@@ -1,6 +1,7 @@
 <template>
     <div>
+        <h3>Footer</h3>
         <hr>
-        <h1>Footer</h1>
+        menu
     </div>
 </template>

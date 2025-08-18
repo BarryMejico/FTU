@@ -99,7 +99,7 @@ ul.topnav {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #333;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 ul.topnav li {float: left;}
@@ -112,7 +112,7 @@ ul.topnav li span {
   text-decoration: none;
 }
 
-ul.topnav li span:hover {background-color: #111;}
+ul.topnav li span:hover {background-color: #667eea;}
 
 ul.topnav li .router-link-active span {background-color: #04AA6D;}
 

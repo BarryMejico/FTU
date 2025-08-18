@@ -73,19 +73,19 @@ export default{
   margin: 0;
   padding: 0;
   width: 200px;
-  background-color: #f1f1f1;
+  /* background-color: #f1f1f1; */
 }
 
 .tools li span{
   display: block;
   color: #000;
-  padding: 8px 16px;
+  padding: 2px 8px;
   text-decoration: none;
 }
 
 /* Change the link color on hover */
 .tools li span:hover {
-  background-color: #555;
+  background-color: #667eea;
   color: white;
 }
 </style>
