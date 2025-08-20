@@ -30,31 +30,41 @@ defineStore("code",{
         async loginuser(data){
             const useMenusa = useMenus(); 
             axios.get('/sanctum/csrf-cookie').then(response => {
-             axios
+                   axios
                    .post('/api/login',data)
                    .then((res)=>{
-                        
                         this.userData=res.data
                         useMenusa.getMenu(res.data.id)
-                        
-                    return true
+                        return true
                    })
                    .catch((err)=>{
                     //    console.log(err)
-                   })
+                     })
+
            });
         },
 
         async logUser(){
             const useMenusa = useMenus();
-            await axios.get('api/user')
-                        .then((res)=>{
-                           this.userData=res.data
-                           useMenusa.getMenu(res.data.id)
-                        })
-                        .catch((err)=>{
-                            // console.log(err.response.data)
-                        })
+            // await axios.get('api/user')
+            //             .then((res)=>{
+            //                this.userData=res.data
+            //                useMenusa.getMenu(res.data.id)
+            //             })
+            //             .catch((err)=>{
+            //                 // console.log(err.response.data)
+            //             })
+             
+             try {
+                const res = await axios.get('http://127.0.0.1:8000/api/user');
+                this.userData=res.data
+                            useMenusa.getMenu(res.data.id)
+                            return true
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                return false;
+            
+    }
         }
     },
     
@@ -62,7 +72,7 @@ defineStore("code",{
 
     getter:{
         async get_logUser(){
-            await axios.get('api/user')
+            await axios.get('http://127.0.0.1:8000//api/user')
                         .then((res)=>{
                            this.userData=res.data
                         })

@@ -10,10 +10,10 @@
             </div>
         
         <div class="users-grid" id="usersGrid">
-            <profile-card></profile-card>
-            <profile-card></profile-card>
-            <profile-card></profile-card>
-            <profile-card></profile-card>
+            <div v-for="(profile, index) in profileID" :key="index">
+                <!-- {{ profile }} -->
+                <profile-card :userdetails="profile" @click.prevent="loadprofile(profile.id)"></profile-card>
+            </div>  
 
         </div>
 
@@ -21,12 +21,49 @@
 </template>
 
 <script>
+import axios from 'axios';
 import profileCard from '../../profile/profile_card.vue';
 
 export default {
   components:{
     profileCard,
   },
+
+   data() {
+        return {
+            profileID: {
+                name: 'Sampple Yarn',
+                email: '',
+                id:1,
+            }
+        }
+    
+    },
+
+        mounted() {
+        this.loadlist_profile();
+    },
+
+
+  methods:{
+
+    loadprofile(id){
+        this.$router.push({path:"/profile/"+id});
+    },
+    
+    loadlist_profile(){
+         axios
+        .get('/api/users')
+        .then(response => {
+            this.profileID = response.data;
+            console.log(this.profileID);
+        })
+        .catch(error => {
+            console.error('Error fetching users:', error);  
+        }); 
+    }
+       
+}
 }
 </script>
 

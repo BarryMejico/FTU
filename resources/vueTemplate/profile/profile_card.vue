@@ -2,7 +2,7 @@
     <div>
         <div class="user-card" data-name="Sarah Johnson" data-role="Frontend Developer" data-skills="React JavaScript TypeScript CSS">
                 <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face" alt="Sarah Johnson" class="user-avatar">
-                <h3 class="user-name">Sarah Johnson</h3>
+                <h3 class="user-name">{{ userdetails.name }}</h3>
                 <p class="user-role">Frontend Developer</p>
                 <div class="user-info">
                     <div class="info-item">
@@ -30,6 +30,28 @@
             </div>
     </div>
 </template>
+<script>
+export default {
+    name: 'ProfileCard',
+    props: {
+        userdetails: {
+            type: Object,
+        }
+    },
+    methods: {
+        handleClick() {
+            this.$emit('click');
+        }
+    },
+
+    watch:{
+        user(){
+            console.log(this.ProfileCard)
+            return this.ProfileCard
+        }
+    }
+}
+</script>
 
 <style>
 .user-card {

@@ -33,8 +33,9 @@
     
 </template>
 <script>
-import {useMenus} from '../../Store/menu'
 import {useUser} from '../../Store/user'
+import {useMenus} from '../../Store/menu'
+
 export default{
     
     setup(){

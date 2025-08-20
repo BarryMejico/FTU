@@ -15,6 +15,16 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('rank')->nullable();
+            $table->date('birthday')->nullable();
+            $table->integer('age')->nullable();
+            $table->string('contact_number')->nullable();
+            $table->string('address')->nullable();
+            $table->string('gender')->nullable();
+            // $table->string('EDUCATIONALBACKGROUND')->nullable();
+            // $table->string('COURSE_TRAININGS_SEMINARTAKEN')->nullable();
+            // $table->string('SUBJECTTAUGHT')->nullable();
+            // $table->string('COURSETAUGHT')->nullable();
         });
     }
 

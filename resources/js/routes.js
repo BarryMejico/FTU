@@ -3,6 +3,8 @@ import{createRouter,createWebHistory} from 'vue-router'
 import Home from '../vueTemplate/Home.vue'
 import About from '../vueTemplate/about.vue'
 import { useUser } from '../Store/user'
+import thisprofile from '../vueTemplate/profile/profile.vue'
+
 
 // import Login from '../vueTemplate/Auth/login.vue'
 // import Register from '../vueTemplate/Auth/registration.vue'
@@ -30,10 +32,12 @@ const routes=[
         component:()=>import('../vueTemplate/Auth/registration.vue')
     },
     {
-        path:'/profile/:id/:name',
-        name:'Profile',
-        // import function for lazy loading 
-        component:()=>import('../vueTemplate/profile/profile.vue')
+        path:'/profile/:id',
+        name:'Profile', 
+        component:thisprofile,
+        meta:{
+            requiresAuth:true,
+        },
     },
     {
         path:'/myprofile',
@@ -49,6 +53,24 @@ const routes=[
         //             return next({ name: 'login', query:{redirect:to.fullPath} })
         //         })        
         // },
+        meta:{
+            requiresAuth:true,
+        },
+    },
+    
+     {
+        path:'/teacher',
+        name:'teacher',
+        component:()=>import('../vueTemplate/databuilder/teacher/teacher.vue'),
+        meta:{
+            requiresAuth:true,
+        },
+    },
+        
+    {
+        path:'/student',
+        name:'student',
+        component:()=>import('../vueTemplate/databuilder/student/student.vue'),
         meta:{
             requiresAuth:true,
         },
@@ -80,6 +102,7 @@ const routes=[
             component:()=>import('../vueTemplate/adminSystem/users/users.vue')},
         ]
     },
+
 
 
 

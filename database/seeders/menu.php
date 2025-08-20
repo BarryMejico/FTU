@@ -34,7 +34,7 @@ class menu extends Seeder
             'menuParent'=>'2',
             'Description'=>'Teachers',
             'icon'=>'clipboard',
-            'slug'=>'/nextTime', 
+            'slug'=>'/teacher', 
         ]);
 
         DB::table('menus')->insert([
@@ -42,7 +42,7 @@ class menu extends Seeder
             'menuParent'=>'2',
             'Description'=>'Students',
             'icon'=>'clipboard',
-            'slug'=>'/nextTime', 
+            'slug'=>'/student', 
         ]);
 
         

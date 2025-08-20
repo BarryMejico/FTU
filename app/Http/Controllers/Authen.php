@@ -29,7 +29,7 @@ class Authen extends Controller
             'email' => $REQUEST['email'],
             'password' => Hash::make($REQUEST['password']),
             'code' => $Code,
-            'permiCode'=>'1',
+            'permiCode'=>'2',
         ]);
         $message ="Data has been saved";
         return ;
@@ -58,9 +58,26 @@ class Authen extends Controller
      public function profile_code(request $request){
         $input=$request->all();
         $user=DB::table('users')
-            ->select('users.code','users.name')
+            ->join('permissions', 'users.permiCode', '=', 'permissions.permCode')
+            ->select('users.code','users.name','users.email','permissions.Description','users.profile_image')
             ->where('code',$input)
             ->get();
+            if ($user->isEmpty()) {
+                return response()->json(['message' => 'User not found'], 404);
+            }
+        return $user;
+     }
+
+     public function profiles(request $request){
+        $input=$request->all();
+        $user=DB::table('users')
+            ->join('permissions', 'users.permiCode', '=', 'permissions.permCode')
+            ->select('users.code','users.name','users.email','permissions.Description','users.profile_image')
+            // ->where('code',$input)
+            ->get();
+            if ($user->isEmpty()) {
+                return response()->json(['message' => 'User not found'], 404);
+            }
         return $user;
      }
 }

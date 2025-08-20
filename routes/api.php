@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Authen;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\menu;
+use App\Http\Controllers\TeacherController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -28,6 +29,7 @@ Route::post('register',[Authen::class,'register']);
 
 Route::post('login',[Authen::class,'login']);
 Route::post('logout',[Authen::class,'logout']);
+Route::get('users',[Authen::class,'profiles']);
 
 Route::get('thatProfile',[Authen::class,'profile_code']);
 
@@ -36,3 +38,4 @@ Route::get('listofPermissions',[PermissionController::class,'index']);
 
 Route::get('listofMenu',[menu::class,'index_menu']);
 
+Route::post('save_teacher',[TeacherController::class,'save_data']);
