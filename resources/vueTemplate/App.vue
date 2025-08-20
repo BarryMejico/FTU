@@ -115,14 +115,15 @@ body {
             /* background: #2c3e50; */
             /* color: white; */
             text-align: center;
-            padding: 2rem 0;
+            /* padding: 2rem 0; */
             margin-top: auto;
         }
-         .footer-content {
+        
+        /* .footer-content {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem;
-        }
+        } */
 
          /* Responsive Design */
         @media (max-width: 768px) {

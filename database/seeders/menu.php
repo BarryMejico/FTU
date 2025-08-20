@@ -24,15 +24,23 @@ class menu extends Seeder
         DB::table('menus')->insert([
             'id'=>'2',
             'menuParent'=>'root',
-            'Description'=>'menu 1',
+            'Description'=>'Data Builder',
+            'icon'=>'clipboard',
+            'slug'=>'0', 
+        ]);
+
+        DB::table('menus')->insert([
+            'id'=>'3',
+            'menuParent'=>'2',
+            'Description'=>'Teachers',
             'icon'=>'clipboard',
             'slug'=>'/nextTime', 
         ]);
 
         DB::table('menus')->insert([
-            'id'=>'3',
-            'menuParent'=>'root',
-            'Description'=>'Menu 2',
+            'id'=>'11',
+            'menuParent'=>'2',
+            'Description'=>'Students',
             'icon'=>'clipboard',
             'slug'=>'/nextTime', 
         ]);

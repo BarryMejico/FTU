@@ -13,7 +13,11 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        
+        $permission= DB::table('permissions')
+        ->select('*')
+        ->get();
+        // dd($permission);
+        return $permission;
     }
 
     /**
