@@ -5,9 +5,8 @@ export const useMenus =
 defineStore("menus",{
     state:()=>{
         return{
-            menu:{
-                
-            }
+            menu:[{slug:''
+            }]
         }
     },
 
@@ -18,6 +17,19 @@ defineStore("menus",{
                     .then((res)=>{
                         this.menu=res.data
                     })
-        }
+        },
+
+        checkThisMenu(slug){
+           var menu = this.menu;
+           const menubyslug = menu.find(menu => menu.slug === slug)
+
+            if (menubyslug) {
+                return true;
+            }
+            else{
+                return false;
+            }
+
+        }   
     }
 })

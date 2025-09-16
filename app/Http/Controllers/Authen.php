@@ -29,7 +29,8 @@ class Authen extends Controller
             'email' => $REQUEST['email'],
             'password' => Hash::make($REQUEST['password']),
             'code' => $Code,
-            'permiCode'=>'2',
+            'permiCode'=>'0',
+            'Profile_Picture' => 'avatar/Default.png',
         ]);
         $message ="Data has been saved";
         return ;
@@ -59,7 +60,7 @@ class Authen extends Controller
         $input=$request->all();
         $user=DB::table('users')
             ->join('permissions', 'users.permiCode', '=', 'permissions.permCode')
-            ->select('users.code','users.name','users.email','permissions.Description','users.profile_image')
+            ->select('users.code','users.name','users.email','permissions.Description','users.Profile_Picture')
             ->where('code',$input)
             ->get();
             if ($user->isEmpty()) {
@@ -72,7 +73,7 @@ class Authen extends Controller
         $input=$request->all();
         $user=DB::table('users')
             ->join('permissions', 'users.permiCode', '=', 'permissions.permCode')
-            ->select('users.code','users.name','users.email','permissions.Description','users.profile_image')
+            ->select('users.code','users.name','users.email','permissions.Description','users.Profile_Picture')
             // ->where('code',$input)
             ->get();
             if ($user->isEmpty()) {

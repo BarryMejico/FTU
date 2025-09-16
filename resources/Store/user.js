@@ -21,9 +21,10 @@ defineStore("code",{
 
         logout(){
             axios
-                .post('api/logout')
+                .post('http://127.0.0.1:8000/api/logout')
                 .then(()=>{
                     this.userData={}
+                    window.location.reload(); // Reloads the current page
                 })
         },
 
@@ -35,33 +36,28 @@ defineStore("code",{
                    .then((res)=>{
                         this.userData=res.data
                         useMenusa.getMenu(res.data.id)
+                        // window.location.reload(); // Reloads the current page
                         return true
                    })
                    .catch((err)=>{
-                    //    console.log(err)
+                        console.log(err);
+                        alert("Login Failed")
+                        return false
                      })
 
            });
         },
 
         async logUser(){
-            const useMenusa = useMenus();
-            // await axios.get('api/user')
-            //             .then((res)=>{
-            //                this.userData=res.data
-            //                useMenusa.getMenu(res.data.id)
-            //             })
-            //             .catch((err)=>{
-            //                 // console.log(err.response.data)
-            //             })
-             
+            const useMenusa = useMenus();             
              try {
                 const res = await axios.get('http://127.0.0.1:8000/api/user');
                 this.userData=res.data
-                            useMenusa.getMenu(res.data.id)
+                useMenusa.getMenu(res.data.id)
+                
                             return true
             } catch (error) {
-                console.error('Error fetching data:', error);
+                // console.error('Error fetching data:', error);
                 return false;
             
     }
@@ -72,9 +68,10 @@ defineStore("code",{
 
     getter:{
         async get_logUser(){
-            await axios.get('http://127.0.0.1:8000//api/user')
+            await axios.get('http://127.0.0.1:8000/api/user')
                         .then((res)=>{
                            this.userData=res.data
+                            return res.data
                         })
                         .catch((err)=>{
                             console.log(err.response.data)

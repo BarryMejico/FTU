@@ -3,12 +3,13 @@ import{createRouter,createWebHistory} from 'vue-router'
 import Home from '../vueTemplate/Home.vue'
 import About from '../vueTemplate/about.vue'
 import { useUser } from '../Store/user'
+import { useMenus } from '../Store/menu'
 import thisprofile from '../vueTemplate/profile/profile.vue'
 
 
 // import Login from '../vueTemplate/Auth/login.vue'
 // import Register from '../vueTemplate/Auth/registration.vue'
-
+ 
 const routes=[
     {
         path:'/',
@@ -35,59 +36,64 @@ const routes=[
         path:'/profile/:id',
         name:'Profile', 
         component:thisprofile,
-        meta:{
-            requiresAuth:true,
-        },
+        // meta:{
+        //     requiresAuth:true,
+        // },
+
     },
     {
         path:'/myprofile',
         name:'MyProfile',
         // import function for lazy loading 
         component:()=>import('../vueTemplate/profile/myProfile.vue'),
-        // route protect
-        // beforeEnter:(to,from,next)=>{
-        //     axios.get('api/user').then(() => {
-        //             next()
-        //         })
-        //         .catch(()=>{
-        //             return next({ name: 'login', query:{redirect:to.fullPath} })
-        //         })        
-        // },
+        
+        
         meta:{
             requiresAuth:true,
         },
+        children:[
+                {
+                path:'/student',
+                name:'student',
+                component:()=>import('../vueTemplate/databuilder/student/student.vue'),
+                meta:{
+                    requiresAuth:true,
+                },
+            },
+            {
+                path:'/teacher-edit',
+                name:'teacher-edit',
+                component:()=>import('../vueTemplate/databuilder/teacher/teacher.vue'),
+                meta:{
+                    requiresAuth:true,
+                },
+            },
+        ]
     },
     
-     {
-        path:'/teacher',
-        name:'teacher',
-        component:()=>import('../vueTemplate/databuilder/teacher/teacher.vue'),
-        meta:{
-            requiresAuth:true,
-        },
-    },
-        
-    {
-        path:'/student',
-        name:'student',
-        component:()=>import('../vueTemplate/databuilder/student/student.vue'),
-        meta:{
-            requiresAuth:true,
-        },
-    },
-
     {
         path:'/admin',
         name:'admin',
         component:()=>import('../vueTemplate/adminSystem/adminDashboard.vue'),
-        meta:{
-            requiresAuth:true,
+        // route protect
+        beforeEnter:(to,from,next)=>{
+            const menu = useMenus();
+            var inmenu=menu.checkThisMenu(to.fullPath)
+            console.log(inmenu);
+            if(inmenu){
+                next()
+            }
+            else{
+                next({name:'E404'})
+            }
         },
+        // meta:{
+            
+        //     requiresAuth:true,
+
+        // },
 
         children:[
-            {path:'/',
-            name:'menulist',
-           component:()=>import('../vueTemplate/adminSystem/menu/menu.vue')},
 
             {path:'/menu',
              name:'menulist',
@@ -135,6 +141,10 @@ router.beforeEach((to,from)=>{
     const authen=useUser();
     if(to.meta.requiresAuth && !authen.userData.name){
         return{name:'login',query:{redirect:to.fullPath}}
+    }
+
+    else{
+        // next();
     }
 })
     

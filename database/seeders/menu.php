@@ -45,6 +45,14 @@ class menu extends Seeder
             'slug'=>'/student', 
         ]);
 
+        DB::table('menus')->insert([
+            'id'=>'12',
+            'menuParent'=>'x',
+            'Description'=>'Edit permission',
+            'icon'=>'clipboard',
+            'slug'=>'/student', 
+        ]);
+
         
         DB::table('menus')->insert([
             'id'=>'4',

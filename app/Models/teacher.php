@@ -16,5 +16,6 @@ class teacher extends Model
         'age',
         'contact_number',
         'address',
+        'gender',
     ];
 }

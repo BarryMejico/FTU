@@ -4,8 +4,12 @@
         <nav>
         <ul class="topnav">
             <li>
+               <img src='/image/logo.png' alt="Logo" class="logo" />
+            </li>
+   
+            <li>
                 <router-link to="/">
-                    <span>Home</span>
+                    <span>{{ appName }}</span>
                 </router-link>
             </li>
             <li>
@@ -62,7 +66,7 @@ export default{
     },
     data(){
         return{
-            
+            appName: import.meta.env.VITE_APP_NAME || 'FTU Portal'
         }
     },
     methods:{
@@ -90,6 +94,12 @@ export default{
 
 
 <style>
+
+.logo {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
 #nav .router-link-active{
     color:red;
 }
@@ -99,7 +109,8 @@ ul.topnav {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+background:black;
 }
 
 ul.topnav li {float: left;}

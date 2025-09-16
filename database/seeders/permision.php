@@ -78,5 +78,10 @@ class permision extends Seeder
             'permiCode'=>'1',
             'id'=>'11',
         ]);
+
+         DB::table('permission_details')->insert([
+            'permiCode'=>'1',
+            'id'=>'12',
+        ]);
     }
 }

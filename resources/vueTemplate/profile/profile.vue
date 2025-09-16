@@ -3,7 +3,8 @@
         <div class="profile-card">
             <div class="profile-header">
                 <div class="profile-image">
-                    <img :src="profileID.profile_image || ''" alt="Profile Picture">
+                    <!-- <img :src="profileID.Profile_Picture" /> -->
+                    <img :src=" appURL + profileID.Profile_Picture"  onerror="/image/Default.png" class="logo" />
                 </div>
                 <div class="profile-info">
                     <div class="info-item">
@@ -15,12 +16,24 @@
                         <span>{{ profileID.email }}</span>
                     </div>
                     <div class="info-item">
-                        <label><b>id:</b></label>
+                        <label><b>ID:</b></label>
                         <span>{{ profileID.code }}</span>
                     </div>
                     <div class="info-item">
-                        <label><b>Permision:</b></label>
-                        <span>{{ profileID.Description }}</span>
+                        <label><b>Title:</b></label>
+                        <div v-if="editpermission">
+                            <select name="myDropdown" id="myDropdown">
+                            <option value="option1">Student</option>
+                            <option value="option2">Teacher</option>
+                            <option value="option3">Admin</option>
+                            </select>
+                            <button class="btn btn-primary">Update</button>
+                        </div>
+                        <div v-else>
+                            <span>{{ profileID.Description }}</span>
+                        </div>
+
+                        
                     </div>
                 </div>
             </div>
@@ -30,9 +43,15 @@
 
 <script>
 import axios from 'axios';
+import {useUser} from '../../Store/user'
+import {useMenus} from '../../Store/menu'
 
 export default {
-    
+    setup(){
+        const menu = useMenus();
+        const userData = useUser();
+        return {menu,userData}
+    },
 
     data() {
         return {
@@ -50,6 +69,7 @@ export default {
                 params: { id: this.$route.params.id }
             });
             this.profileID = response.data[0];
+            
         } catch (error) {
             console.error('Error fetching profile:', error);
             this.profileID= {
@@ -57,6 +77,44 @@ export default {
                 email: '',
                 image_url: ''
             }
+        }
+    },
+
+    mounted(){  
+        // this.checkifallowedit();
+    },
+
+    methods:{
+        checkifallowedit(){   
+        var i=0
+        for(var i = 0; i < this.tools.length; i++){
+            console.log(this.useUser[i].name);
+        }
+        }
+    },
+
+    computed:{
+        appURL(){
+            var path= window.location.origin + "/"
+        return path
+      },
+
+        userData(){
+            return this.userData.userData
+        },
+
+        editpermission(){
+            var i=0
+            var data=this.menu.menu
+            for(var i = 0; i < data.length; i++){
+            console.log(data[i].Description);
+            if(data[i].Description=="Edit permission")
+            console.log("found");
+                return true
+            }
+            
+            return false
+
         }
     }
 }

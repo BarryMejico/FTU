@@ -12,7 +12,7 @@
         <div class="users-grid" id="usersGrid">
             <div v-for="(profile, index) in profileID" :key="index">
                 <!-- {{ profile }} -->
-                <profile-card :userdetails="profile" @click.prevent="loadprofile(profile.id)"></profile-card>
+                <profile-card :userdetails="profile" @click.prevent="loadprofile(profile.code)"></profile-card>
             </div>  
 
         </div>
@@ -31,11 +31,11 @@ export default {
 
    data() {
         return {
-            profileID: {
+            profileID: [{
                 name: 'Sampple Yarn',
                 email: '',
                 id:1,
-            }
+            }]
         }
     
     },
@@ -48,6 +48,7 @@ export default {
   methods:{
 
     loadprofile(id){
+        console.log(id);
         this.$router.push({path:"/profile/"+id});
     },
     

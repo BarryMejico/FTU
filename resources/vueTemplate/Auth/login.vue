@@ -32,6 +32,9 @@ data(){
         }
     }
 },
+mounted(){
+    // window.location.reload();
+},
 methods:{
     async login(){
         const redirectPath = this.$route.query.redirect
@@ -39,9 +42,13 @@ methods:{
             if(undefined!=redirectPath){
                 this.$router.push(redirectPath)
             }
-            else{this.$router.push("/myprofile")}
+            else{
+                window.location.reload();
+                this.$router.push("/myprofile")}
         }
-        },
+        
+             }
+        
 },
 computed:{
         userData(){

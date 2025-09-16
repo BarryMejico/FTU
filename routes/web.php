@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+// routes/web.php
+use App\Http\Controllers\imgserver;
+
+Route::get('/image/{filename}', [imgserver::class, 'show'])->name('image.show');
 
 /*
 |--------------------------------------------------------------------------

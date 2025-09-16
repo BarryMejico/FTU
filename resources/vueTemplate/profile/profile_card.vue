@@ -1,24 +1,24 @@
 <template>
     <div>
         <div class="user-card" data-name="Sarah Johnson" data-role="Frontend Developer" data-skills="React JavaScript TypeScript CSS">
-                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face" alt="Sarah Johnson" class="user-avatar">
+                <img :src="userdetails.Profile_Picture" alt="Sarah Johnson" class="user-avatar">
                 <h3 class="user-name">{{ userdetails.name }}</h3>
-                <p class="user-role">Frontend Developer</p>
+                <p class="user-role">{{ userdetails.Description }}</p>
                 <div class="user-info">
                     <div class="info-item">
                         <span class="info-icon">📧</span>
-                        <span>sarah.johnson@company.com</span>
+                        <span>{{ userdetails.email }}</span>
                     </div>
-                    <div class="info-item">
+                    <!-- <div class="info-item">
                         <span class="info-icon">📱</span>
                         <span>+1 (555) 123-4567</span>
                     </div>
                     <div class="info-item">
                         <span class="info-icon">📍</span>
                         <span>San Francisco, CA</span>
-                    </div>
+                    </div> -->
                 </div>
-                <div class="user-skills">
+                <!-- <div class="user-skills">
                     <div class="skills-title">Skills</div>
                     <div class="skills-list">
                         <span class="skill-tag">React</span>
@@ -26,7 +26,7 @@
                         <span class="skill-tag">TypeScript</span>
                         <span class="skill-tag">CSS</span>
                     </div>
-                </div>
+                </div> -->
             </div>
     </div>
 </template>
@@ -46,7 +46,7 @@ export default {
 
     watch:{
         user(){
-            console.log(this.ProfileCard)
+            // console.log(this.ProfileCard)
             return this.ProfileCard
         }
     }
