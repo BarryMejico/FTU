@@ -40,6 +40,7 @@ methods:{
         const redirectPath = this.$route.query.redirect
         if(await this.userDatax.loginuser(this.data)){
             if(undefined!=redirectPath){
+                console.log("")
                 this.$router.push(redirectPath)
             }
             else{

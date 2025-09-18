@@ -53,7 +53,9 @@ class Authen extends Controller
     }
 
     public function logout(){
-        Auth::logout();
+        Auth::guard('web')->logout();
+        //  Auth::user()->tokens()->where('id', $tokenId)->delete();
+        // Auth::logout();
      }
 
      public function profile_code(request $request){
