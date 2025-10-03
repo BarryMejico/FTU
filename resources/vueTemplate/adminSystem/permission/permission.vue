@@ -17,7 +17,7 @@
                     <tr v-for="(permission, index) in permissions" :key="permission.id">
                         <td>{{ index + 1 }}</td>
                         <td>{{ permission.permCode }}</td>
-                        <td>{{ permission.Description }}</td>
+                        <td @click="toedit(permission.permCode)">{{ permission.Description }}</td>
                         <td>
                             <button class="btn-edit" @click="editPermission(permission)">Edit</button>
                             <button class="btn-delete" @click="deletePermission(permission.id)">- Delete</button>
@@ -38,8 +38,16 @@
 
 <script>
 import axios from 'axios';
+import {useUser} from '../../../Store/user'
+import {useMenus} from '../../../Store/menu'
 
 export default {
+    setup(){
+        const menu = useMenus();
+        const userData = useUser();
+        return {menu,userData}
+    },
+
     data() {
         return {
             permissions: [
@@ -50,6 +58,8 @@ export default {
         }
     },
 
+    
+
     mounted() {
         // Fetch permissions from API
         this.fetchPermissions();
@@ -57,6 +67,9 @@ export default {
     
     
     methods: {
+        toedit(permcode){
+            this.$router.push("/permission-modify/"+permcode)
+        },
         fetchPermissions(){
             axios
             .get('api/listofPermissions')

@@ -109,5 +109,13 @@ class menu extends Seeder
             'icon'=>'clipboard',
             'slug'=>'/permission', 
         ]);
+
+         DB::table('menus')->insert([
+            'id'=>'13',
+            'menuParent'=>'1',
+            'Description'=>'Permissions-Modify',
+            'icon'=>'clipboard',
+            'slug'=>'/permission-modify', 
+        ]);
     }
 }

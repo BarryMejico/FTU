@@ -35,6 +35,8 @@ Route::get('thatProfile',[Authen::class,'profile_code']);
 
 Route::get('menuList',[PermissionController::class,'menuFor']);
 Route::get('listofPermissions',[PermissionController::class,'index']);
+Route::get('thisPermissions',[PermissionController::class,'specificmenu']);
+Route::post('UpdatePermissions',[PermissionController::class,'updateBULK']);
 
 Route::get('listofMenu',[menu::class,'index_menu']);
 
