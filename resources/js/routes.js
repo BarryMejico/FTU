@@ -68,6 +68,15 @@ const routes=[
                     requiresAuth:true,
                 },
             },
+
+            {
+                path:'/userDetails',
+                name:'userDetails',
+                component:()=>import('../vueTemplate/databuilder/userDetails.vue'),
+                meta:{
+                    requiresAuth:true,
+                },
+            },
         ]
     },
     

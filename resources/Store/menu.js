@@ -2,7 +2,7 @@ import {defineStore} from "pinia"
 import axios from "axios";
 
 export const useMenus =
-defineStore("menus",{
+defineStore("menu",{
     state:()=>{
         return{
             menu:[{slug:''

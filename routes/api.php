@@ -40,4 +40,5 @@ Route::post('UpdatePermissions',[PermissionController::class,'updateBULK']);
 
 Route::get('listofMenu',[menu::class,'index_menu']);
 
+
 Route::post('save_teacher',[TeacherController::class,'save_data']);

@@ -74,9 +74,9 @@ class PermissionController extends Controller
          $id=$request->all();
         // dd($id['id']);
         $Menu= DB::table('permission_details')
-        ->join('menus', 'menus.id', '=', 'permission_details.id')
+        ->join('menu', 'menu.id', '=', 'permission_details.id')
         ->where('permission_details.permiCode',$id['id'])
-        ->select('menus.*')
+        ->select('menu.*')
         ->get();
         return $Menu;
     }

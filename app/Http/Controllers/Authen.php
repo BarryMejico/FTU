@@ -30,7 +30,7 @@ class Authen extends Controller
             'password' => Hash::make($REQUEST['password']),
             'code' => $Code,
             'permiCode'=>'0',
-            'Profile_Picture' => 'avatar/Default.png',
+            'Profile_Picture' => 'image/Default.png',
         ]);
         $message ="Data has been saved";
         return ;

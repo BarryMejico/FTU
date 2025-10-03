@@ -90,6 +90,7 @@ export default {
                 }],
             menus:[{}],
             listmenParent:[],
+            tableData:[{}]
             // tableData: [
             //     // Sample data - replace with actual API calls
             //     { id: 1, code: 'VIEW_DASHBOARD', description: 'Can view dashboard' },
@@ -110,8 +111,12 @@ export default {
             const response = await axios.get('http://127.0.0.1:8000/api/thisPermissions', {
                 params: { id: this.$route.params.permcode }
             });
+
+            const response2 = await axios.get('http://127.0.0.1:8000/api/listofMenu')
+            this.tableData = response2.data;
+
             this.SelectedMenu = response.data;
-             this.menuData()
+            this.menuData()
             
         } catch (error) {
             this.profileID= {
@@ -136,7 +141,6 @@ export default {
                         }
                     });
 
-             console.log(selectedmenus)
             axios.post('http://127.0.0.1:8000/api/UpdatePermissions', {
                 selectedmenus: selectedmenus,
             })
@@ -188,14 +192,14 @@ export default {
         },
         
         menuData(){
+        
             var i=0;
-            for(i=0;i<this.menu.menu.length;i++){
+            for(i=0;i<this.tableData.length;i++){
                 var selected
                 var j=0;
 
                 for(j=0;j<this.SelectedMenu.length;j++){
-
-                    if(this.SelectedMenu[j].id==this.menu.menu[i].id){
+                    if(this.SelectedMenu[j].id==this.tableData[i].id){
                         selected=true
                         break
                     }else{
@@ -204,12 +208,12 @@ export default {
                 }
                 this.menus.push({
                     Selected: selected,
-                    id: this.menu.menu[i].id,
-                    icon: this.menu.menu[i].icon,
-                    permCode: this.menu.menu[i].permCode,
-                    Description: this.menu.menu[i].Description,
-                    menuParent: this.menu.menu[i].menuParent,
-                    slug: this.menu.menu[i].slug,
+                    id: this.tableData[i].id,
+                    icon: this.tableData[i].icon,
+                    permCode: this.tableData[i].permCode,
+                    Description: this.tableData[i].Description,
+                    menuParent: this.tableData[i].menuParent,
+                    slug: this.tableData[i].slug,
                 })
             }
             // return menus;
@@ -217,9 +221,9 @@ export default {
 
         fetchPermissions(){
             axios
-            .get('api/listofPermissions')
+            .get('http://127.0.0.1:8000/api/listofMenu')
             .then((res)=> {
-                // this.tableData = res.data;
+                this.tableData = res.data;
             })
         },
 
@@ -239,9 +243,6 @@ export default {
             return this.userData.userData
         },
 
-        tableData(){
-            return this.menu.menu
-        },
     },
     
  watch: {

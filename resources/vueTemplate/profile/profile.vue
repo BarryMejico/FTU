@@ -4,7 +4,7 @@
             <div class="profile-header">
                 <div class="profile-image">
                     <!-- <img :src="profileID.Profile_Picture" /> -->
-                    <img :src=" appURL + profileID.Profile_Picture"  onerror="/image/Default.png" class="logo" />
+                    <img :src=" appURL + profileID.Profile_Picture"  onerror="image/Default.png" class="logo" />
                 </div>
                 <div class="profile-info">
                     <div class="info-item">

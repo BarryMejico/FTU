@@ -35,9 +35,9 @@ $PO_detail=array(
 function listofmenu(){
      $permCode=getUser()->permCode;
             $Menu= DB::table('permission_details')
-            ->join('menus', 'menus.id', '=', 'permission_details.id')
+            ->join('menu', 'menu.id', '=', 'permission_details.id')
             ->where('permission_details.permCode',$permCode)
-            ->select('menus.*')
+            ->select('menu.*')
             ->get();
     return $Menu;
    
