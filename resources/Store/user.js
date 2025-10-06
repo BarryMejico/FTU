@@ -58,7 +58,7 @@ defineStore("code",{
                    .post('/api/login',data)
                    .then((res)=>{
                         this.userData=res.data
-                        useMenusa.getMenu(res.data.id)
+                        useMenusa.getMenu(res.data.permiCode)
                         // window.location.reload(); // Reloads the current page
                         return true
                    })
@@ -76,9 +76,9 @@ defineStore("code",{
              try {
                 const res = await axios.get('http://127.0.0.1:8000/api/user');
                 this.userData=res.data
-                useMenusa.getMenu(res.data.id)
+                useMenusa.getMenu(res.data.permiCode)
                 
-                            return true
+                return true
             } catch (error) {
                 // console.error('Error fetching data:', error);
                 return false;

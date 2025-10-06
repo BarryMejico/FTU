@@ -52,6 +52,14 @@ const routes=[
             requiresAuth:true,
         },
         children:[
+             {
+                path:'/myDashboard',
+                name:'profileoverview',
+                component:()=>import('../vueTemplate/profile/profileoverview.vue'),
+                meta:{
+                    requiresAuth:true,
+                },
+            },
                 {
                 path:'/student',
                 name:'student',

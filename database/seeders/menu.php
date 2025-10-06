@@ -57,7 +57,7 @@ class menu extends Seeder
         DB::table('menu')->insert([
             'id'=>'4',
             'menuParent'=>'root',
-            'Description'=>'Menu 3',
+            'Description'=>'Teacher',
             'icon'=>'clipboard',
             'slug'=>'0', 
         ]);
@@ -65,7 +65,7 @@ class menu extends Seeder
         DB::table('menu')->insert([
             'id'=>'8',
             'menuParent'=>'4',
-            'Description'=>'submenu',
+            'Description'=>'Subjects',
             'icon'=>'clipboard',
             'slug'=>'/encashment', 
         ]);
@@ -73,7 +73,7 @@ class menu extends Seeder
         DB::table('menu')->insert([
             'id'=>'9',
             'menuParent'=>'4',
-            'Description'=>'Submenu 4 1',
+            'Description'=>'Modules',
             'icon'=>'clipboard',
             'slug'=>'/ReceivedPayments', 
         ]);

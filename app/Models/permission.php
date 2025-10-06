@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class permission extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'permCode';
+    protected $fillable = [
+        'Description',
+    ];
+
 }

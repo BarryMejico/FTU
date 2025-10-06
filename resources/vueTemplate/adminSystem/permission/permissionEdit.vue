@@ -43,16 +43,25 @@
                             </span>
                         </li>
                     </ul>
-                </span>   
+                    </span>   
 
-                <span v-else>
+                    <span v-else>
                             <span>{{ tool.Description }}</span>     
-                </span>
-                </span>
+                    </span>
+                    </span>
+                    <span v-if="tool.menuParent=='x'">
+                        <span>
+                        <input
+                                            type="checkbox"
+                                            v-model="tool.Selected"
+                                            @change="updateSelect(tool)"
+                                        />
+                         {{ tool.Description }}</span>  
+                    </span>
 
-                </li>
-                </ul>
-            </div>
+                    </li>
+                    </ul>
+                    </div>
                     <button class="btn btn-primary mt-2" @click="savethis()">Save</button>
                 
                     <hr>
@@ -91,31 +100,30 @@ export default {
             menus:[{}],
             listmenParent:[],
             tableData:[{}]
-            // tableData: [
-            //     // Sample data - replace with actual API calls
-            //     { id: 1, code: 'VIEW_DASHBOARD', description: 'Can view dashboard' },
-            //     { id: 2, code: 'MANAGE_USERS', description: 'Can manage users' }
-            // ]
         }
     },
 
     mounted() {
-        // Fetch permissions from API
-        // this.fetchPermissions();
 
-        // this.menuData()
     },
 
     async created() {
         try {
+            const response2 = await axios.get('http://127.0.0.1:8000/api/listofMenu')
+            this.tableData = response2.data;
+
             const response = await axios.get('http://127.0.0.1:8000/api/thisPermissions', {
                 params: { id: this.$route.params.permcode }
             });
 
-            const response2 = await axios.get('http://127.0.0.1:8000/api/listofMenu')
-            this.tableData = response2.data;
-
             this.SelectedMenu = response.data;
+            if(this.SelectedMenu.length==0){
+                console.log('no data')
+            }
+
+            
+
+
             this.menuData()
             
         } catch (error) {

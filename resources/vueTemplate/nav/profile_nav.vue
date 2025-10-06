@@ -1,13 +1,11 @@
 <template>
     <nav class="profile-nav">
         <ul>
+            <li :class="{ active: activeTab === 'dashboard' }" @click="setActive('dashboard')">
+                        Dashboard
+            </li>
             <li :class="{ active: activeTab === 'details' }" @click="setActive('details')">
-                 <router-link to="/userDetails">
-                    <span>
                         Details
-                    </span>
-                    
-                </router-link>
             </li>
             <li :class="{ active: activeTab === 'education' }" @click="setActive('education')">
                 Education
@@ -25,13 +23,30 @@ export default {
     name: 'ProfileNav',
     data() {
         return {
-            activeTab: 'details'
+            activeTab: 'dashboard'
         }
     },
     methods: {
         setActive(tab) {
             this.activeTab = tab;
-            this.$emit('tab-selected', tab);
+            
+
+            if(tab=='dashboard'){
+                this.$router.push("/myDashboard");
+                this.$emit('tab-selected', 'dashboard');
+            }
+            if(tab=='details'){
+                this.$router.push("/userDetails");
+                this.$emit('tab-selected', 'details');
+            }
+            if(tab=='education'){
+                this.$router.push("/userEducation");
+                this.$emit('tab-selected', 'education');
+            }
+            if(tab=='courses'){ 
+                this.$router.push("/userCourses");
+                this.$emit('tab-selected', 'courses');
+            }
         }
     }
 }

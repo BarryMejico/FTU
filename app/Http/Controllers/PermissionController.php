@@ -123,4 +123,49 @@ class PermissionController extends Controller
 
         // return $model;
     }
+
+    function addPermission(Request $request){
+        $data = $request->all();
+        // dd($data);
+        $permission = new permission();
+        $permission->permCode = $data['permCode'];
+        $permission->Description = $data['Description'];
+        $permission->save();
+
+        $permissiondetails= new permission_details();
+        $permissiondetails->permiCode = $data['permCode'];
+        $permissiondetails->id = 1;
+        $permissiondetails->save();
+
+
+        return response()->json(['message' => 'Permission added successfully', 'permission' => $permission], 201);
+    }  
+    
+    function editpermission(C $request){
+        $data = $request->all();
+        // dd($data);
+        $permission = permission::where('permCode', $data['permCode'])->first();
+        if ($permission) {
+            $permission->Description = $data['Description'];
+            $permission->save();
+
+            return response()->json(['message' => 'Permission updated successfully', 'permission' => $permission], 200);
+        } else {
+            return response()->json(['message' => 'Permission not found'], 404);
+        }
+    }   
+
+    function deletepermission(Request $request){
+        $data = $request->all();
+        // dd($data);
+        $permission = permission::where('permCode', $data['permCode'])->first();
+        if ($permission) {
+            $permission->delete();
+
+            return response()->json(['message' => 'Permission deleted successfully'], 200);
+        } else {
+            return response()->json(['message' => 'Permission not found'], 404);
+        }
+    }   
+
 }

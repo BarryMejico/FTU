@@ -11,10 +11,12 @@
 <script>
 import axios from 'axios';
 import { useUser } from '../../resources/Store/user';
+import { useMenus } from '../../resources/Store/menu';
 export default{
 setup(){
         const userDatax=useUser();
-        return {userDatax}
+        const menu = useMenus();
+        return {userDatax,menu}
 },
 data(){
     return{
@@ -45,18 +47,43 @@ methods:{
 computed:{
         userData(){
             return this.userDatax.userData
+        },
+
+        menulist(){
+            return this.menu.menu
         }
     },
+
 watch:{
+
+    menulist(newvalue){
+        const redirectPath = this.$route.query.redirect        
+        if(newvalue[0].id){
+            if(undefined!=redirectPath){
+                this.$router.push(redirectPath)
+            }
+            else{
+                this.$router.push("/myprofile")
+            }
+
+        }
+
+    },  
+
+
     userData(newvalue){
+        const redirectPath = this.$route.query.redirect
+
+
+
         
         if(newvalue.id){
             
-            const redirectPath = this.$route.query.redirect
+            
             
             if(undefined!=redirectPath){
                 
-                this.$router.push("/myprofile")
+                this.$router.push(redirectPath)
                 
             }
             else{

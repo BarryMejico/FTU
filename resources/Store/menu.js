@@ -21,6 +21,7 @@ defineStore("menu",{
 
         checkThisMenu(slug){
            var menu = this.menu;
+           
            const menubyslug = menu.find(menu => menu.slug === slug)
 
             if (menubyslug) {
