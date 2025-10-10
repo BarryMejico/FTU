@@ -131,6 +131,32 @@ const routes=[
     },
 
     {
+        path:'/coursedirector',
+        name:'coursedirector',
+        // import function for lazy loading 
+        component:()=>import('../vueTemplate/CD/batch.vue'),
+        children:[
+             {path:'/batches',
+             name:'subjects',
+            component:()=>import('../vueTemplate/CD/batch.vue')},
+            
+        ]
+    },
+
+    {
+        path:'/teacherdashboard',
+        name:'teacherDashboard',
+        // import function for lazy loading 
+        component:()=>import('../vueTemplate/teacherSystem/teacherDashboard.vue'),
+        children:[
+             {path:'/teacher-subjects',
+             name:'subjects',
+            component:()=>import('../vueTemplate/teacherSystem/subjects.vue')},
+            
+        ]
+    },
+
+    {
         path:'/:pathMatch(.*)*',
         name:'E404',
         // import function for lazy loading 

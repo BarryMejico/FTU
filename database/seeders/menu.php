@@ -67,7 +67,7 @@ class menu extends Seeder
             'menuParent'=>'4',
             'Description'=>'Subjects',
             'icon'=>'clipboard',
-            'slug'=>'/encashment', 
+            'slug'=>'/teacher-subjects', 
         ]);
 
         DB::table('menu')->insert([
@@ -81,9 +81,9 @@ class menu extends Seeder
         DB::table('menu')->insert([
             'id'=>'10',
             'menuParent'=>'4',
-            'Description'=>'Submenu 4 2',
+            'Description'=>'Dashboard',
             'icon'=>'clipboard',
-            'slug'=>'/FinancialReport', 
+            'slug'=>'/teacherdashboard', 
         ]);
 
         DB::table('menu')->insert([
@@ -147,6 +147,46 @@ class menu extends Seeder
             'Description'=>'Grades',
             'icon'=>'clipboard',
             'slug'=>'0', 
+        ]);
+
+        DB::table('menu')->insert([
+            'id'=>'18',
+            'menuParent'=>'root',
+            'Description'=>'Student',
+            'icon'=>'clipboard',
+            'slug'=>'0', 
+        ]);
+
+        DB::table('menu')->insert([
+            'id'=>'19',
+            'menuParent'=>'18',
+            'Description'=>'Courses',
+            'icon'=>'clipboard',
+            'slug'=>'0', 
+        ]);
+
+        DB::table('menu')->insert([
+            'id'=>'20',
+            'menuParent'=>'18',
+            'Description'=>'Accomplishments',
+            'icon'=>'clipboard',
+            'slug'=>'0', 
+        ]);
+
+         DB::table('menu')->insert([
+            'id'=>'21',
+            'menuParent'=>'root',
+            'Description'=>'Course Admin',
+            'icon'=>'clipboard',
+            'slug'=>'0', 
+        ]);
+
+        DB::table('menu')->insert([
+            'id'=>'22',
+            'menuParent'=>'21',
+            'Description'=>'Batches',
+            'icon'=>'clipboard',
+            'slug'=>'/coursedirector', 
         ]);
     }
 }
