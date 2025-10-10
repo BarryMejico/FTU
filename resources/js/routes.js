@@ -52,6 +52,14 @@ const routes=[
             requiresAuth:true,
         },
         children:[
+             {
+                path:'/myDashboard',
+                name:'profileoverview',
+                component:()=>import('../vueTemplate/profile/profileoverview.vue'),
+                meta:{
+                    requiresAuth:true,
+                },
+            },
                 {
                 path:'/student',
                 name:'student',
@@ -68,6 +76,15 @@ const routes=[
                     requiresAuth:true,
                 },
             },
+
+            {
+                path:'/userDetails',
+                name:'userDetails',
+                component:()=>import('../vueTemplate/databuilder/userDetails.vue'),
+                meta:{
+                    requiresAuth:true,
+                },
+            },
         ]
     },
     
@@ -79,12 +96,12 @@ const routes=[
         beforeEnter:(to,from,next)=>{
             const menu = useMenus();
             var inmenu=menu.checkThisMenu(to.fullPath)
-            console.log(inmenu);
+            
             if(inmenu){
                 next()
             }
             else{
-                next({name:'E404'})
+                next({name:'permissionDenied',query:{redirect:to.fullPath}})
             }
         },
         // meta:{
@@ -102,6 +119,10 @@ const routes=[
             {path:'/permission',
              name:'permission',
              component:()=>import('../vueTemplate/adminSystem/permission/permission.vue')},
+            
+             {path:'/permission-modify/:permcode',
+             name:'modifypermission',   
+             component:()=>import('../vueTemplate/adminSystem/permission/permissionEdit.vue')},
            
            {path:'/user',
             name:'users',
@@ -109,14 +130,44 @@ const routes=[
         ]
     },
 
+    {
+        path:'/coursedirector',
+        name:'coursedirector',
+        // import function for lazy loading 
+        component:()=>import('../vueTemplate/CD/batch.vue'),
+        children:[
+             {path:'/batches',
+             name:'subjects',
+            component:()=>import('../vueTemplate/CD/batch.vue')},
+            
+        ]
+    },
 
-
+    {
+        path:'/teacherdashboard',
+        name:'teacherDashboard',
+        // import function for lazy loading 
+        component:()=>import('../vueTemplate/teacherSystem/teacherDashboard.vue'),
+        children:[
+             {path:'/teacher-subjects',
+             name:'subjects',
+            component:()=>import('../vueTemplate/teacherSystem/subjects.vue')},
+            
+        ]
+    },
 
     {
         path:'/:pathMatch(.*)*',
         name:'E404',
         // import function for lazy loading 
         component:()=>import('../vueTemplate/404.vue')
+    },
+
+    {
+        path:'/permissionDenied',
+        name:'permissionDenied',
+        // import function for lazy loading 
+        component:()=>import('../vueTemplate/permissionDenied.vue')
     },
 
 
@@ -147,6 +198,8 @@ router.beforeEach((to,from)=>{
         // next();
     }
 })
+
+
     
 
 

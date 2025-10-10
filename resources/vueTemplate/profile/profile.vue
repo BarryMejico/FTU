@@ -4,7 +4,7 @@
             <div class="profile-header">
                 <div class="profile-image">
                     <!-- <img :src="profileID.Profile_Picture" /> -->
-                    <img :src=" appURL + profileID.Profile_Picture"  onerror="/image/Default.png" class="logo" />
+                    <img :src=" appURL + profileID.Profile_Picture"  onerror="image/Default.png" class="logo" />
                 </div>
                 <div class="profile-info">
                     <div class="info-item">
@@ -18,22 +18,26 @@
                     <div class="info-item">
                         <label><b>ID:</b></label>
                         <span>{{ profileID.code }}</span>
+                        
                     </div>
                     <div class="info-item">
                         <label><b>Title:</b></label>
-                        <div v-if="editpermission">
-                            <select name="myDropdown" id="myDropdown">
-                            <option value="option1">Student</option>
-                            <option value="option2">Teacher</option>
-                            <option value="option3">Admin</option>
-                            </select>
-                            <button class="btn btn-primary">Update</button>
-                        </div>
-                        <div v-else>
-                            <span>{{ profileID.Description }}</span>
-                        </div>
-
+                        <span>{{ profileID.Description }}</span>   
                         
+                             
+                        <div v-if="editpermission">
+<br>
+                             <hr></hr>
+                             <span>{{ profileID.permiCode }}</span><br>
+                             
+                            <select name="myDropdown" id="myDropdown" v-model="profileID.permiCode">
+                            <!-- <option value="" disabled>Select new permission</option> -->
+                            <option v-for="(permission,k) in permissions" :key="k" :value="permission.permCode">
+                                {{ permission.Description }}
+                            </option>
+                            </select>
+                            <button class="btn btn-primary" @click="updateuserpermission()">Update</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -59,16 +63,32 @@ export default {
                 name: '',
                 email: '',
                 image_url: ''
-            }
+            },
+            permissions: [],
+            tools: ['Edit permission'],
+            
         }
     },
 
-    async created() {
+    created() {
+        this.createdthis()
+    },
+
+    mounted(){  
+        // this.checkifallowedit();
+    },
+
+    methods:{
+
+         async createdthis() {
         try {
             const response = await axios.get('http://127.0.0.1:8000/api/thatProfile', {
                 params: { id: this.$route.params.id }
             });
             this.profileID = response.data[0];
+
+            const response2 = await axios.get('http://127.0.0.1:8000/api/listofPermissions')
+            this.permissions = response2.data;
             
         } catch (error) {
             console.error('Error fetching profile:', error);
@@ -80,13 +100,23 @@ export default {
         }
     },
 
-    mounted(){  
-        // this.checkifallowedit();
-    },
 
-    methods:{
+        updateuserpermission(){
+            
+            axios
+            .post('http://127.0.0.1:8000/api/updateuserpermission',
+             { 
+             code: this.profileID.code, 
+             permiCode: this.profileID.permiCode })
+            .then((res)=> {
+                this.createdthis();
+                // console.log(res.data);
+                // this.fetchPermissions();
+            })
+        },
+
         checkifallowedit(){   
-        var i=0
+        
         for(var i = 0; i < this.tools.length; i++){
             console.log(this.useUser[i].name);
         }
@@ -107,9 +137,9 @@ export default {
             var i=0
             var data=this.menu.menu
             for(var i = 0; i < data.length; i++){
-            console.log(data[i].Description);
+            // console.log(data[i].Description);
             if(data[i].Description=="Edit permission")
-            console.log("found");
+            // console.log("found");
                 return true
             }
             

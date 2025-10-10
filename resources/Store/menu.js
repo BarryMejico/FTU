@@ -2,7 +2,7 @@ import {defineStore} from "pinia"
 import axios from "axios";
 
 export const useMenus =
-defineStore("menus",{
+defineStore("menu",{
     state:()=>{
         return{
             menu:[{slug:''
@@ -21,6 +21,7 @@ defineStore("menus",{
 
         checkThisMenu(slug){
            var menu = this.menu;
+           
            const menubyslug = menu.find(menu => menu.slug === slug)
 
             if (menubyslug) {

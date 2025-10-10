@@ -17,16 +17,24 @@
                     <tr v-for="(permission, index) in permissions" :key="permission.id">
                         <td>{{ index + 1 }}</td>
                         <td>{{ permission.permCode }}</td>
-                        <td>{{ permission.Description }}</td>
+                        <td >
+                            <input type="text" 
+                             
+                            v-model="permission.Description"
+                            @change="editPermission(permission)"
+                                style="border:none; 
+                                background:transparent; 
+                                width:100%; cursor:pointer;"></input>
+                            </td>
                         <td>
-                            <button class="btn-edit" @click="editPermission(permission)">Edit</button>
-                            <button class="btn-delete" @click="deletePermission(permission.id)">- Delete</button>
+                            <button class="btn-delete" @click="deletePermission(permission.permCode)">- Delete</button>
+                             <button class="btn-add" @click="toedit(permission.permCode)">Permissions</button>
                         </td>
                     </tr>
                     <tr>
                         <td></td>
                         <td></td>
-                        <td></td>
+                        <td><input type="text" v-model="add"></input></td>
                         <td><button class="btn-add" @click="addPermission()">+ ADD</button></td>
 
                     </tr>
@@ -38,17 +46,28 @@
 
 <script>
 import axios from 'axios';
+import {useUser} from '../../../Store/user'
+import {useMenus} from '../../../Store/menu'
 
 export default {
+    setup(){
+        const menu = useMenus();
+        const userData = useUser();
+        return {menu,userData}
+    },
+
     data() {
         return {
+            add:'',
             permissions: [
                 // Sample data - replace with actual API calls
-                { id: 1, code: 'VIEW_DASHBOARD', description: 'Can view dashboard' },
-                { id: 2, code: 'MANAGE_USERS', description: 'Can manage users' }
+                {permCode: 'VIEW_DASHBOARD', Description: 'Can view dashboard' },
+                {permCode: 'MANAGE_USERS', Description: 'Can manage users' }
             ]
         }
     },
+
+    
 
     mounted() {
         // Fetch permissions from API
@@ -57,6 +76,23 @@ export default {
     
     
     methods: {
+        addPermission(){
+            if( this.add.length!=''){
+            axios
+            .post('api/addPermission', { permCode: this.permissions.length+2, Description: this.add })
+            .then((res)=> {
+                // console.log(res.data);
+                this.fetchPermissions();
+            })
+            }
+            else{
+                alert('Please enter permission details')
+            }
+        },
+
+        toedit(permcode){
+            this.$router.push("/permission-modify/"+permcode)
+        },
         fetchPermissions(){
             axios
             .get('api/listofPermissions')
@@ -67,11 +103,22 @@ export default {
 
         editPermission(permission) {
             // Implement edit logic
-            console.log('Edit permission:', permission)
+         
+            axios
+            .post('api/editPermission', { permCode: permission.permCode, Description: permission.Description })
+            .then((res)=> {
+                // console.log(res.data);
+                this.fetchPermissions();
+            })  
         },
         deletePermission(id) {
             // Implement delete logic
-            console.log('Delete permission:', id)
+            axios
+            .post('api/deletePermission', { permCode: id })
+            .then((res)=> {
+                // console.log(res.data);
+                this.fetchPermissions();
+            })
         }
     }
 }

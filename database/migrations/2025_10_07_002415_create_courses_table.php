@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('menu', function (Blueprint $table) {
+        Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('menuParent');// 'menuParent' id of parent root if no parent,
-            $table->string('Description');// 'Description',
-            $table->string('icon');// 'icon',
-            $table->string('slug');// 'route',
         });
     }
 
@@ -26,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('menu');
+        Schema::dropIfExists('courses');
     }
 };

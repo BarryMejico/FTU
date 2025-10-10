@@ -3,7 +3,8 @@
         <div class="profile-card">
             <div class="profile-header">
                 <div class="profile-avatar">
-                    <img :src="userData.userData.Profile_Picture || '/default-avatar.png'" alt="Profile Picture">
+                    <img :src="userData.userData.Profile_Picture || '/image/Default.png'" alt="Profile Picture">
+                    
                 </div>
                 <div class="profile-info">
                     <h1>My Profile</h1>
@@ -24,7 +25,8 @@
                     </button>
                 </div>
             </div>
-        <i>navigation</i>
+<hr></hr>
+        <Profile_nav></Profile_nav>
         <RouterView></RouterView>
         </div>
         
@@ -34,8 +36,10 @@
 <script>
 import axios from 'axios';
 import { useUser } from '../../Store/user';
+import Profile_nav from '../nav/profile_nav.vue';
 
 export default {
+    components: {Profile_nav},
     setup() {
         const userData = useUser();
         return { userData }

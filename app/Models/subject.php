@@ -5,12 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class permission extends Model
+class subject extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'permCode';
-    protected $fillable = [
-        'Description',
-    ];
-
 }

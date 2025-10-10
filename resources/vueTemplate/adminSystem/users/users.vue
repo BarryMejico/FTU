@@ -48,7 +48,7 @@ export default {
   methods:{
 
     loadprofile(id){
-        console.log(id);
+        
         this.$router.push({path:"/profile/"+id});
     },
     
@@ -57,7 +57,7 @@ export default {
         .get('/api/users')
         .then(response => {
             this.profileID = response.data;
-            console.log(this.profileID);
+            // console.log(this.profileID);
         })
         .catch(error => {
             console.error('Error fetching users:', error);  

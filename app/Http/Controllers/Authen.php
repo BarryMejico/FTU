@@ -30,7 +30,7 @@ class Authen extends Controller
             'password' => Hash::make($REQUEST['password']),
             'code' => $Code,
             'permiCode'=>'0',
-            'Profile_Picture' => 'avatar/Default.png',
+            'Profile_Picture' => 'image/Default.png',
         ]);
         $message ="Data has been saved";
         return ;
@@ -53,14 +53,16 @@ class Authen extends Controller
     }
 
     public function logout(){
-        Auth::logout();
+        Auth::guard('web')->logout();
+        //  Auth::user()->tokens()->where('id', $tokenId)->delete();
+        // Auth::logout();
      }
 
      public function profile_code(request $request){
         $input=$request->all();
         $user=DB::table('users')
             ->join('permissions', 'users.permiCode', '=', 'permissions.permCode')
-            ->select('users.code','users.name','users.email','permissions.Description','users.Profile_Picture')
+            ->select('users.code','users.name','users.email','permissions.Description','users.Profile_Picture','users.permiCode')
             ->where('code',$input)
             ->get();
             if ($user->isEmpty()) {
@@ -80,5 +82,18 @@ class Authen extends Controller
                 return response()->json(['message' => 'User not found'], 404);
             }
         return $user;
+     }
+
+     public function updateuserpermission(request $request){
+        $input=$request->all();
+        // dd($input);
+        $update=DB::table('users')
+            ->where('code',$input['code']) // Assuming 'code' is the unique identifier for the user
+            ->update(['permiCode' => $input['permiCode']]);
+            if ($update) {
+                return response()->json(['message' => 'User permission updated successfully'], 200);
+            } else {
+                return response()->json(['message' => 'Update failed or no changes made'], 400);
+            }
      }
 }

@@ -13,7 +13,7 @@ class menu extends Seeder
      */
     public function run(): void
     {
-        DB::table('menus')->insert([
+        DB::table('menu')->insert([
             'id'=>'1',
             'menuParent'=>'root',
             'Description'=>'System Admin',
@@ -21,7 +21,7 @@ class menu extends Seeder
             'slug'=>'0', 
         ]);
 
-        DB::table('menus')->insert([
+        DB::table('menu')->insert([
             'id'=>'2',
             'menuParent'=>'root',
             'Description'=>'Data Builder',
@@ -29,7 +29,7 @@ class menu extends Seeder
             'slug'=>'0', 
         ]);
 
-        DB::table('menus')->insert([
+        DB::table('menu')->insert([
             'id'=>'3',
             'menuParent'=>'2',
             'Description'=>'Teachers',
@@ -37,7 +37,7 @@ class menu extends Seeder
             'slug'=>'/teacher', 
         ]);
 
-        DB::table('menus')->insert([
+        DB::table('menu')->insert([
             'id'=>'11',
             'menuParent'=>'2',
             'Description'=>'Students',
@@ -45,7 +45,7 @@ class menu extends Seeder
             'slug'=>'/student', 
         ]);
 
-        DB::table('menus')->insert([
+        DB::table('menu')->insert([
             'id'=>'12',
             'menuParent'=>'x',
             'Description'=>'Edit permission',
@@ -54,39 +54,39 @@ class menu extends Seeder
         ]);
 
         
-        DB::table('menus')->insert([
+        DB::table('menu')->insert([
             'id'=>'4',
             'menuParent'=>'root',
-            'Description'=>'Menu 3',
+            'Description'=>'Teacher',
             'icon'=>'clipboard',
             'slug'=>'0', 
         ]);
 
-        DB::table('menus')->insert([
+        DB::table('menu')->insert([
             'id'=>'8',
             'menuParent'=>'4',
-            'Description'=>'submenu',
+            'Description'=>'Subjects',
             'icon'=>'clipboard',
-            'slug'=>'/encashment', 
+            'slug'=>'/teacher-subjects', 
         ]);
 
-        DB::table('menus')->insert([
+        DB::table('menu')->insert([
             'id'=>'9',
             'menuParent'=>'4',
-            'Description'=>'Submenu 4 1',
+            'Description'=>'Modules',
             'icon'=>'clipboard',
             'slug'=>'/ReceivedPayments', 
         ]);
 
-        DB::table('menus')->insert([
+        DB::table('menu')->insert([
             'id'=>'10',
             'menuParent'=>'4',
-            'Description'=>'Submenu 4 2',
+            'Description'=>'Dashboard',
             'icon'=>'clipboard',
-            'slug'=>'/FinancialReport', 
+            'slug'=>'/teacherdashboard', 
         ]);
 
-        DB::table('menus')->insert([
+        DB::table('menu')->insert([
             'id'=>'5',
             'menuParent'=>'1',
             'Description'=>'Menu',
@@ -94,7 +94,7 @@ class menu extends Seeder
             'slug'=>'/menu', 
         ]);
 
-        DB::table('menus')->insert([
+        DB::table('menu')->insert([
             'id'=>'6',
             'menuParent'=>'1',
             'Description'=>'Users',
@@ -102,12 +102,91 @@ class menu extends Seeder
             'slug'=>'/user',
         ]);
 
-        DB::table('menus')->insert([
+        DB::table('menu')->insert([
             'id'=>'7',
             'menuParent'=>'1',
             'Description'=>'Permissions',
             'icon'=>'clipboard',
             'slug'=>'/permission', 
+        ]);
+
+         DB::table('menu')->insert([
+            'id'=>'13',
+            'menuParent'=>'1',
+            'Description'=>'Permissions-Modify',
+            'icon'=>'clipboard',
+            'slug'=>'/permission-modify', 
+        ]);
+
+        DB::table('menu')->insert([
+            'id'=>'14',
+            'menuParent'=>'root',
+            'Description'=>'Administrator',
+            'icon'=>'clipboard',
+            'slug'=>'0', 
+        ]);
+
+        DB::table('menu')->insert([
+            'id'=>'15',
+            'menuParent'=>'14',
+            'Description'=>'Courses',
+            'icon'=>'clipboard',
+            'slug'=>'0', 
+        ]);
+                DB::table('menu')->insert([
+            'id'=>'16',
+            'menuParent'=>'14',
+            'Description'=>'Subjects',
+            'icon'=>'clipboard',
+            'slug'=>'0', 
+        ]);
+
+                DB::table('menu')->insert([
+            'id'=>'17',
+            'menuParent'=>'14',
+            'Description'=>'Grades',
+            'icon'=>'clipboard',
+            'slug'=>'0', 
+        ]);
+
+        DB::table('menu')->insert([
+            'id'=>'18',
+            'menuParent'=>'root',
+            'Description'=>'Student',
+            'icon'=>'clipboard',
+            'slug'=>'0', 
+        ]);
+
+        DB::table('menu')->insert([
+            'id'=>'19',
+            'menuParent'=>'18',
+            'Description'=>'Courses',
+            'icon'=>'clipboard',
+            'slug'=>'0', 
+        ]);
+
+        DB::table('menu')->insert([
+            'id'=>'20',
+            'menuParent'=>'18',
+            'Description'=>'Accomplishments',
+            'icon'=>'clipboard',
+            'slug'=>'0', 
+        ]);
+
+         DB::table('menu')->insert([
+            'id'=>'21',
+            'menuParent'=>'root',
+            'Description'=>'Course Admin',
+            'icon'=>'clipboard',
+            'slug'=>'0', 
+        ]);
+
+        DB::table('menu')->insert([
+            'id'=>'22',
+            'menuParent'=>'21',
+            'Description'=>'Batches',
+            'icon'=>'clipboard',
+            'slug'=>'/coursedirector', 
         ]);
     }
 }

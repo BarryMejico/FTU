@@ -42,7 +42,7 @@
             </li>
             <li v-else>
                 <router-link 
-                    :to="{name:'MyProfile'}" 
+                    :to="{name:'profileoverview'}" 
                     >
                        <span> {{userData.name  }}</span>
                 </router-link>

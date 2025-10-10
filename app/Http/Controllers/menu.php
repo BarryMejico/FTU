@@ -10,9 +10,7 @@ use App\Models\menuModel;
 class menu extends Controller
 {
     public function index_menu(){
-
-    
-
-        return 'smile';
+        $data=menuModel::all();
+        return $data;
     }
 }

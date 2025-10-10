@@ -32,10 +32,19 @@ Route::post('logout',[Authen::class,'logout']);
 Route::get('users',[Authen::class,'profiles']);
 
 Route::get('thatProfile',[Authen::class,'profile_code']);
+Route::post('updateuserpermission',[Authen::class,'updateuserpermission']);
 
 Route::get('menuList',[PermissionController::class,'menuFor']);
 Route::get('listofPermissions',[PermissionController::class,'index']);
+Route::get('thisPermissions',[PermissionController::class,'specificmenu']);
+Route::post('UpdatePermissions',[PermissionController::class,'updateBULK']);
+Route::post('addPermission',[PermissionController::class,'addPermission']);
+Route::post('editPermission',[PermissionController::class,'editpermission']);
+
+route::post('deletePermission',[PermissionController::class,'deletepermission']);
 
 Route::get('listofMenu',[menu::class,'index_menu']);
+
+
 
 Route::post('save_teacher',[TeacherController::class,'save_data']);

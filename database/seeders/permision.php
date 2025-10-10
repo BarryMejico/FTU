@@ -16,7 +16,7 @@ class permision extends Seeder
     {
         DB::table('permissions')->insert([
             'permCode'=>'1',
-            'Description'=>'Admin',
+            'Description'=>'System Admin',
         ]);
 
         DB::table('permissions')->insert([
@@ -27,6 +27,16 @@ class permision extends Seeder
         DB::table('permissions')->insert([
             'permCode'=>'3',
             'Description'=>'Student',
+        ]);
+
+        DB::table('permissions')->insert([
+            'permCode'=>'4',
+            'Description'=>'Administrator',
+        ]);
+
+        DB::table('permissions')->insert([
+            'permCode'=>'5',
+            'Description'=>'Course Admin',
         ]);
 
         DB::table('permission_details')->insert([
@@ -81,7 +91,91 @@ class permision extends Seeder
 
          DB::table('permission_details')->insert([
             'permiCode'=>'1',
+            'id'=>'13',
+        ]);
+// ----------- for teacher
+        DB::table('permission_details')->insert([
+            'permiCode'=>'2',
+            'id'=>'4',
+        ]);
+
+        DB::table('permission_details')->insert([
+            'permiCode'=>'2',
+            'id'=>'8',
+        ]);
+
+                DB::table('permission_details')->insert([
+            'permiCode'=>'2',
+            'id'=>'9',
+        ]);
+
+                DB::table('permission_details')->insert([
+            'permiCode'=>'2',
+            'id'=>'10',
+        ]);
+
+// ----------- for student
+        DB::table('permission_details')->insert([
+            'permiCode'=>'3',
+            'id'=>'18',
+        ]);
+
+        DB::table('permission_details')->insert([
+            'permiCode'=>'3',
+            'id'=>'19',
+        ]);
+
+         DB::table('permission_details')->insert([
+            'permiCode'=>'3',
+            'id'=>'20',
+        ]);
+// -------------for Administrator
+        DB::table('permission_details')->insert([
+            'permiCode'=>'4',
+            'id'=>'3',
+        ]);
+
+        DB::table('permission_details')->insert([
+            'permiCode'=>'4',
             'id'=>'12',
         ]);
+
+        DB::table('permission_details')->insert([
+            'permiCode'=>'4',
+            'id'=>'14',
+        ]);
+
+        DB::table('permission_details')->insert([
+            'permiCode'=>'4',
+            'id'=>'15',
+        ]);
+
+        DB::table('permission_details')->insert([
+            'permiCode'=>'4',
+            'id'=>'16',
+        ]);
+
+        DB::table('permission_details')->insert([
+            'permiCode'=>'4',
+            'id'=>'17',
+        ]);
+
+        // -------------for Course Admin
+        DB::table('permission_details')->insert([
+            'permiCode'=>'5',
+            'id'=>'3',
+        ]);
+
+        DB::table('permission_details')->insert([
+            'permiCode'=>'5',
+            'id'=>'12',
+        ]);
+        
+        DB::table('permission_details')->insert([
+            'permiCode'=>'5',
+            'id'=>'14',
+        ]);
+
+        
     }
 }
