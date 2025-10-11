@@ -4,7 +4,7 @@
         <nav>
         <ul class="topnav">
             <li>
-               <img src='/image/logo.png' alt="Logo" class="logo" />
+               <img src='/image/ftu_logo.png' alt="Logo" class="logo" />
             </li>
    
             <li>
@@ -20,7 +20,7 @@
             
             <li v-if="!userData.name" class="right">
                 <router-link to="/login">
-                    <span>Login</span>
+                    <span>Log in</span>
                 </router-link>
             </li>
             <li v-else class="right">
@@ -35,11 +35,6 @@
                 </router-link>
             </li> -->
 
-            <li v-if="!userData.name" class="right">
-                <router-link to="/regster">
-                        <span>Sign up</span> 
-                </router-link>
-            </li>
             <li v-else>
                 <router-link 
                     :to="{name:'profileoverview'}" 
@@ -123,9 +118,9 @@ ul.topnav li span {
   text-decoration: none;
 }
 
-ul.topnav li span:hover {background-color: #667eea;}
+ul.topnav li span:hover {background-color: #3b82f6;}
 
-ul.topnav li .router-link-active span {background-color: #04AA6D;}
+ul.topnav li .router-link-active span {background-color: #3b82f6;}
 
 ul.topnav li.right {float: right;}
 
