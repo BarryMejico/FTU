@@ -1,12 +1,14 @@
 <template>
 
-  <div>
-    <nav class="navbar">
+    <div class="app-root">
+        <nav class="navbar">
         <div class="nav-container">
             <navigation></navigation>
         </div>
     </nav>
-        <Loading v-if="ui.isLoading" />
+                <Loading v-if="ui.isLoading" />
+        <!-- centered logo element (fixed) -->
+        <div class="bg-logo" :style="{ backgroundImage: `url(${logoUrl})` }"></div>
   <div class="main-container">
     <aside class="sidebar">
             <ToolBar></ToolBar>
@@ -44,11 +46,13 @@ export default {
         ,Loading
   },
 
-    setup() {
-                const userData=useUser();
-                const ui = useUi();
-                return {userData, ui}
-     },
+        setup() {
+                                const userData=useUser();
+                                const ui = useUi();
+                                // resolve logo URL with Vite so it loads correctly in dev and build
+                                const logoUrl = new URL('../images/ftu_logo.png', import.meta.url).href;
+                                return {userData, ui, logoUrl}
+         },
 
    async created(){
 
@@ -107,32 +111,30 @@ body {
             gap: 2rem;
         }
 
-        /* Subtle FTU logo tiled background for the app (keeps content readable) */
-        /* subtle repeating pattern as the page background */
+        /* subtle repeating pattern for the page */
         html, #app {
             background-color: #fbfbfb;
-            /* light dotted pattern using SVG data-uri for low contrast */
             background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 10 10'><circle cx='1' cy='1' r='0.7' fill='%23e9e9e9' fill-opacity='0.6'/></svg>");
             background-repeat: repeat;
-            background-position: center;
         }
 
-        /* centered non-repeating logo above the pattern, with 60% opacity */
-        #app::before {
-            content: '';
+        /* centered fixed logo element above pattern; keep low opacity */
+        .bg-logo {
             position: fixed;
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
             width: 420px;
             height: 420px;
-            background: url('/resources/images/ftu_logo.png') no-repeat center center / contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
             opacity: 0.6;
             pointer-events: none;
             z-index: 0;
         }
 
-        .main-container { background: transparent; position: relative; z-index: 1; }
+    .main-container { position: relative; z-index: 1; padding-bottom: 120px; }
 
          /* Left Menu */
         .sidebar {
@@ -148,22 +150,24 @@ body {
             margin-bottom: 1rem;
             font-size: 1.2rem;
         }
-        .footer {
-            /* background: #2c3e50; */
-            /* color: white; */
+         .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
             text-align: center;
-            /* padding: 2rem 0; */
-            margin-top: auto;
-            position: relative; /* create stacking context */
-            z-index: 5; /* above #app::before which is z-index:0 */
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(6px);
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.06);
+            z-index: 9999;
+            padding: 12px 0;
         }
         
-        .footer-content {
+        /* .footer-content {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem;
-            position: relative; z-index: 6;
-        }
+        } */
 
          /* Responsive Design */
         @media (max-width: 768px) {

@@ -126,12 +126,13 @@ ul.topnav li.right {float: right;}
   ul.topnav li.right, 
   ul.topnav li {float: none;}
 }
-.router-link-active {
-  font-weight: bold;
-  text-decoration: NONE;
+.topnav a {
+    text-decoration: none; /* remove underline from all nav links */
+    color: inherit;
 }
-router-link {
-     text-decoration: NONE;
+.router-link-active {
+    font-weight: bold;
+    text-decoration: none;
 }
 /* Responsive Design */
 @media screen and (max-width: 600px) {
