@@ -59,7 +59,7 @@ export default{
     },
     data(){
         return{
-            appName: import.meta.env.VITE_APP_NAME || 'FTU Portal'
+            appName: import.meta.env.VITE_APP_NAME || 'Finance Training Unit'
         }
     },
     methods:{
