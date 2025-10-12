@@ -3,9 +3,9 @@
     <div>
         <nav>
         <ul class="topnav">
-            <li>
-               <img src='/image/ftu_logo.png' alt="Logo" class="logo" />
-            </li>
+                <li>
+                    <img :src="logoUrl" alt="Logo" class="logo" />
+                </li>
    
             <li>
                 <router-link to="/">
@@ -18,14 +18,12 @@
                 </router-link>
             </li>
             
-            <li v-if="!userData.name" class="right">
+            <li v-if="!userData.name" class="right" style="float:right">
                 <router-link to="/login">
                     <span>Log in</span>
                 </router-link>
             </li>
-            <li v-else class="right">
-                    <span @click="logout">Logout</span>
-            </li>
+         
             
             <!-- <li v-else>
                 <router-link 
@@ -45,9 +43,7 @@
         </ul>
     </nav>
 
-        <span @click.prevent="goback">
-            Back
-        </span>
+        <!-- Back button removed as requested -->
         
     </div>
 </template>
@@ -57,7 +53,9 @@ import { useUser } from '../../Store/user'
 export default{
     setup(){
         const userData=useUser();
-        return {userData}
+        // Resolve logo path via Vite so it works in dev and build
+        const logoUrl = new URL('../../images/ftu_logo.png', import.meta.url).href;
+        return {userData, logoUrl}
     },
     data(){
         return{
@@ -84,7 +82,7 @@ export default{
             return this.userData.userData
         }
     }
-}
+}   
 </script>
 
 
@@ -104,8 +102,8 @@ ul.topnav {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
-background:black;
+ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+background:#00004D;
 }
 
 ul.topnav li {float: left;}
@@ -118,9 +116,9 @@ ul.topnav li span {
   text-decoration: none;
 }
 
-ul.topnav li span:hover {background-color: #3b82f6;}
+ul.topnav li span:hover {background-color: #1C2951;}
 
-ul.topnav li .router-link-active span {background-color: #3b82f6;}
+ul.topnav li .router-link-active span {background-color: #131E3A;}
 
 ul.topnav li.right {float: right;}
 
@@ -128,4 +126,18 @@ ul.topnav li.right {float: right;}
   ul.topnav li.right, 
   ul.topnav li {float: none;}
 }
+.router-link-active {
+  font-weight: bold;
+  text-decoration: NONE;
+}
+router-link {
+     text-decoration: NONE;
+}
+/* Responsive Design */
+@media screen and (max-width: 600px) {
+  ul.topnav li {
+    float: none;
+    width: 100%;
+  }
+}   
 </style>

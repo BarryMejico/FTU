@@ -1,6 +1,7 @@
 <template>
 
 <!-- From Uiverse.io by kyle1dev --> 
+<div class="auth-overlay">
 <form class="modern-form">
 <div class="login-icon">
             <i class="fas fa-user-circle"></i>
@@ -76,9 +77,7 @@
     </a>
   </div>
 </form>
-
-
-  
+</div>
 
 </template>
 
@@ -142,7 +141,7 @@ watch:{
 
 /* From Uiverse.io by kyle1dev */ 
 .modern-form {
-  --primary: #3b82f6;
+  --primary: #00004D;
   --primary-dark: #2563eb;
   --primary-light: rgba(59, 130, 246, 0.1);
   --success: #10b981;
@@ -150,7 +149,6 @@ watch:{
   --text-secondary: #64748b;
   --bg-input: #f8fafc;
   margin-bottom: 80px;
-  margin-left: 150px;
   margin-top: 10px;
 
   position: relative;
@@ -166,6 +164,18 @@ watch:{
     system-ui,
     -apple-system,
     sans-serif;
+}
+
+/* Overlay to center the auth forms */
+.auth-overlay{
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0,0,0,0.04); /* subtle backdrop */
+  z-index: 60;
 }
 
 .form-title {
@@ -249,7 +259,7 @@ watch:{
 button {
  border: none;
  color: #fff;
- background-image: linear-gradient(30deg, #0400ff, #4ce3f7);
+ background-image: linear-gradient(30deg, #00004D, #6790f7);
  border-radius: 20px;
  background-size: 100% auto;
  font-family: inherit;

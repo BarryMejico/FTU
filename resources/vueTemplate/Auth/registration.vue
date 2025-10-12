@@ -1,7 +1,6 @@
 <template>
-    <div>
+  <div class="auth-overlay">
 
-        
 <form class="modern-form">
   <div class="form-title">Create an Account</div>
 
@@ -130,11 +129,15 @@
     </div>
   </div>
 
-  <button class="submit-button" type="submit" @click.prevent="register()">
-    <span class="button-text">Create Account</span>
+  <button class="submit-button" type="submit" :disabled="submitting" @click.prevent="register()">
+    <span class="button-text">{{ submitting ? 'Creating...' : 'Create Account' }}</span>
     <div class="button-glow"></div>
   </button>
-  <label v-if="message">{{ message }}</label>
+  <label class="server-message" v-if="message">{{ message }}</label>
+  <label class="client-message" v-if="clientMessage">{{ clientMessage }}</label>
+  <div class="confirm-toast" v-if="showConfirm">
+    <div class="toast-inner">Registration successful</div>
+  </div>
 
   <div class="form-footer">
     <a class="login-link" href="#">
@@ -142,7 +145,7 @@
     </a>
   </div>
 </form>
-    </div>
+  </div>
 
 
 
@@ -159,24 +162,69 @@ export default{
             password:'',
             password_confirmation:''
         },
-        err:'',
-        message:'',
+    err:'',
+    message:'',
+    showConfirm:false,
+    clientMessage:'',
+    submitting:false,
     }
         
     },
 
     methods:{
         register(){
-            axios.post('/api/register',this.Data)
-                 .then((response)=>{
-                    this.message=response.data
-                    console.log(this.message);
-                    this.clearData()
-                 })
-                 .catch((err)=>{
-                    this.err=err.response.data.errors
-                    console.log(err.response.data.errors);
-                 })
+      // client-side required checks
+      this.clientMessage = '';
+      if(!this.Data.name || !this.Data.email || !this.Data.password || !this.Data.password_confirmation){
+        this.clientMessage = 'Please fill in all required fields.';
+        // keep focus/inputs intact, don't submit
+        return;
+      }
+      // simple password confirmation check
+      if(this.Data.password !== this.Data.password_confirmation){
+        this.clientMessage = 'Passwords do not match.';
+        return;
+      }
+
+      this.submitting = true;
+      axios.post('/api/register',this.Data)
+           .then((response)=>{
+        // show server message and a small confirmation toast
+        // server may return an object or string
+        this.message = (response.data && typeof response.data === 'string') ? response.data : (response.data.message || 'Registered successfully');
+        this.showConfirm = true;
+        // after confirmation, hide toast and redirect to login page
+        setTimeout(()=>{ 
+          this.showConfirm = false;
+          // navigate to login route
+          if(this.$router){
+            this.$router.push({ path: '/login' });
+          }
+        }, 3000);
+        console.log(this.message);
+        // do not clear data immediately to avoid damaging inputs; only clear on explicit call
+           })
+           .catch((err)=>{
+              // prefer friendly client message and attach field errors if available
+              if(err.response && err.response.data){
+                if(err.response.data.errors){
+                  this.err = err.response.data.errors;
+                  // pick first field error message
+                  const first = Object.values(err.response.data.errors)[0];
+                  this.clientMessage = Array.isArray(first) ? first[0] : first;
+                } else if(err.response.data.message){
+                  this.clientMessage = err.response.data.message;
+                } else {
+                  this.clientMessage = 'Registration failed. Please try again.';
+                }
+              } else {
+                this.clientMessage = 'Registration failed. Please check your connection.';
+              }
+              console.log(err);
+           })
+           .finally(()=>{
+             this.submitting = false;
+           })
         },
 
         clearData(){
@@ -195,7 +243,7 @@ export default{
 <style>
 /* From Uiverse.io by kyle1dev */ 
 .modern-form {
-  --primary: #3b82f6;
+  --primary: #00004D;
   --primary-dark: #2563eb;
   --primary-light: rgba(59, 130, 246, 0.1);
   --success: #10b981;
@@ -203,7 +251,7 @@ export default{
   --text-secondary: #64748b;
   --bg-input: #f8fafc;
   margin-bottom: 80px;
-  margin-left: 150px;
+ 
   margin-top: 10px;
 
   position: relative;
@@ -429,4 +477,45 @@ button:hover {
   color: #ef4444;
 }
 
+/* Messages */
+.client-message, .server-message{
+  display: block;
+  margin-top: 8px;
+  color: #ef4444;
+  font-size: 13px;
+}
+.server-message{
+  color: #065f46; /* success-ish for server text when used for success */
+}
+
+/* confirmation toast */
+.confirm-toast{
+  position: absolute;
+  right: 12px;
+  top: -8px;
+  z-index: 40;
+}
+.toast-inner{
+  background: #10b981;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(16,185,129,0.15);
+  font-size: 13px;
+}
+
+</style>
+
+<style>
+/* overlay wrapper for registration when used standalone */
+.auth-overlay{
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0,0,0,0.04);
+  z-index: 60;
+}
 </style>
