@@ -4,6 +4,8 @@ export const useUi = defineStore('ui', {
   state: () => ({
     isLoading: false,
     _timerId: null,
+    // sidebar collapse state persisted across reloads
+    sidebarCollapsed: false,
   }),
   actions: {
     show() { this.isLoading = true },
@@ -27,6 +29,21 @@ export const useUi = defineStore('ui', {
         this.isLoading = false
         this._timerId = null
       }, ms)
+    }
+    ,
+    // sidebar controls
+    setSidebarCollapsed(val){
+      this.sidebarCollapsed = !!val
+      try{ localStorage.setItem('ftu_sidebar_collapsed', this.sidebarCollapsed ? '1' : '0') }catch(e){}
+    },
+    toggleSidebar(){
+      this.setSidebarCollapsed(!this.sidebarCollapsed)
+    },
+    initSidebar(){
+      try{
+        const v = localStorage.getItem('ftu_sidebar_collapsed')
+        this.sidebarCollapsed = v === '1'
+      }catch(e){}
     }
   }
 })

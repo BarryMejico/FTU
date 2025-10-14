@@ -1,7 +1,12 @@
 <template>
-<footer style="font-style: italic; color: white; padding: 1px; text-align: center; height: 50px; ">
-    <p>&copy;  FTU 2028: Competent and Capable Budget, Fiscal and Finance Education and Training Administrator
-</p>
+<footer style="font-style:
+ italic; 
+ color: #e6f2fb;  
+  text-align:center;
+   height: 40px; 
+   padding-bottom: 10PX;
+   background: #071430;">
+    <p style="margin-bottom:30PX; font-size:0.9rem">FTU 2028: Competent and Capable Budget, Fiscal and Finance Education and Training Administrator</p>
 </footer>
 </template>
 
@@ -17,7 +22,7 @@ footer {
     left: 0;
     bottom: 0;
     width: 100%;
-    background-color: #00004D;
+    background-color: #071430;
  transition: border-radius 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 

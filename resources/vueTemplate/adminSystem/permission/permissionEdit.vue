@@ -148,11 +148,11 @@ export default {
                             })
                         }
                     });
-
+                // LOADING
             axios.post('http://127.0.0.1:8000/api/UpdatePermissions', {
                 selectedmenus: selectedmenus,
             })
-
+                // END LOADING
         },
 
         updateSelect(selectedmenudata) {

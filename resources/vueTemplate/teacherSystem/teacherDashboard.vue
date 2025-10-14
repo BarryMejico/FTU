@@ -1,6 +1,6 @@
 <template>
     <div class="dashboard">
-        <h1>Teacher MLS Dashboard</h1>
+    <h1>Instructor MLS Dashboard</h1>
         <div class="stats">
             <div class="card">
                 <h2>My Classes</h2>

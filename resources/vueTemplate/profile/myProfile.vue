@@ -3,8 +3,7 @@
         <div class="profile-card">
             <div class="profile-header">
                 <div class="profile-avatar">
-                    <img :src="userData.userData.Profile_Picture || '/image/Default.png'" alt="Profile Picture">
-                    
+                    <img :src="profileImageSrc" alt="Profile Picture" />
                 </div>
                 <div class="profile-info">
                     <h1>My Profile</h1>
@@ -49,6 +48,17 @@ export default {
         logout() {
             this.userData.logout()
             this.$router.push("/login")
+        }
+    },
+    computed: {
+        profileImageSrc() {
+            // read profile picture from store; support full URLs or relative paths like 'image/Default.png'
+            const pic = this.userData && this.userData.userData && this.userData.userData.Profile_Picture
+            if (!pic) return '/image/Default.png'
+            // if it's already an absolute URL
+            if (/^https?:\/\//.test(pic)) return pic
+            // otherwise prefix with origin
+            return window.location.origin + '/' + pic.replace(/^\//, '')
         }
     },
 }

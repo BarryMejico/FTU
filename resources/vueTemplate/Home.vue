@@ -1,5 +1,7 @@
 <template>
-  <div class="home-page">
+  <div class="grid-wrapper">
+    <div class="grid-background" aria-hidden="true"></div>
+    <div class="home-page">
     <section class="hero">
       <h1 class="sr-only">Welcome to Finance Training Unit Portal</h1>
       <div class="carousel" @mouseenter="stop" @mouseleave="start">
@@ -10,7 +12,7 @@
             class="slide"
             :class="{ active: index === current }"
           >
-            <img :src="img" :alt="`Slide ${index + 1}`" loading="lazy" />
+            <img :src="img" :alt="`Slide ${index + 1}`"/>
           </div>
         </div>
 
@@ -29,6 +31,19 @@
       </div>
     </section>
 
+    <!-- Finance Training Unit Title / Hero band -->
+    <section class="ftu-band" aria-hidden="false">
+      <div class="ftu-container">
+        <div class="ftu-title">
+          <h2>FINANCE TRAINING UNIT</h2>
+          <p class="ftu-sub">Building capable Budget, Fiscal & Finance (BFF) professionals for the Philippine Navy</p>
+        </div>
+        <div class="ftu-actions">
+          <a href="#mission" class="ftu-cta">Our Mission</a>
+        </div>
+      </div>
+    </section>
+
     <div class="cards">
       <div class="aboutus card" id="mission">
         <h2>Mission</h2>
@@ -39,6 +54,28 @@
         <h2>Vision</h2>
         <p>By 2028, to be a competent and capable Budget, Fiscal and Finance (BFF) Education and Training Administrator that produces motivated, excellent and highly-skilled BFF Professionals for the Philippine Navy.</p>
       </div>
+
+      <!-- Accreditation card spanning both columns -->
+      <div class="aboutus card accreditation-card" id="accreditation">
+        <h2>Accreditation</h2>
+        <div class="accreditation-wrapper">
+          <div class="accreditation" role="status" aria-label="Accreditation summary">
+            <div class="accredit-copy">
+              <strong>Accredited (Secondary Level)</strong>
+              <div class="accredit-text">The Finance Training Unit (FTU) is accredited as a Secondary Armed Forces of the Philippines Education & Training Institution effective 16 July 2024.</div>
+              <a href="/docs/accreditation.jpg" class="accredit-link" title="View accreditation document" target="_blank" rel="noopener">View accreditation</a>
+            </div>
+          </div>
+
+          <!-- Larger scan image displayed beside the accreditation text. Place the scan at public/docs/accreditation.jpg -->
+          <div class="accredit-image">
+            <a href="/docs/accreditation.jpg" target="_blank" rel="noopener">
+              <img src="/docs/accreditation.jpg" alt="FTU Accreditation scan" onerror="this.onerror=null;this.src='/docs/accreditation-placeholder.svg'" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
     </div>
   </div>
 </template>
@@ -46,22 +83,30 @@
 <script>
 export default {
   data() {
-    // Use Vite's import.meta.glob to reliably resolve image URLs at build time
-    const modules = import.meta.glob('../images/*.jpg', { eager: true, as: 'url' });
-    // modules is an object: { './.../images/1.jpg': 'http://.../1.jpg', ... }
-    const images = Object.entries(modules)
-      .map(([path, url]) => ({ path, url }))
-      .sort((a, b) => {
-        const na = (a.path.match(/(\d+)\.jpg$/) || [0, 0])[1];
-        const nb = (b.path.match(/(\d+)\.jpg$/) || [0, 0])[1];
-        return Number(na) - Number(nb);
-      })
-      .map(x => x.url);
+    // Use Vite-friendly imports so images resolve in dev and production
+    // import.meta.glob returns an object of matching modules; we'll map to their URLs
+    let images = [];
+    try {
+  const modules = import.meta.glob('../images/*.{jpg,png,jpeg,gif}', { eager: true, query: '?url', import: 'default' })
+  images = Object.keys(modules).map(k => modules[k])
+  // optional: sort by filename so ordering is stable
+  images.sort()
+  // remove any slide named 14.* if present (defensive)
+  images = images.filter(url => !/\/14\.(jpg|png|jpeg|gif)$/i.test(url))
+  // ensure we only keep the first 13 images
+  images = images.slice(0, 13)
+    } catch (e) {
+      // fallback to legacy path if import.meta.glob isn't available in this environment
+      images = [];
+      for (let i = 1; i <= 13; i++) {
+        images.push(`/resources/images/${i}.jpg`);
+      }
+    }
     return {
       images,
       current: 0,
       timer: null,
-      interval: 4000,
+  interval: 3000,
     };
   },
   mounted() {
@@ -86,24 +131,22 @@ export default {
     },
     next() {
       this.current = (this.current + 1) % this.images.length;
-      // restart autoplay timer so user interaction doesn't immediately trigger auto-advance
-      this.start();
     },
     prev() {
       this.current = (this.current - 1 + this.images.length) % this.images.length;
-      this.start();
     },
     goTo(i) {
       this.current = i;
-      this.start();
     },
   },
 };
 </script>
 
+.style-placeholder {}
 <style>
-/* Carousel styles */
+/* Component styles */
 .home-page { padding: 1rem; }
+/* Carousel styles */
 .carousel { position: relative; max-width: 980px; margin: 0 auto 1.25rem; overflow: hidden; border-radius: 12px; }
 .carousel-track { position: relative; height: 420px; }
 .slide { position: absolute; inset: 0; opacity: 0; transform: scale(1.02); transition: opacity 0.6s ease, transform 0.6s ease; display: flex; align-items: center; justify-content: center; }
@@ -143,6 +186,8 @@ export default {
 .card { padding: 1.25rem 1.5rem; min-height: 160px; display:flex; flex-direction:column; justify-content:center; }
 .card h2 { margin-bottom: 0.6rem; }
 
+.accreditation-card { grid-column: 1 / -1; padding-bottom: 1.5rem; }
+
 @media (max-width: 800px) {
   .cards { grid-template-columns: 1fr; }
 }
@@ -151,5 +196,50 @@ export default {
 body.home-no-sidebar .main-container { grid-template-columns: 1fr !important; max-width: 900px; margin: 0 auto; }
 body.home-no-sidebar .sidebar { display: none !important; }
 body.home-no-sidebar .content { padding: 0; }
+
+/* FINANCE TRAINING UNIT band */
+.ftu-band { display:block; width:100%; background: linear-gradient(90deg, #001f6b 0%, #004aad 50%, #0066cc 100%); color: #fff; padding: 28px 0; border-radius: 12px; max-width: 980px; margin: 0 auto 1.5rem; box-shadow: 0 12px 30px rgba(0,32,78,0.35); }
+.ftu-container { display:flex; align-items:center; justify-content:space-between; gap: 1rem; padding: 0 1rem; }
+.ftu-title h2 { margin:0; font-size: 1.8rem; letter-spacing: 1px; font-weight: 700; text-transform: uppercase; color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,0.45); }
+.ftu-sub { margin:6px 0 0; opacity:0.95; font-size: 0.95rem; max-width:700px; }
+.ftu-actions { display:flex; align-items:center; gap:0.75rem; }
+.ftu-cta { background: #4bb4e8; color: #eff1f5; padding: 0.5rem 0.9rem; border-radius: 8px; text-decoration:none; font-weight:700; box-shadow: 0 6px 18px rgba(3, 39, 90, 0.18); transition: transform 0.12s ease, box-shadow 0.12s ease; }
+.ftu-cta:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(3,39,90,0.25); }
+
+@media (max-width: 800px) {
+  .ftu-container { flex-direction: column; align-items:flex-start; }
+  .ftu-title h2 { font-size: 1.5rem; }
+  .ftu-sub { font-size: 0.9rem; }
+  .ftu-band { padding: 20px 0; }
+}
+
+/* Accreditation aside inside mission card */
+.accreditation { display:flex; gap:12px; align-items:flex-start; margin-top: .2rem; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius: 12px; padding: 12px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.02); }
+.accredit-badge { min-width:56px; height:56px; border-radius:8px; background: linear-gradient(180deg,#00204f,#004aad); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; letter-spacing:1px; box-shadow: 0 6px 18px rgba(1,30,70,0.2); }
+.accredit-copy { display:flex; flex-direction:column; }
+.accredit-copy strong { color: #001f6b; background: #ffd; padding: 2px 6px; border-radius: 6px; font-size: 2rem; margin-bottom:6px; }
+.accredit-text { font-size: 1.2rem; color: #333; margin-bottom:6px; }
+.accredit-link { font-weight:700; color:#004aad; text-decoration:underline; font-size:0.92rem; }
+
+.accredit-thumb-link { margin-left: 12px; display:inline-block; align-self:center; }
+.accredit-thumb { width:110px; height:70px; object-fit:cover; border-radius:8px; border:1px solid rgba(0,0,0,0.06); box-shadow: 0 6px 18px rgba(0,0,0,0.08); }
+
+@media (max-width: 600px) {
+  .accreditation { flex-direction: column; align-items:flex-start; }
+  .accredit-badge { min-width:44px; height:44px; }
+}
+
+/* Accreditation card layout: text left, image right */
+.accreditation-wrapper { display:flex; gap:18px; align-items:flex-start; justify-content:space-between; }
+.accredit-image img { width:260px; height:auto; max-width:36%; border-radius:10px; box-shadow: 0 12px 30px rgba(0,0,0,0.12); border:1px solid rgba(0,0,0,0.06); }
+
+@media (max-width: 900px) {
+  .accredit-image img { max-width:40%; }
+}
+
+@media (max-width: 700px) {
+  .accreditation-wrapper { flex-direction: column; }
+  .accredit-image img { max-width:100%; width:100%; }
+}
 </style>
  

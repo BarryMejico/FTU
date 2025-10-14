@@ -155,6 +155,36 @@ const routes=[
             
         ]
     },
+    {
+        path:'/instructors',
+        name:'instructors',
+        component:()=>import('../vueTemplate/databuilder/teacher/teacher.vue'),
+        meta:{ requiresAuth:true }
+    },
+    {
+        path:'/instructor-profile',
+        name:'instructor-profile',
+        component:()=>import('../vueTemplate/databuilder/userDetails.vue'),
+        meta:{ requiresAuth:true }
+    },
+    {
+        path:'/dashboard',
+        name:'dashboard',
+        component:()=>import('../vueTemplate/board/board.vue'),
+        meta:{ requiresAuth:true }
+    },
+    {
+        path:'/dashboard/:key',
+        name:'dashboard-detail',
+        component:()=>import('../vueTemplate/board/detail.vue'),
+        meta:{ requiresAuth:true }
+    },
+    {
+        path:'/files',
+        name:'files',
+        component:()=>import('../vueTemplate/files/files.vue'),
+        meta:{ requiresAuth:true }
+    },
 
     {
         path:'/:pathMatch(.*)*',

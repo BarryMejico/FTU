@@ -9,14 +9,14 @@
                 <Loading v-if="ui.isLoading" />
         <!-- centered logo element (fixed) -->
         <div class="bg-logo" :style="{ backgroundImage: `url(${logoUrl})` }"></div>
-  <div class="main-container">
-    <aside class="sidebar">
-            <ToolBar></ToolBar>
-        </aside>
-        <main class="content">
-            <router-view :key="$route.path"></router-view>
-        </main>
-  </div>
+    <div class="main-container" :class="{ 'has-sidebar': showSidebar, 'sidebar-collapsed': ui.sidebarCollapsed }">
+        <aside v-if="showSidebar" class="sidebar">
+                        <ToolBar></ToolBar>
+                </aside>
+                <main class="content">
+                        <router-view :key="$route.path"></router-view>
+                </main>
+    </div>
   <footer class="footer">
         <div class="footer-content">
           <myfooter></myfooter>
@@ -30,6 +30,8 @@
 import navigation from './nav/nav.vue'
 import myfooter from './myfooter/myfooter.vue'
 import { useUser } from '../Store/user';
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import ToolBar from './nav/menubar.vue';
 import Loading from './adminSystem/Loading.vue'
 import { useUi } from '../Store/ui'
@@ -47,11 +49,20 @@ export default {
   },
 
         setup() {
-                                const userData=useUser();
-                                const ui = useUi();
+                                                        const userData=useUser();
+                                                        const ui = useUi();
+                                                        const route = useRoute()
+
+                                                        const showSidebar = computed(() => {
+                                                            // don't show sidebar on public routes
+                                                            const hidden = ['login', 'Register', 'about']
+                                                            if (hidden.includes(route.name)) return false
+                                                            // require a logged-in user: either authenticated flag or userData.name
+                                                            return !!userData.authenticated || (!!userData.userData && !!userData.userData.name)
+                                                        })
                                 // resolve logo URL with Vite so it loads correctly in dev and build
                                 const logoUrl = new URL('../images/ftu_logo.png', import.meta.url).href;
-                                return {userData, ui, logoUrl}
+                                                        return {userData, ui, logoUrl, showSidebar}
          },
 
    async created(){
@@ -107,9 +118,16 @@ body {
             /* padding: 2rem; */
             flex: 1;
             display: grid;
-            grid-template-columns: 250px 1fr;
+            grid-template-columns: 1fr;
             gap: 2rem;
         }
+
+        /* When the sidebar is present, use two columns */
+        .main-container.has-sidebar { grid-template-columns: 250px 1fr }
+
+    /* When the sidebar is collapsed, use a narrow column and center content */
+    .main-container.sidebar-collapsed.has-sidebar { grid-template-columns: 72px 1fr }
+    .main-container.sidebar-collapsed.has-sidebar .content { display:flex; justify-content:center }
 
         /* subtle repeating pattern for the page */
         html, #app {
@@ -138,8 +156,8 @@ body {
 
          /* Left Menu */
         .sidebar {
-            /* background: #f8f9fa; */
-            border-radius: 10px;
+            /* remove top corner curve so sidebar aligns flush with navbar */
+            border-radius: 0;
             padding: 1.5rem;
             height: fit-content;
             /* box-shadow: 0 2px 15px rgba(0,0,0,0.1); */
@@ -156,11 +174,11 @@ body {
             bottom: 0;
             width: 100%;
             text-align: center;
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(6px);
+            background: #071430; /* match sidebar */
             box-shadow: 0 -2px 8px rgba(0,0,0,0.06);
             z-index: 9999;
             padding: 12px 0;
+            color: #e6f2fb;
         }
         
         /* .footer-content {
