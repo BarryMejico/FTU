@@ -6,6 +6,7 @@
             placeholder="Search subjects..."
             class="search-bar"
         />
+
         <div class="cards">
             <div
                 v-for="subject in filteredSubjects"

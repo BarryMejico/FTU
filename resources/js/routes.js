@@ -139,6 +139,10 @@ const routes=[
              {path:'/batches',
              name:'subjects',
             component:()=>import('../vueTemplate/CD/batch.vue')},
+
+            {path:'/courses',
+             name:'courses',
+            component:()=>import('../vueTemplate/CD/courses/courses.vue')},
             
         ]
     },

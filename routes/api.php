@@ -6,6 +6,7 @@ use App\Http\Controllers\Authen;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\menu;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\CourseController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -42,6 +43,12 @@ Route::post('addPermission',[PermissionController::class,'addPermission']);
 Route::post('editPermission',[PermissionController::class,'editpermission']);
 
 route::post('deletePermission',[PermissionController::class,'deletepermission']);
+
+route::get('courses',[courseController::class,'getCourses']);
+route::post('add_course',[CourseController::class,'createCourse']);
+route::put('update_course/{id}',[CourseController::class,'updateCourse']);
+route::delete('delete_course/{id}',[CourseController::class,'deleteCourse']);
+route::get('course/{id}',[CourseController::class,'getCourse']);
 
 Route::get('listofMenu',[menu::class,'index_menu']);
 

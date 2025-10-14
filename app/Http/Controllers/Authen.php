@@ -29,7 +29,7 @@ class Authen extends Controller
             'email' => $REQUEST['email'],
             'password' => Hash::make($REQUEST['password']),
             'code' => $Code,
-            'permiCode'=>'0',
+            'permiCode'=>'3', //default student
             'Profile_Picture' => 'image/Default.png',
         ]);
         $message ="Data has been saved";

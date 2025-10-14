@@ -114,6 +114,12 @@ class permision extends Seeder
             'id'=>'10',
         ]);
 
+        
+        DB::table('permission_details')->insert([
+            'permiCode'=>'2',
+            'id'=>'23',
+        ]);
+
 // ----------- for student
         DB::table('permission_details')->insert([
             'permiCode'=>'3',
@@ -128,6 +134,17 @@ class permision extends Seeder
          DB::table('permission_details')->insert([
             'permiCode'=>'3',
             'id'=>'20',
+        ]);
+
+        
+        DB::table('permission_details')->insert([
+            'permiCode'=>'3',
+            'id'=>'23',
+        ]);
+
+        DB::table('permission_details')->insert([
+            'permiCode'=>'3',
+            'id'=>'24',
         ]);
 // -------------for Administrator
         DB::table('permission_details')->insert([
@@ -175,7 +192,10 @@ class permision extends Seeder
             'permiCode'=>'5',
             'id'=>'14',
         ]);
-
         
+        DB::table('permission_details')->insert([
+            'permiCode'=>'5',
+            'id'=>'23',
+        ]);        
     }
 }

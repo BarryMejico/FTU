@@ -10,9 +10,7 @@
             <li :class="{ active: activeTab === 'education' }" @click="setActive('education')">
                 Education
             </li>
-            <li :class="{ active: activeTab === 'courses' }" @click="setActive('courses')">
-                Courses
-            </li>
+            
         </ul>
     </nav>
     

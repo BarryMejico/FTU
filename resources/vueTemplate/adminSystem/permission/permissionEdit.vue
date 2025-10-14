@@ -46,9 +46,16 @@
                     </span>   
 
                     <span v-else>
-                            <span>{{ tool.Description }}</span>     
+                        
+                            <span>
+                                 <input
+                                            type="checkbox"
+                                            v-model="tool.Selected"
+                                            @change="updateSelect(tool)"
+                                        />{{ tool.Description }}</span>     
                     </span>
                     </span>
+                    
                     <span v-if="tool.menuParent=='x'">
                         <span>
                         <input

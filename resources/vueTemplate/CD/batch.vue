@@ -2,7 +2,8 @@
     <div class="course-admin">
         <h1>Course Administration</h1>
         <div class="card-list">
-            <CourseCard/>
+            <!-- <CourseCard/> -->
+             <router-view>  </router-view>
         </div>
     </div>
 </template>

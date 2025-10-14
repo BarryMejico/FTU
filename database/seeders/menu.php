@@ -131,7 +131,7 @@ class menu extends Seeder
             'menuParent'=>'14',
             'Description'=>'Courses',
             'icon'=>'clipboard',
-            'slug'=>'0', 
+            'slug'=>'/courses', 
         ]);
                 DB::table('menu')->insert([
             'id'=>'16',
@@ -160,7 +160,7 @@ class menu extends Seeder
         DB::table('menu')->insert([
             'id'=>'19',
             'menuParent'=>'18',
-            'Description'=>'Courses',
+            'Description'=>'My Courses',
             'icon'=>'clipboard',
             'slug'=>'0', 
         ]);
@@ -187,6 +187,22 @@ class menu extends Seeder
             'Description'=>'Batches',
             'icon'=>'clipboard',
             'slug'=>'/coursedirector', 
+        ]);
+
+        DB::table('menu')->insert([
+            'id'=>'23',
+            'menuParent'=>'18',
+            'Description'=>'Schedule',
+            'icon'=>'clipboard',
+            'slug'=>'/scheude', 
+        ]);
+
+        DB::table('menu')->insert([
+            'id'=>'24',
+            'menuParent'=>'root',
+            'Description'=>'Available Courses',
+            'icon'=>'clipboard',
+            'slug'=>'/Availablecourses', 
         ]);
     }
 }

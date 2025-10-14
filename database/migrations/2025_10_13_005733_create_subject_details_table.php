@@ -11,14 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('subjects', function (Blueprint $table) {
+        Schema::create('subject_details', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('Subject_Name');
-            $table->string('Subject_Code')->unique();
-            $table->string('Subject_Description')->nullable();
-            $table->string('Subject_Credit');
-            $table->string('Subject_Type');
         });
     }
 
@@ -27,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('subjects');
+        Schema::dropIfExists('subject_details');
     }
 };
