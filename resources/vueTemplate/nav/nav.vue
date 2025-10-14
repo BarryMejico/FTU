@@ -14,7 +14,7 @@
             </li>
             <li>
                 <router-link to="/about">
-                    <span>About</span> 
+                    <span>About us</span> 
                 </router-link>
             </li>
             

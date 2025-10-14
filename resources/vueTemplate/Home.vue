@@ -55,26 +55,6 @@
         <p>By 2028, to be a competent and capable Budget, Fiscal and Finance (BFF) Education and Training Administrator that produces motivated, excellent and highly-skilled BFF Professionals for the Philippine Navy.</p>
       </div>
 
-      <!-- Accreditation card spanning both columns -->
-      <div class="aboutus card accreditation-card" id="accreditation">
-        <h2>Accreditation</h2>
-        <div class="accreditation-wrapper">
-          <div class="accreditation" role="status" aria-label="Accreditation summary">
-            <div class="accredit-copy">
-              <strong>Accredited (Secondary Level)</strong>
-              <div class="accredit-text">The Finance Training Unit (FTU) is accredited as a Secondary Armed Forces of the Philippines Education & Training Institution effective 16 July 2024.</div>
-              <a href="/docs/accreditation.jpg" class="accredit-link" title="View accreditation document" target="_blank" rel="noopener">View accreditation</a>
-            </div>
-          </div>
-
-          <!-- Larger scan image displayed beside the accreditation text. Place the scan at public/docs/accreditation.jpg -->
-          <div class="accredit-image">
-            <a href="/docs/accreditation.jpg" target="_blank" rel="noopener">
-              <img src="/docs/accreditation.jpg" alt="FTU Accreditation scan" onerror="this.onerror=null;this.src='/docs/accreditation-placeholder.svg'" />
-            </a>
-          </div>
-        </div>
-      </div>
     </div>
     </div>
   </div>
@@ -177,9 +157,6 @@ export default {
 }
 .aboutus h2 { color: #333; margin-bottom: 10px; }
 .aboutus { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); padding: 1rem 1rem; text-align: center; font-size: 1.1rem; transition: all 0.3s ease; position: relative; overflow: hidden; }
-.aboutus::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, rgb(201, 201, 201), #00004D); transform: scaleX(0); transition: transform 0.3s ease; }
-.aboutus:hover::before { transform: scaleX(1); }
-.aboutus:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); }
 
 /* Cards layout for mission/vision */
 .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; max-width: 1100px; margin: 2rem auto 4rem; padding: 0 1rem; }
@@ -241,5 +218,14 @@ body.home-no-sidebar .content { padding: 0; }
   .accreditation-wrapper { flex-direction: column; }
   .accredit-image img { max-width:100%; width:100%; }
 }
+
+/* Ensure FTU background logo centers on Home page when we forcibly hide the sidebar.
+   The global App.vue positions the big translucent logo using:
+       left: calc(50% + (var(--sidebar-width, 0px) * 0.5));
+   Because the sidebar is only hidden with the body.home-no-sidebar class (not by disabling showSidebar),
+   .app-root still has .has-sidebar which sets --sidebar-width:250px and shifts the logo right.
+   We neutralize that here so Home matches About and other non-sidebar pages. */
+body.home-no-sidebar .app-root.has-sidebar { --sidebar-width: 0px; }
+
 </style>
  

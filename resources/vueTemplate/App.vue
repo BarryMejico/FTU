@@ -1,14 +1,18 @@
 <template>
 
-    <div class="app-root">
+    <div class="app-root" :class="{ 'has-sidebar': showSidebar, 'sidebar-collapsed': ui.sidebarCollapsed }">
         <nav class="navbar">
         <div class="nav-container">
             <navigation></navigation>
         </div>
     </nav>
                 <Loading v-if="ui.isLoading" />
-        <!-- centered logo element (fixed) -->
+    <!-- subtle glow behind the logo (fixed) -->
+    <div class="bg-logo-glow" aria-hidden="true"></div>
+    <!-- centered logo element (fixed) -->
         <div class="bg-logo" :style="{ backgroundImage: `url(${logoUrl})` }"></div>
+        <!-- global grid overlay (fixed) placed above logo, below content -->
+        <div class="bg-grid" aria-hidden="true"></div>
     <div class="main-container" :class="{ 'has-sidebar': showSidebar, 'sidebar-collapsed': ui.sidebarCollapsed }">
         <aside v-if="showSidebar" class="sidebar">
                         <ToolBar></ToolBar>
@@ -90,6 +94,19 @@ export default {
 </script>
 
 <style>
+        /* Grid fade variables */
+        :root {
+            --grid-color-rgb: 144,205,244; /* light blue */
+            --grid-alpha: 0.7;             /* line opacity */
+            --grid-size: 40px;             /* square size */
+            --grid-fade-start: 35%;        /* where fade begins (earlier for more fade) */
+            --grid-fade-mid-opacity: 0.75; /* strength mid-way down */
+            --grid-fade-mid-offset: 30%;   /* distance after start to reach mid strength */
+        }
+        /* Grid opacity presets (toggle on <html>) */
+        html.grid-faint { --grid-alpha: 0.35 }
+        html.grid-strong { --grid-alpha: 0.9 }
+        html.grid-off { --grid-alpha: 0 }
 body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -129,17 +146,39 @@ body {
     .main-container.sidebar-collapsed.has-sidebar { grid-template-columns: 72px 1fr }
     .main-container.sidebar-collapsed.has-sidebar .content { display:flex; justify-content:center }
 
-        /* subtle repeating pattern for the page */
-        html, #app {
-            background-color: #fbfbfb;
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 10 10'><circle cx='1' cy='1' r='0.7' fill='%23e9e9e9' fill-opacity='0.6'/></svg>");
-            background-repeat: repeat;
+        /* Background is applied globally via resources/css/app.css */
+
+        /* Adjustable glow variables and presets */
+        :root {
+            --logo-glow-inner: 0.85;   /* center opacity */
+            --logo-glow-mid: 0.35;     /* mid ring opacity */
+            --logo-glow-size: 520px;   /* overall glow diameter */
+            --logo-glow-blur: 6px;     /* blur strength */
         }
 
+        /* Optional presets: apply to the <html> element */
+        html.glow-none {
+            --logo-glow-inner: 0;
+            --logo-glow-mid: 0;
+            --logo-glow-size: 0px;
+            --logo-glow-blur: 0px;
+        }
+        html.glow-weak {
+            --logo-glow-inner: 0.55;
+            --logo-glow-mid: 0.18;
+            --logo-glow-size: 460px;
+            --logo-glow-blur: 4px;
+        }
+        html.glow-strong {
+            --logo-glow-inner: 1;
+            --logo-glow-mid: 0.5;
+            --logo-glow-size: 640px;
+            --logo-glow-blur: 12px;
+        }
         /* centered fixed logo element above pattern; keep low opacity */
         .bg-logo {
             position: fixed;
-            left: 50%;
+            left: calc(50% + (var(--sidebar-width, 0px) * 0.5));
             top: 50%;
             transform: translate(-50%, -50%);
             width: 420px;
@@ -147,9 +186,60 @@ body {
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
-            opacity: 0.6;
+            opacity: 0.85; /* slightly stronger */
             pointer-events: none;
-            z-index: 0;
+            z-index: 1; /* ensure logo sits above the grid overlay */
+        }
+
+        /* soft white glow behind the logo to improve contrast */
+        .bg-logo-glow {
+            position: fixed;
+            left: calc(50% + (var(--sidebar-width, 0px) * 0.5));
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: var(--logo-glow-size); /* adjustable size */
+            height: var(--logo-glow-size);
+            pointer-events: none;
+            /* above grid (0), below logo (1) by using same layer as logo but earlier in DOM */
+            z-index: 1;
+            background: radial-gradient(circle, rgba(255,255,255,var(--logo-glow-inner)) 0%, rgba(255,255,255,var(--logo-glow-mid)) 40%, rgba(255,255,255,0) 70%);
+            filter: blur(var(--logo-glow-blur));
+        }
+
+        /* full-screen grid overlay above logo, below main content */
+        .bg-grid {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0; /* grid sits below logo and content */
+            background-image:
+                /* stronger, smoother fade: transparent -> mid -> white */
+                linear-gradient(
+                    to bottom,
+                    rgba(255,255,255,0) var(--grid-fade-start),
+                    rgba(255,255,255,var(--grid-fade-mid-opacity)) calc(var(--grid-fade-start) + var(--grid-fade-mid-offset)),
+                    rgba(255,255,255,1) 100%
+                ),
+                /* vertical grid lines */
+                linear-gradient(to right, rgba(var(--grid-color-rgb), var(--grid-alpha)) 1px, rgba(var(--grid-color-rgb), 0) 1px),
+                /* horizontal grid lines */
+                linear-gradient(to bottom, rgba(var(--grid-color-rgb), var(--grid-alpha)) 1px, rgba(var(--grid-color-rgb), 0) 1px);
+            background-size: auto, var(--grid-size) var(--grid-size), var(--grid-size) var(--grid-size); /* perfect squares */
+            background-position: top left, top left, top left;
+            background-repeat: no-repeat, repeat, repeat;
+        }
+
+        /* Sidebar width variable to keep the logo aligned with content center */
+        .app-root { --sidebar-width: 0px; }
+        .app-root.has-sidebar { --sidebar-width: 250px; }
+        .app-root.has-sidebar.sidebar-collapsed { --sidebar-width: 72px; }
+
+        /* On small screens, layout stacks; keep logo centered to viewport */
+        @media (max-width: 768px) {
+            .app-root { --sidebar-width: 0px; }
         }
 
     .main-container { position: relative; z-index: 1; padding-bottom: 120px; }
