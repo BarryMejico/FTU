@@ -30,7 +30,7 @@ class Authen extends Controller
             'password' => Hash::make($REQUEST['password']),
             'code' => $Code,
             'permiCode'=>'3', //default student
-            'Profile_Picture' => 'image/Default.png',
+            'Profile_Picture' => 'storage/Default.png',
         ]);
         $message ="Data has been saved";
         return ;
@@ -101,7 +101,8 @@ class Authen extends Controller
     {
         $request->validate([
             'code' => 'required|string',
-            'Profile_Picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            // allow up to 5 MB files (5120 KB)
+            'Profile_Picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
         $user = User::where('code', $request->code)->first();
         if (!$user) {

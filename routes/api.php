@@ -33,6 +33,9 @@ Route::post('logout',[Authen::class,'logout']);
 Route::get('users',[Authen::class,'profiles']);
 Route::post('updateProfile',[Authen::class,'updateProfile']);
 
+// Profile picture upload
+Route::post('uploadprofilepicture',[Authen::class,'uploadprofilepicture']);
+
 Route::get('thatProfile',[Authen::class,'profile_code']);
 Route::post('updateuserpermission',[Authen::class,'updateuserpermission']);
 

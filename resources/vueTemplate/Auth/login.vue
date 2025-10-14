@@ -108,9 +108,9 @@ methods:{
                 console.log("")
                 this.$router.push(redirectPath)
             }
-            else{
-                window.location.reload();
-                this.$router.push("/myprofile")}
+      else{
+        window.location.reload();
+        this.$router.push("/mydashboard")}
         }
         
              }
@@ -128,7 +128,7 @@ watch:{
             if(undefined!=redirectPath){
                 this.$router.push(redirectPath)
             }
-            else{this.$router.push("/myprofile")}
+            else{this.$router.push("/mydashboard")}
 
         }
 

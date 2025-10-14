@@ -2,9 +2,9 @@
     <div class="profile-container">
         <div class="profile-card">
             <div class="profile-header">
-                <div class="profile-avatar">
-                    <img :src="profileImageSrc" alt="Profile Picture" />
-                </div>
+                            <div class="profile-avatar">
+                                <img :src="profileImageSrc" alt="Profile Picture" @error="onImgError" @click="openModal" class="clickable-avatar" />
+                            </div>
                 <div class="profile-info">
                     <h1>My Profile</h1>
                     <div class="info-row">
@@ -27,6 +27,22 @@
 <hr></hr>
         <Profile_nav></Profile_nav>
         <RouterView></RouterView>
+
+        <!-- Profile picture upload modal -->
+        <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
+            <div class="modal-card">
+                <h3>Update Profile Picture</h3>
+                <div class="preview">
+                    <img :src="previewSrc || profileImageSrc" alt="Preview" @error="onImgError" />
+                </div>
+                <input type="file" accept="image/*" @change="onFileChange" />
+                <div class="modal-actions">
+                    <button class="btn" @click="uploadPicture" :disabled="!selectedFile">Upload</button>
+                    <button class="btn secondary" @click="closeModal">Cancel</button>
+                </div>
+                <p v-if="uploadMessage" class="upload-message">{{ uploadMessage }}</p>
+            </div>
+        </div>
         </div>
         
     </div>
@@ -34,6 +50,7 @@
 
 <script>
 import axios from 'axios';
+import { ref, computed } from 'vue';
 import { useUser } from '../../Store/user';
 import Profile_nav from '../nav/profile_nav.vue';
 
@@ -41,36 +58,95 @@ export default {
     components: {Profile_nav},
     setup() {
         const userData = useUser();
-        return { userData }
+        const showModal = ref(false);
+        const selectedFile = ref(null);
+        const previewSrc = ref('');
+        const uploadMessage = ref('');
+        return { userData, showModal, selectedFile, previewSrc, uploadMessage }
     },
-    
+
+    computed: {
+        profileImageSrc() {
+            const pic = this.userData && this.userData.userData && this.userData.userData.Profile_Picture
+            if (!pic) return '/storage/Default.png'
+            if (/^https?:\/\//.test(pic)) return pic
+            const normalized = pic.replace(/^\//, '').replace(/^image\//, 'storage/')
+            return window.location.origin + '/' + normalized
+        }
+    },
+
     methods: {
         logout() {
             this.userData.logout()
             this.$router.push("/login")
         },
 
-        saveprofile(){
-            axios.post('updateProfile', {
-                Profile_Picture: this.userData.userData.Profile_Picture,
-            }).then(response => {
-                console.log(response.data);
-                // Optionally update local user data if needed
-            }).catch(error => {
-                console.error('There was an error updating the profile!', error);
-            });
-        }
-    },
-    computed: {
-        profileImageSrc() {
-            // read profile picture from store; support full URLs or relative paths like 'image/Default.png'
-            const pic = this.userData && this.userData.userData && this.userData.userData.Profile_Picture
-            if (!pic) return '/image/Default.png'
-            // if it's already an absolute URL
-            if (/^https?:\/\//.test(pic)) return pic
-            // otherwise prefix with origin
-            return window.location.origin + '/' + pic.replace(/^\//, '')
-        }
+        openModal(){
+            this.uploadMessage = '';
+            this.previewSrc = '';
+            this.selectedFile = null;
+            this.showModal = true;
+        },
+
+        closeModal(){
+            this.showModal = false;
+        },
+
+        onFileChange(e){
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            // basic client-side validation
+            if (!file.type.startsWith('image/')){
+                this.uploadMessage = 'Please select an image file.';
+                return;
+            }
+            this.selectedFile = file;
+            const reader = new FileReader();
+            reader.onload = (ev) => { this.previewSrc = ev.target.result; };
+            reader.readAsDataURL(file);
+        },
+
+        async uploadPicture(){
+            if (!this.selectedFile){
+                this.uploadMessage = 'No file selected.';
+                return;
+            }
+            const formData = new FormData();
+            // assume userData.userData.code is available as identifier
+            formData.append('code', this.userData.userData.code || this.userData.userData.id || '');
+            formData.append('Profile_Picture', this.selectedFile);
+            try{
+                const resp = await axios.post('/api/uploadprofilepicture', formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
+                if (resp && resp.data && resp.data.path){
+                    // cache-bust the image URL so browser reloads the new image
+                    const pathWithBust = resp.data.path + '?v=' + Date.now();
+                    console.log('Upload response path:', resp.data.path, 'using', pathWithBust);
+                    // update Pinia store reactively without overwriting nested state
+                    if (typeof this.userData.$patch === 'function'){
+                        this.userData.$patch(state => {
+                            if (!state.userData) state.userData = {};
+                            state.userData.Profile_Picture = pathWithBust;
+                        });
+                    } else {
+                        this.userData.userData.Profile_Picture = pathWithBust;
+                    }
+                    this.uploadMessage = 'Upload successful.';
+                    // small delay before closing
+                    setTimeout(() => { this.closeModal() }, 800);
+                } else {
+                    this.uploadMessage = resp.data.message || 'Upload completed.';
+                }
+            }catch(err){
+                console.error(err);
+                this.uploadMessage = err.response && err.response.data && err.response.data.message ? err.response.data.message : 'Upload failed.';
+            }
+        },
+
+        onImgError(event){
+            event.target.src = window.location.origin + '/storage/Default.png'
+        },
     },
 }
 </script>
@@ -106,6 +182,34 @@ export default {
     object-fit: cover;
     border: 3px solid #f0f0f0;
 }
+
+.clickable-avatar { cursor: pointer; transition: transform 0.15s ease; }
+.clickable-avatar:hover { transform: scale(1.04); }
+
+/* Modal styles */
+.modal-overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index: 9999;
+}
+.modal-card{
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    text-align: center;
+}
+.modal-card .preview img{ width: 160px; height: 160px; object-fit: cover; border-radius: 50%; border: 2px solid #eee; margin-bottom: 1rem; }
+.modal-actions{ display:flex; gap:0.5rem; justify-content:center; margin-top:1rem }
+.btn{ padding:0.5rem 1rem; border-radius:6px; border:none; cursor:pointer; background:#2c7be5; color:#fff }
+.btn.secondary{ background:#e0e0e0; color:#333 }
+.upload-message{ margin-top:0.75rem; color: #2c7be5 }
 
 .profile-info {
     flex-grow: 1;

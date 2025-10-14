@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="user-card" data-name="Sarah Johnson" data-role="Frontend Developer" data-skills="React JavaScript TypeScript CSS">
-                <img :src="userdetails.Profile_Picture" alt="Sarah Johnson" class="user-avatar">
+                <img :src="normalizedSrc(userdetails.Profile_Picture)" @error="onImgError" alt="Sarah Johnson" class="user-avatar">
                 <h3 class="user-name">{{ userdetails.name }}</h3>
                 <p class="user-role">{{ userdetails.Description }}</p>
                 <div class="user-info">
@@ -41,6 +41,23 @@ export default {
     methods: {
         handleClick() {
             this.$emit('click');
+        }
+    },
+
+    methods: {
+        handleClick() {
+            this.$emit('click');
+        },
+
+        normalizedSrc(pic){
+            if(!pic) return window.location.origin + '/storage/Default.png'
+            if(/^https?:\/\//.test(pic)) return pic
+            const normalized = pic.replace(/^\//, '').replace(/^image\//, 'storage/')
+            return window.location.origin + '/' + normalized
+        },
+
+        onImgError(event){
+            event.target.src = window.location.origin + '/storage/Default.png'
         }
     },
 

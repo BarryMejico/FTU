@@ -19,7 +19,7 @@
             </li>
             
             <li v-if="!userData.name" class="right" style="float:right">
-                <router-link to="/login">
+                <router-link to="/login" class="nav-link">
                     <span>Log in</span>
                 </router-link>
             </li>
@@ -34,10 +34,9 @@
             </li> -->
 
             <li v-else class="right">
-                <router-link 
-                    :to="{name:'profileoverview'}" 
-                    >
-                       <span><i class="ri-user-3-line user-icon" aria-hidden="true"></i> {{userData.name}}</span>
+                <router-link :to="{name:'profileoverview'}" class="user-with-avatar">
+                    <img :src="avatarUrl" @error="onAvatarError" alt="avatar" class="nav-avatar" />
+                    <span class="username-text">{{userData.name}}</span>
                 </router-link>
             </li>
             
@@ -60,7 +59,8 @@ export default{
     },
     data(){
         return{
-            appName: import.meta.env.VITE_APP_NAME || 'Finance Training Unit'
+            appName: import.meta.env.VITE_APP_NAME || 'Finance Training Unit',
+            avatarUrl: '/storage/Default.png'
         }
     },
     methods:{
@@ -71,12 +71,35 @@ export default{
                 this.userData.logout()
                 this.$router.push("/login")
         }
-
+        ,
+        normalizedProfilePic(path){
+            if(!path) return '/storage/Default.png'
+            // remove any cache-busting query string for normalization
+            const clean = path.split('?')[0];
+            if(clean.startsWith('http')) return clean + (path.includes('?') ? ('?' + path.split('?').slice(1).join('?')) : '');
+            if(clean.startsWith('/')) return window.location.origin + clean + (path.includes('?') ? ('?' + path.split('?').slice(1).join('?')) : '');
+            // path like 'storage/profile_pictures/xxx' -> prefix origin
+            return window.location.origin + '/' + clean.replace(/^\/+/, '') + (path.includes('?') ? ('?' + path.split('?').slice(1).join('?')) : '');
+        },
+        onAvatarError(event){
+            event.target.src = '/storage/Default.png'
+        }
+    },
+    created(){
+        // initialize local avatar URL from store
+        try{
+            this.avatarUrl = this.normalizedProfilePic(this.userData.userData.Profile_Picture);
+        }catch(e){
+            this.avatarUrl = '/storage/Default.png';
+        }
     },
     watch:{
-
-        
+        // watch the Pinia store for Profile_Picture changes and update avatarUrl
+        'userData.userData.Profile_Picture': function(newVal){
+            this.avatarUrl = this.normalizedProfilePic(newVal);
+        }
     },
+    
     
     computed:{
         userData(){
@@ -103,22 +126,16 @@ ul.topnav {
     margin: 0;
     padding: 0 18px; /* horizontal breathing room */
     overflow: hidden;
-    /* 3D layered gradient header */
-    background: linear-gradient(180deg, #0b2546 0%, #071430 45%, #041726 100%);
+    /* Clean gradient header, dot pattern removed */
+    background: linear-gradient(90deg, #0b2546 0%, #071430 100%);
     position: relative;
     box-shadow: 0 6px 20px rgba(4,12,30,0.55), inset 0 -6px 20px rgba(2,8,18,0.25);
 }
 
 /* subtle radial accent near the left (logo area) */
 ul.topnav::before{
-    content:'';
-    position:absolute;
-    left:12px;
-    top:6px;
-    width:220px;
-    height:60px;
-    background: radial-gradient(ellipse at left center, rgba(0,163,196,0.06), transparent 40%);
-    pointer-events:none;
+    /* Dot pattern removed: no pseudo-element background */
+    content: none;
 }
 
 ul.topnav li {float: left;}
@@ -139,6 +156,9 @@ ul.topnav li span {
     transition: transform .16s ease, box-shadow .16s ease, background .12s ease;
 }
 
+/* unify hover for regular nav items and the profile link */
+.app-name span:hover,
+.user-with-avatar:hover,
 ul.topnav li span:hover {
     background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
     transform: translateY(-4px);
@@ -146,6 +166,14 @@ ul.topnav li span:hover {
 }
 
 ul.topnav li .router-link-active span {background-color: rgba(0,163,196,0.12);}
+
+/* make app-name active explicit so we have a single source of truth */
+.app-name .router-link-active span{ 
+    background: linear-gradient(180deg, rgba(0,163,196,0.12), rgba(0,163,196,0.06));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,163,196,0.08);
+    color: #e6f2fb; 
+}
 
 ul.topnav li.right {float: right;}
 
@@ -179,4 +207,68 @@ ul.topnav li.right {float: right;}
 }
 
 .user-icon{ margin-right:6px; font-size:16px; vertical-align:middle; color: #bcd7e8 }
+
+/* Ensure username hover height matches app name/about links */
+.user-with-avatar{ 
+    display:inline-flex;
+     align-items:center; gap:1px;
+      padding: 14px 16px; 
+      border-radius:8px;
+       cursor:pointer; 
+       transition: transform .16s ease, box-shadow .16s ease, background .12s ease; 
+       border: none; background: transparent;
+     }
+.user-with-avatar .username-text{ padding: 0 0 0 0; color:#e6f2fb }
+.user-with-avatar:hover{ background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); transform: translateY(-4px); box-shadow: 0 8px 18px rgba(2,12,30,0.35); }
+
+/* stronger selector so the button hover always takes precedence over generic span:hover */
+.topnav li .user-with-avatar:hover{ background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); transform: translateY(-4px); box-shadow: 0 8px 18px rgba(2,12,30,0.35); }
+
+/* ensure the username text doesn't show its own hover — let the button handle visuals */
+.user-with-avatar .username-text{ pointer-events: none; }
+/* ensure inner username span never shows its own hover visuals */
+.user-with-avatar .username-text:hover{ background: transparent; transform: none; box-shadow: none; }
+
+/* active state for profile button to match other nav items */
+.user-with-avatar.router-link-active{ 
+    background: linear-gradient(180deg, rgba(0,163,196,0.12), rgba(0,163,196,0.06));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,163,196,0.08);
+    color: #e6f2fb;
+}
+
+/* mousedown / click feedback: make active (pressed) state match app-name active visuals */
+.user-with-avatar:active,
+.user-with-avatar:active .username-text{
+    background: linear-gradient(180deg, rgba(0,163,196,0.12), rgba(0,163,196,0.06));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,163,196,0.08);
+    color: #e6f2fb;
+}
+
+/* active feedback for app-name link when mouse is pressed */
+.app-name span:active{ 
+    background: linear-gradient(180deg, rgba(0,163,196,0.12), rgba(0,163,196,0.06));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,163,196,0.08);
+    color: #e6f2fb; 
+}
+
+/* avatar */
+.nav-avatar{
+     width:28px;
+     height:28px;
+     border-radius:50%;
+     object-fit:cover;
+     margin-right:8px;
+     border:1px solid rgba(255,255,255,0.12);
+         }
+
+/* reset button defaults inside navbar */
+.user-with-avatar[role="button"], .user-with-avatar button{ 
+    background: transparent;
+     border: none; padding: 0; }
+.user-with-avatar:focus{ 
+    outline: none; 
+    box-shadow: 0 0 0 4px rgba(0,163,196,0.12); }
 </style>

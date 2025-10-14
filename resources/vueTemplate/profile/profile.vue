@@ -4,7 +4,7 @@
             <div class="profile-header">
                 <div class="profile-image">
                     <!-- <img :src="profileID.Profile_Picture" /> -->
-                    <img :src=" appURL + profileID.Profile_Picture"  onerror="image/Default.png" class="logo" />
+                    <img :src="profileImageSrc" @error="onImgError" class="logo" />
                 </div>
                 <div class="profile-info">
                     <div class="info-item">
@@ -115,6 +115,11 @@ export default {
             })
         },
 
+        onImgError(event){
+            // set a known-good default from public/storage/Default.png
+            event.target.src = this.appURL + 'storage/Default.png'
+        },
+
         checkifallowedit(){   
         
         for(var i = 0; i < this.tools.length; i++){
@@ -128,6 +133,15 @@ export default {
             var path= window.location.origin + "/"
         return path
       },
+
+        profileImageSrc(){
+            // Build a full URL for the profile image and normalize legacy paths like 'image/Default.png'
+            const pic = this.profileID && this.profileID.Profile_Picture
+            if(!pic) return this.appURL + 'storage/Default.png'
+            if(/^https?:\/\//.test(pic)) return pic
+            const normalized = pic.replace(/^\//, '').replace(/^image\//, 'storage/')
+            return this.appURL + normalized
+        },
 
         userData(){
             return this.userData.userData
