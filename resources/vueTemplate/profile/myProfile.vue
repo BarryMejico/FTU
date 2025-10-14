@@ -48,6 +48,17 @@ export default {
         logout() {
             this.userData.logout()
             this.$router.push("/login")
+        },
+
+        saveprofile(){
+            axios.post('updateProfile', {
+                Profile_Picture: this.userData.userData.Profile_Picture,
+            }).then(response => {
+                console.log(response.data);
+                // Optionally update local user data if needed
+            }).catch(error => {
+                console.error('There was an error updating the profile!', error);
+            });
         }
     },
     computed: {

@@ -14,7 +14,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import Loading from './.vue'
+import Loading from '../adminSystem/Loading.vue'
 
 const isLoading = ref(true)
 

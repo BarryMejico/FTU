@@ -96,4 +96,29 @@ class Authen extends Controller
                 return response()->json(['message' => 'Update failed or no changes made'], 400);
             }
      }
+
+     public function uploadprofilepicture(Request $request)
+    {
+        $request->validate([
+            'code' => 'required|string',
+            'Profile_Picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+        $user = User::where('code', $request->code)->first();
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+    
+        // Handle the file upload
+        if ($request->hasFile('Profile_Picture')) {
+            $file = $request->file('Profile_Picture');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $filePath = $file->storeAs('public/profile_pictures', $filename);
+            // Update the user's profile picture path in the database
+            $user->Profile_Picture = 'storage/profile_pictures/' . $filename;
+            $user->save();
+            return response()->json(['message' => 'Profile picture updated successfully', 'path' => $user->Profile_Picture], 200);
+        } else {
+            return response()->json(['message' => 'No file uploaded'], 400);
+        }
+    }
 }

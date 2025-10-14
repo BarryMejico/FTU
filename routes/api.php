@@ -31,6 +31,7 @@ Route::post('register',[Authen::class,'register']);
 Route::post('login',[Authen::class,'login']);
 Route::post('logout',[Authen::class,'logout']);
 Route::get('users',[Authen::class,'profiles']);
+Route::post('updateProfile',[Authen::class,'updateProfile']);
 
 Route::get('thatProfile',[Authen::class,'profile_code']);
 Route::post('updateuserpermission',[Authen::class,'updateuserpermission']);
