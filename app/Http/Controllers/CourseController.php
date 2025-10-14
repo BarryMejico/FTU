@@ -70,8 +70,8 @@ class CourseController extends Controller
     public function createCourse(Request $request)
     {
         $course = new course;
-        $course->Course_Name = $request->name;
-        $course->Course_Description = $request->description;
+        $course->Course_Name = $request->Course_Name;
+        $course->Course_Description = $request->Course_Description;
         $course->Course_Code = Ucode();
         $course->Course_Duration = 1;
         $course->Course_Level = 1;
