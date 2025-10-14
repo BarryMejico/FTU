@@ -1,6 +1,6 @@
 <template>
     <div class="teacher-form-container">
-        <h1>Teacher Details</h1>
+        <h1>Instructor Details</h1>
         <form @submit.prevent="save_teacher" class="teacher-form">
             <div class="form-group">
                 <label for="rank">Rank:</label>
@@ -43,7 +43,7 @@
                 </select>
             </div>
 
-            <button type="submit" class="submit-btn">Save Teacher Details</button>
+            <button type="submit" class="submit-btn">Save Instructor Details</button>
         </form>
     </div>
 </template>

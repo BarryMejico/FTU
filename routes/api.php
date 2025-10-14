@@ -55,3 +55,9 @@ Route::get('listofMenu',[menu::class,'index_menu']);
 
 
 Route::post('save_teacher',[TeacherController::class,'save_data']);
+// Dashboard metrics (protected)
+Route::middleware('auth:sanctum')->group(function(){
+    Route::get('dashboard/enlisted',[\App\Http\Controllers\DashboardController::class,'enlistedCounts']);
+    Route::get('files', [\App\Http\Controllers\FilesController::class, 'index']);
+    Route::post('files', [\App\Http\Controllers\FilesController::class, 'upload']);
+});

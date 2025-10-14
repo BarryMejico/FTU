@@ -1,27 +1,13 @@
 <template>
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-column">
-                <h3>About Us</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
-            </div>
-            
-            <div class="footer-column">
-                <h3>Mission</h3>
-                <p>To provide high standard and responsive Budget, 
-                Fiscal and Finance Education and Training to develop a competent, excellent 
-                and highly-skilled BFF professionals for the Philippine Navy.</p>
-            </div>
-            
-            <div class="footer-column">
-                <h3>Vision</h3>
-                <p>By 2028, to be a competent and capable Budget, Fiscal and Finance (BFF)
-                Education and Training Administrator that produces motivated, excellent and
-                highly-skilled BFF Professionals for the Philippine Navy.</p>
-            </div>
-        </div>
-    </footer>
+<footer style="font-style:
+ italic; 
+ color: #e6f2fb;  
+  text-align:center;
+   height: 40px; 
+   padding-bottom: 10PX;
+   background: #071430;">
+    <p style="margin-bottom:30PX; font-size:0.9rem">FTU 2028: Competent and Capable Budget, Fiscal and Finance Education and Training Administrator</p>
+</footer>
 </template>
 
 <script>
@@ -30,69 +16,19 @@ export default {
 }
 </script>
 
-<style scoped>
-.footer {
-    background-color: #2c3e50;
-    color: #ffffff;
-    padding: 3rem 0;
-    margin-top: auto;
-}
-
-.footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
-    display: flex;
-    justify-content: space-between;
-    gap: 2rem;
-}
-
-.footer-column {
-    flex: 1;
-    min-width: 0;
-}
-
-.footer-column h3 {
-    color: #ecf0f1;
-    font-size: 1.25rem;
-    margin-bottom: 1.5rem;
-    position: relative;
-    padding-bottom: 0.5rem;
-}
-
-.footer-column h3::after {
-    content: '';
-    position: absolute;
+<style>
+footer {
+    position: fixed;
     left: 0;
     bottom: 0;
-    width: 50px;
-    height: 2px;
-    background-color: #3498db;
+    width: 100%;
+    background-color: #071430;
+ transition: border-radius 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.footer-column p {
-    color: #bdc3c7;
-    line-height: 1.6;
-    margin-bottom: 1rem;
-}
-
-@media (max-width: 768px) {
-    .footer-container {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .footer-column h3::after {
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    .footer-column {
-        margin-bottom: 2rem;
-    }
-
-    .footer-column:last-child {
-        margin-bottom: 0;
-    }
+.shadow {
+ box-shadow: inset 0 -3em 3em rgba(0,0,0,0.1),
+             0 0  0 2px rgb(190, 190, 190),
+             0.3em 0.3em 1em rgba(0,0,0,0.3);
 }
 </style>

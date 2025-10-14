@@ -4,10 +4,12 @@
         <div class="table-responsive">
         <table class="menu-table">
             <thead>
-                <th>#</th>
-                <th>Icon</th>
-                <th>Description</th>
-                <th>Slug</th>
+                <tr>
+                    <th>#</th>
+                    <th>Icon</th>
+                    <th>Description</th>
+                    <th>Slug</th>
+                </tr>
             </thead>
             <tbody>
                 <tr v-for="(menu,k) in menu" :key="k">

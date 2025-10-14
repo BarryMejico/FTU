@@ -21,7 +21,7 @@ class permision extends Seeder
 
         DB::table('permissions')->insert([
             'permCode'=>'2',
-            'Description'=>'Teacher',
+            'Description'=>'Instructor',
         ]);
 
         DB::table('permissions')->insert([

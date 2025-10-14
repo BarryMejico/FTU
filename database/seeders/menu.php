@@ -32,9 +32,9 @@ class menu extends Seeder
         DB::table('menu')->insert([
             'id'=>'3',
             'menuParent'=>'2',
-            'Description'=>'Teachers',
+            'Description'=>'Instructors',
             'icon'=>'clipboard',
-            'slug'=>'/teacher', 
+            'slug'=>'/instructors', 
         ]);
 
         DB::table('menu')->insert([
@@ -54,10 +54,11 @@ class menu extends Seeder
         ]);
 
         
+        // Rename Teacher section to Instructor and add submenus
         DB::table('menu')->insert([
             'id'=>'4',
             'menuParent'=>'root',
-            'Description'=>'Teacher',
+            'Description'=>'Instructor',
             'icon'=>'clipboard',
             'slug'=>'0', 
         ]);
@@ -65,17 +66,17 @@ class menu extends Seeder
         DB::table('menu')->insert([
             'id'=>'8',
             'menuParent'=>'4',
-            'Description'=>'Subjects',
+            'Description'=>'Instructors Profile',
             'icon'=>'clipboard',
-            'slug'=>'/teacher-subjects', 
+            'slug'=>'/instructor-profile', 
         ]);
 
         DB::table('menu')->insert([
             'id'=>'9',
             'menuParent'=>'4',
-            'Description'=>'Modules',
+            'Description'=>'List of Instructors',
             'icon'=>'clipboard',
-            'slug'=>'/ReceivedPayments', 
+            'slug'=>'/instructors', 
         ]);
 
         DB::table('menu')->insert([

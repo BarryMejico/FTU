@@ -1,3 +1,30 @@
-/* @tailwind base;
-@tailwind components;
-@tailwind utilities; */
+/* User-provided grid background pattern */
+.grid-wrapper {
+	min-height: 100%;
+	width: 100%;
+	position: relative;
+	background-color: #f8fafc;
+}
+
+
+.grid-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  /* Denser, slightly darker bluish grid */
+  background-image:
+    linear-gradient(to right, rgba(130,156,220,0.22) 1px, rgba(130,156,220,0) 1px),
+    linear-gradient(to bottom, rgba(130,156,220,0.18) 1px, rgba(130,156,220,0) 1px);
+  background-size: 12px 18px; /* denser grid */
+
+  /* keep the existing mask to fade at top center */
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 60%, transparent 100%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 60%, transparent 100%);
+
+  /* subtle overlay to soften the grid */
+  background-blend-mode: overlay;
+}
+
+/* Ensure content sits above the grid background when using .grid-wrapper */
+.grid-wrapper > .home-page { position: relative; z-index: 1; }
+
