@@ -10,6 +10,7 @@ class menu extends Seeder
 {
     /**
      * Run the database seeds.
+     * /storage/storage/icons/System/dashboard-line.svg
      */
     public function run(): void
     {
@@ -17,7 +18,7 @@ class menu extends Seeder
             'id'=>'1',
             'menuParent'=>'root',
             'Description'=>'System Admin',
-            'icon'=>'basket',
+            'icon'=>'/storage/icons/UserFaces/user-settings-fill.svg',
             'slug'=>'0', 
         ]);
 
@@ -25,7 +26,7 @@ class menu extends Seeder
             'id'=>'2',
             'menuParent'=>'root',
             'Description'=>'Data Builder',
-            'icon'=>'clipboard',
+            'icon'=>'/storage/icons/Device/database-line.svg',
             'slug'=>'0', 
         ]);
 
@@ -33,7 +34,7 @@ class menu extends Seeder
             'id'=>'3',
             'menuParent'=>'2',
             'Description'=>'Instructors',
-            'icon'=>'clipboard',
+            'icon'=>'/storage/icons/Business/presentation-fill.svg',
             'slug'=>'/instructors', 
         ]);
 
@@ -41,7 +42,7 @@ class menu extends Seeder
             'id'=>'11',
             'menuParent'=>'2',
             'Description'=>'Students',
-            'icon'=>'clipboard',
+            'icon'=>'/storage/icons/Business/id-card-line.svg',
             'slug'=>'/student', 
         ]);
 
@@ -49,7 +50,7 @@ class menu extends Seeder
             'id'=>'12',
             'menuParent'=>'x',
             'Description'=>'Edit permission',
-            'icon'=>'clipboard',
+            'icon'=>'/storage/icons/userFaces/account-box-line.svg',
             'slug'=>'/student', 
         ]);
 
@@ -59,7 +60,7 @@ class menu extends Seeder
             'id'=>'4',
             'menuParent'=>'root',
             'Description'=>'Instructor',
-            'icon'=>'clipboard',
+            'icon'=>'/storage/icons/Business/presentation-line.svg',
             'slug'=>'0', 
         ]);
 
@@ -67,7 +68,7 @@ class menu extends Seeder
             'id'=>'8',
             'menuParent'=>'4',
             'Description'=>'Instructors Profile',
-            'icon'=>'clipboard',
+            'icon'=>'/storage/icons/Userfaces/user-fill.svg',
             'slug'=>'/instructor-profile', 
         ]);
 
@@ -83,7 +84,7 @@ class menu extends Seeder
             'id'=>'10',
             'menuParent'=>'4',
             'Description'=>'Dashboard',
-            'icon'=>'clipboard',
+            'icon'=>'/storage/icons/System/dashboard-line.svg',
             'slug'=>'/teacherdashboard', 
         ]);
 
@@ -91,7 +92,7 @@ class menu extends Seeder
             'id'=>'5',
             'menuParent'=>'1',
             'Description'=>'Menu',
-            'icon'=>'clipboard',
+            'icon'=>'/storage/icons/System/menu-fill.svg',
             'slug'=>'/menu', 
         ]);
 
@@ -99,7 +100,7 @@ class menu extends Seeder
             'id'=>'6',
             'menuParent'=>'1',
             'Description'=>'Users',
-            'icon'=>'clipboard',
+            'icon'=>'/storage/icons/UserFaces/group-line.svg',
             'slug'=>'/user',
         ]);
 
@@ -107,7 +108,7 @@ class menu extends Seeder
             'id'=>'7',
             'menuParent'=>'1',
             'Description'=>'Permissions',
-            'icon'=>'clipboard',
+            'icon'=>'/storage/icons/Others/key-line.svg',
             'slug'=>'/permission', 
         ]);
 
@@ -115,15 +116,15 @@ class menu extends Seeder
             'id'=>'13',
             'menuParent'=>'1',
             'Description'=>'Permissions-Modify',
-            'icon'=>'clipboard',
-            'slug'=>'/permission-modify', 
+            'icon'=>'/storage/icons/Others/key-fill.svg',
+            'slug'=>'/permission-modify',
         ]);
 
         DB::table('menu')->insert([
             'id'=>'14',
             'menuParent'=>'root',
             'Description'=>'Administrator',
-            'icon'=>'clipboard',
+            'icon'=>'/storage/icons/UserFaces/admin-line.svg',
             'slug'=>'0', 
         ]);
 
@@ -131,14 +132,14 @@ class menu extends Seeder
             'id'=>'15',
             'menuParent'=>'14',
             'Description'=>'Courses',
-            'icon'=>'clipboard',
+            'icon'=>'/storage/icons/Document/book-open-line.svg',
             'slug'=>'/courses', 
         ]);
                 DB::table('menu')->insert([
             'id'=>'16',
             'menuParent'=>'14',
             'Description'=>'Subjects',
-            'icon'=>'clipboard',
+            'icon'=>'/storage/icons/Others/book-shelf-line.svg',
             'slug'=>'0', 
         ]);
 

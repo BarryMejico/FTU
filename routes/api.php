@@ -42,7 +42,6 @@ Route::get('thisPermissions',[PermissionController::class,'specificmenu']);
 Route::post('UpdatePermissions',[PermissionController::class,'updateBULK']);
 Route::post('addPermission',[PermissionController::class,'addPermission']);
 Route::post('editPermission',[PermissionController::class,'editpermission']);
-
 route::post('deletePermission',[PermissionController::class,'deletepermission']);
 
 route::get('courses',[courseController::class,'getCourses']);
@@ -56,6 +55,8 @@ Route::get('listofMenu',[menu::class,'index_menu']);
 
 
 Route::post('save_teacher',[TeacherController::class,'save_data']);
+
+
 // Dashboard metrics (protected)
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('dashboard/enlisted',[\App\Http\Controllers\DashboardController::class,'enlistedCounts']);

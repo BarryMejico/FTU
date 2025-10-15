@@ -11,26 +11,7 @@
                 <ul>
                     <li class="menu-section"><span class="menu-title">Menu</span></li>
                     <!-- Static Dashboard link -->
-                    <li class="menu-item">
-                        <router-link class="menu-link dashboard-link" to="/dashboard">
-                            <span class="icon"><i class="ri-dashboard-line"></i></span>
-                            <span class="title">Dashboard</span>
-                        </router-link>
-                    </li>
-                    <!-- Files link -->
-                    <li class="menu-item">
-                        <router-link class="menu-link files-link" to="/files">
-                            <span class="icon"><i class="ri-folder-3-line"></i></span>
-                            <span class="title">Files</span>
-                        </router-link>
-                    </li>
-                    <!-- Courses link -->
-                    <li class="menu-item">
-                        <router-link class="menu-link courses-link" to="/courses">
-                            <span class="icon"><i class="ri-book-2-line"></i></span>
-                            <span class="title">Courses</span>
-                        </router-link>
-                    </li>
+                    
                                 <li v-for="(item, idx) in topLevelTools" :key="item.id || idx" class="menu-item" :class="{ hasChildren: childItems(item.id).length, open: !!openMenus[idx] }">
                                     <!-- if the item has children, render a toggleable section -->
                                     <template v-if="childItems(item.id).length">
@@ -45,7 +26,19 @@
                                             @mouseenter="onTopMenuHover(idx)"
                                             @mouseleave="onTopMenuLeave(idx)"
                                         >
-                                            <span class="icon"><i class="ri-folder-3-line"></i></span>
+                                            <span class="icon">
+                                                <img v-if="item.icon" :src="item.icon" alt="" 
+                                                style="width:25px; 
+                                                height:25px; 
+                                                object-fit:contain;
+                                                filter: invert(100%) 
+                                                        sepia(0%) 
+                                                        saturate(0%) 
+                                                        hue-rotate(0deg) 
+                                                        brightness(100%) 
+                                                        contrast(100%);"  />
+                                                <i v-else class="ri-folder-3-line"></i>
+                                            </span>
                                             <span class="title">{{ item.Description }}</span>
                                             <span class="caret"><i class="ri-arrow-right-s-line"></i></span>
                                         </div>
@@ -53,7 +46,21 @@
                                         <transition name="submenu" @enter="onEnter" @leave="onLeave">
                                             <ul v-show="!!openMenus[idx]" class="sub-list" role="menu">
                                                 <li v-for="(sub, j) in childItems(item.id)" :key="sub.id || j" class="sub-item">
-                                                    <router-link class="sub-link" :to="sub.slug || '#'">{{ sub.Description }}</router-link>
+                                                    <router-link class="sub-link" :to="sub.slug || '#'">
+                                                        <span class="icon">
+                                                <img v-if="sub.icon" :src="sub.icon" alt="" 
+                                                style="width:15px;   
+                                                height:15px; 
+                                                object-fit:contain;
+                                                filter: invert(100%) 
+                                                        sepia(0%) 
+                                                        saturate(0%) 
+                                                        hue-rotate(0deg) 
+                                                        brightness(100%) 
+                                                        contrast(100%);"  />
+                                                <i v-else class="ri-folder-3-line"></i>
+                                            </span>
+                                            {{ sub.Description }}</router-link>
                                                 </li>
                                             </ul>
                                         </transition>

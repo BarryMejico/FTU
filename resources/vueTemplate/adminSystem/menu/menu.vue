@@ -1,7 +1,33 @@
 <template>
     <div class="menu-container">
          <h1 class="page-title">Menu Management</h1>
+        <div class="actions-bar">
+            <button class="btn-add" @click="showAddModal = true">
+            <i class="ri-add-line"></i> Add New Menu
+            </button>
+        </div>
         <div class="table-responsive">
+            <el-dialog title="Add/Edit Menu" v-model="showAddModal">
+            <form @submit.prevent="saveMenu">
+                <div class="form-group">
+                <label>Description</label>
+                <input v-model="formData.Description" type="text" required>
+                </div>
+                <div class="form-group">
+                <label>Icon URL</label>
+                <input v-model="formData.icon" type="text">
+                </div>
+                <div class="form-group">
+                <label>Slug</label>
+                <input v-model="formData.slug" type="text" required>
+                </div>
+                <div class="dialog-footer">
+                <button type="button" @click="showAddModal = false">Cancel</button>
+                <button type="submit">Save</button>
+                </div>
+            </form>
+            </el-dialog>
+            <div class="table-responsive"></div>
         <table class="menu-table">
             <thead>
                 <tr>
@@ -12,19 +38,65 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(menu,k) in menu" :key="k">
-                    <td>
+                <tr v-for="(menu,k) in allmenu" :key="k">
+                    <td  v-if="menu.menuParent=='root'">
                         {{menu.id}}
                     </td>
-                    <td>
-                        {{menu.icon}}
+
+                    <td  v-if="menu.menuParent=='root'">
+                        <!-- {{menu.icon}} -->
+                        <img :src="menu.icon" alt="" 
+                                                style="width:25px; 
+                                                height:25px; 
+                                                object-fit:contain;
+                                                "  />
+                                                
                     </td>
-                    <td>
+                    <td  v-if="menu.menuParent=='root'">
                         {{menu.Description}}
                     </td>
-                    <td>
+                    <td  v-if="menu.menuParent=='root'">
                         {{menu.slug}}
                     </td>
+                    <td v-if="menu.menuParent=='root'">
+                        <table >
+                            <t-head>
+                                <tr>
+                                    <th style="padding-left: 20px;">Icon</th>
+                                    <th>Description</th>
+                                    <th>Slug</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </t-head>
+                            <t-body>
+                            <tr v-for="(subMenu, index) in allmenu" :key="index">
+                                <td v-if="subMenu.menuParent ==  menu.id"
+                                 style="padding-left: 20px;">
+                                    <img :src="subMenu.icon" alt="" 
+                                        style="width:20px; 
+                                        height:20px; 
+                                        object-fit:contain;
+                                        "  />
+                                </td>
+                                <td v-if="subMenu.menuParent ==  menu.id">{{ subMenu.Description }}</td>
+                                <td v-if="subMenu.menuParent ==  menu.id">{{ subMenu.slug }}</td>
+                                <td v-if="subMenu.menuParent ==  menu.id">
+                                    <div class="actions">
+                                        <button class="btn-edit" @click="editMenu(subMenu)"><i class="ri-edit-line"></i> Edit</button>
+                                        <button class="btn-delete" @click="deleteMenu(subMenu.id)"><i class="ri-delete-bin-6-line"></i> Delete</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </t-body>
+                        </table>
+                    </td>
+                    <td  v-if="menu.menuParent=='root'">
+                        <div class="actions">
+                            <button class="btn-edit" @click="editMenu(menu)"><i class="ri-edit-line"></i> Edit</button>
+                            <button class="btn-delete" @click="deleteMenu(menu.id)"><i class="ri-delete-bin-6-line"></i> Delete</button>
+                        </div>
+                    </td>
+                    <td v-else style="display:none;"></td>
                 </tr>
             </tbody>
         </table>
@@ -32,34 +104,48 @@
     </div>
 </template>
 <script>
-import {useMenus} from '../../../Store/menu'
-import {useUser} from '../../../Store/user'
+import axios from 'axios';
 
 
 export default{
+    
     setup(){
-        const menu = useMenus();
-        const userData = useUser();
-        return {menu,userData}
+
     },
 
     data(){
         return{
-            
+            showAddModal:false,
+            formData:{
+                id:'',
+                icon:'',
+                Description:'', 
+                slug:'',
+            },
+            allmenu:[{
+                id:'',
+                icon:'',
+                Description:'',
+                slug:'',
+            }],
         }
     },
-    methods:{
-       
+    mounted(){
+        this.getallmenu()
     },
-    computed:{
-        userData(){
-            return this.userData.userData
+    
+    methods:{
+
+        getallmenu(){
+            axios.get('/api/listofMenu')
+            .then(res=>{
+                this.allmenu=res.data
+            })
         },
 
-        menu(){
-            return this.menu.menu
-        }
-    }
+        },
+
+
 }
 </script>
 
