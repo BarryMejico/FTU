@@ -144,6 +144,11 @@ class permision extends Seeder
 
         DB::table('permission_details')->insert([
             'permiCode'=>'3',
+            'id'=>'25',
+        ]);
+
+        DB::table('permission_details')->insert([
+            'permiCode'=>'3',
             'id'=>'24',
         ]);
 // -------------for Administrator
