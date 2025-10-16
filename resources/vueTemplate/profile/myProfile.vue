@@ -36,9 +36,13 @@
                     <img :src="previewSrc || profileImageSrc" alt="Preview" @error="onImgError" />
                 </div>
                 <input type="file" accept="image/*" @change="onFileChange" />
+                <div v-if="isUploading" class="modal-loader">
+                    <span class="loader"></span>
+                    <span>Uploading...</span>
+                </div>
                 <div class="modal-actions">
-                    <button class="btn" @click="uploadPicture" :disabled="!selectedFile">Upload</button>
-                    <button class="btn secondary" @click="closeModal">Cancel</button>
+                    <button class="btn" @click="uploadPicture" :disabled="!selectedFile || isUploading">Update</button>
+                    <button class="btn secondary" @click="closeModal" :disabled="isUploading">Cancel</button>
                 </div>
                 <p v-if="uploadMessage" class="upload-message">{{ uploadMessage }}</p>
             </div>
@@ -62,7 +66,8 @@ export default {
         const selectedFile = ref(null);
         const previewSrc = ref('');
         const uploadMessage = ref('');
-        return { userData, showModal, selectedFile, previewSrc, uploadMessage }
+        const isUploading = ref(false);
+        return { userData, showModal, selectedFile, previewSrc, uploadMessage, isUploading }
     },
 
     computed: {
@@ -111,8 +116,8 @@ export default {
                 this.uploadMessage = 'No file selected.';
                 return;
             }
+            this.isUploading = true;
             const formData = new FormData();
-            // assume userData.userData.code is available as identifier
             formData.append('code', this.userData.userData.code || this.userData.userData.id || '');
             formData.append('Profile_Picture', this.selectedFile);
             try{
@@ -120,10 +125,7 @@ export default {
                     headers: { 'Content-Type': 'multipart/form-data' }
                 });
                 if (resp && resp.data && resp.data.path){
-                    // cache-bust the image URL so browser reloads the new image
                     const pathWithBust = resp.data.path + '?v=' + Date.now();
-                    console.log('Upload response path:', resp.data.path, 'using', pathWithBust);
-                    // update Pinia store reactively without overwriting nested state
                     if (typeof this.userData.$patch === 'function'){
                         this.userData.$patch(state => {
                             if (!state.userData) state.userData = {};
@@ -133,14 +135,15 @@ export default {
                         this.userData.userData.Profile_Picture = pathWithBust;
                     }
                     this.uploadMessage = 'Upload successful.';
-                    // small delay before closing
-                    setTimeout(() => { this.closeModal() }, 800);
+                    setTimeout(() => { this.closeModal(); this.isUploading = false; }, 800);
                 } else {
                     this.uploadMessage = resp.data.message || 'Upload completed.';
+                    this.isUploading = false;
                 }
             }catch(err){
                 console.error(err);
                 this.uploadMessage = err.response && err.response.data && err.response.data.message ? err.response.data.message : 'Upload failed.';
+                this.isUploading = false;
             }
         },
 
@@ -156,6 +159,11 @@ export default {
     max-width: 800px;
     margin: 2rem auto;
     padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: margin 0.3s cubic-bezier(.4,0,.2,1);
 }
 
 .profile-card {
@@ -163,6 +171,10 @@ export default {
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 2rem;
+    margin: 0 auto;
+    width: 1000px;
+    max-width: 100%;
+    transition: margin 0.3s cubic-bezier(.4,0,.2,1);
 }
 
 .profile-header {
@@ -254,23 +266,46 @@ export default {
 }
 
 @media (max-width: 600px) {
+    .profile-container {
+        padding: 0 8px;
+    }
     .profile-header {
         flex-direction: column;
         align-items: center;
         text-align: center;
     }
-
+    .profile-card {
+        width: 100%;
+        margin: 0 auto;
+    }
     .profile-info {
         width: 100%;
     }
-
     .info-row {
         flex-direction: column;
         gap: 0.5rem;
     }
-
     .info-row label {
         min-width: auto;
     }
+}
+.modal-loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem 0;
+}
+.loader {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #2c7be5;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 0.5rem;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 </style>

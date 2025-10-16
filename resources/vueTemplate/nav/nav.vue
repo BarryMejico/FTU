@@ -1,4 +1,3 @@
-
 <template>
     <div>
         <nav>
@@ -33,11 +32,14 @@
                 </router-link>
             </li> -->
 
-            <li v-else class="right">
+            <li v-else class="right" style="display:flex;align-items:center;gap:8px;">
                 <router-link :to="{name:'profileoverview'}" class="user-with-avatar">
                     <img :src="avatarUrl" @error="onAvatarError" alt="avatar" class="nav-avatar" />
                     <span class="username-text">{{userData.name}}</span>
                 </router-link>
+                <button class="navbar-logout-btn" @click="logout" aria-label="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
             </li>
             
         </ul>
@@ -130,6 +132,8 @@ ul.topnav {
     background: linear-gradient(90deg, #0b2546 0%, #071430 100%);
     position: relative;
     box-shadow: 0 6px 20px rgba(4,12,30,0.55), inset 0 -6px 20px rgba(2,8,18,0.25);
+    /* Set z-index for navbar */
+    z-index: 100;
 }
 
 /* subtle radial accent near the left (logo area) */
@@ -145,6 +149,10 @@ ul.topnav li.right{ float:right; }
 .app-name{ display:flex; align-items:center; gap:10px }
 .app-name .logo{ margin-right:6px }
 
+/* Remove underlines from all navbar links */
+ul.topnav li a, .topnav a, .nav-link, .user-with-avatar {
+    text-decoration: none !important;
+}
 
 ul.topnav li span {
     display: block;
@@ -178,26 +186,22 @@ ul.topnav li .router-link-active span {background-color: rgba(0,163,196,0.12);}
 ul.topnav li.right {float: right;}
 
 @media screen and (max-width: 600px) {
-  ul.topnav li.right, 
-  ul.topnav li {float: none;}
+    ul.topnav li.right, ul.topnav li {
+        float: none;
+        width: 100%;
+    }
 }
-.topnav a {
-    text-decoration: none; /* remove underline from all nav links */
-    color: inherit;
+ul.topnav {
+        list-style-type: none;
+        margin: 0;
+        padding: 0 18px; /* horizontal breathing room */
+        overflow: hidden;
+        /* Clean gradient header, dot pattern removed */
+        background: linear-gradient(90deg, #0b2546 0%, #071430 100%);
+        position: relative;
+        box-shadow: 0 6px 20px rgba(4,12,30,0.55), inset 0 -6px 20px rgba(2,8,18,0.25);
+        z-index: 100;
 }
-.router-link-active {
-    font-weight: bold;
-    text-decoration: none;
-}
-/* header toggle button */
-/* header toggle removed */
-/* Responsive Design */
-@media screen and (max-width: 600px) {
-  ul.topnav li {
-    float: none;
-    width: 100%;
-  }
-}   
 
 /* small elevation for active route */
 .topnav li .router-link-active span{
@@ -271,4 +275,21 @@ ul.topnav li.right {float: right;}
 .user-with-avatar:focus{ 
     outline: none; 
     box-shadow: 0 0 0 4px rgba(0,163,196,0.12); }
+
+/* Navbar logout button style */
+.navbar-logout-btn {
+  background: none;
+  border: none;
+  color: #e6f2fb;
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background 0.18s, color 0.18s;
+}
+.navbar-logout-btn:hover {
+  background: #0b2546;
+  color: #fff;
+  box-shadow: 0 0 12px 2px #fff, 0 0 32px 8px rgba(255,255,255,0.18);
+}
 </style>

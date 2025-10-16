@@ -1,6 +1,7 @@
 <template>
 
 <!-- From Uiverse.io by kyle1dev --> 
+<div class="login-title-top">Welcome to FTU Portal</div>
 <div class="auth-overlay">
 <form class="modern-form">
 <div class="login-icon">
@@ -373,5 +374,72 @@ button:hover {
   color: var(--primary);
   text-align: center;
   margin-bottom: 10px;
+}
+
+.login-title-top {
+  display: block;
+  text-align: center;
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: .5px;
+  line-height: 1.08;
+  margin-top: 70px;
+  margin-bottom: 1.1rem;
+  background: linear-gradient(112deg,
+    #0f2547 0%,
+    #163c6c 18%,
+    #1d548f 36%,
+    #2264a3 50%,
+    #1d548f 60%,
+    #e6f2ff 70%,
+    #ffffff 73%,
+    #d8e9ff 76%,
+    #1a3354 86%,
+    #0f2547 100%
+  );
+  background-size: 190% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 5px 14px rgba(10,40,85,.42)) drop-shadow(0 2px 3px rgba(0,0,0,.55));
+  animation: titleSheen 8.5s linear infinite;
+  position: relative;
+}
+.login-title-top:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -20%;
+  width: 18%;
+  height: 100%;
+  background: linear-gradient(75deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.35) 40%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0.35) 60%, rgba(255,255,255,0) 100%);
+  transform: skewX(-18deg);
+  filter: blur(.8px) brightness(1.18);
+  opacity: 0;
+  animation: shineSweep 4.2s ease-in-out 0.6s 1 forwards;
+  pointer-events: none;
+}
+.login-title-top:hover:after {
+  animation: shineSweepHover 2.3s ease-in-out 0s infinite;
+}
+@keyframes titleSheen {
+  0% { background-position: 200% 0; }
+  100% { background-position: 0 0; }
+}
+@keyframes shineSweep {
+  0% { left: -25%; opacity: 0; }
+  8% { opacity: .85; }
+  18% { left: 110%; opacity: 0; }
+  100% { left: 110%; opacity: 0; }
+}
+@keyframes shineSweepHover {
+  0% { left: -25%; opacity: 0; }
+  10% { opacity: .95; }
+  55% { left: 110%; opacity: 0; }
+  100% { left: 110%; opacity: 0; }
+}
+@keyframes login-shine {
+  0% { background-position: 200% 0; }
+  100% { background-position: 0 0; }
 }
 </style>

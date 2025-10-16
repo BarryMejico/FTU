@@ -1,9 +1,19 @@
+    text-decoration: none !important;
 <template>
     <div class="app-sidebar" :class="{ collapsed: isCollapsed, open: isToggled }">
         <aside class="sidebar" :class="{ collapsed: isCollapsed, open: isToggled }" ref="sidebar">
             <header class="sidebar-header">
                 <div class="actions">
-                    <!-- header collapse control removed; edge-centered control used instead -->
+                    <button
+                        ref="edgeBtn"
+                        class="edge-collapse"
+                        :class="{ collapsed: isCollapsed }"
+                        @click="toggleCollapse"
+                        :aria-pressed="isCollapsed"
+                        :aria-label="isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+                    >
+                        <i :class="isCollapsed ? 'ri-arrow-right-s-line' : 'ri-arrow-left-s-line'"></i>
+                    </button>
                 </div>
             </header>
 
@@ -22,13 +32,6 @@
                         <router-link class="menu-link files-link" to="/files">
                             <span class="icon"><i class="ri-folder-3-line"></i></span>
                             <span class="title">Files</span>
-                        </router-link>
-                    </li>
-                    <!-- Courses link -->
-                    <li class="menu-item">
-                        <router-link class="menu-link courses-link" to="/courses">
-                            <span class="icon"><i class="ri-book-2-line"></i></span>
-                            <span class="title">Courses</span>
                         </router-link>
                     </li>
                                 <li v-for="(item, idx) in topLevelTools" :key="item.id || idx" class="menu-item" :class="{ hasChildren: childItems(item.id).length, open: !!openMenus[idx] }">
@@ -71,17 +74,7 @@
                 </ul>
             </nav>
 
-            <!-- Edge-centered collapse button: sits centered on the right edge of the sidebar -->
-            <button
-                ref="edgeBtn"
-                class="edge-collapse"
-                :class="{ collapsed: isCollapsed }"
-                @click="toggleCollapse"
-                :aria-pressed="isCollapsed"
-                :aria-label="isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
-            >
-                <i :class="isCollapsed ? 'ri-arrow-right-s-line' : 'ri-arrow-left-s-line'"></i>
-            </button>
+            <!-- Move collapse button to sidebar-header actions -->
 
             
         </aside>
@@ -232,20 +225,19 @@ const userData = computed(() => (userStore ? userStore.userData : {}))
 .app-sidebar{ display:flex }
 /* make the sidebar float on the left and respond to the wrapper classes */
 .app-sidebar .sidebar{ 
-    /* place the sidebar below the sticky navbar so controls (toggle) are visible */
+    /* Sidebar offset from the very top by 30px */
     position:fixed;
-     left:0; 
-     width:205px;
-     background:#071430;
-     color:#c6d0e6;
-     display:flex;
-     flex-direction:column;
-    top:var(--app-navbar-height,56px);
-    bottom:0;
-    height:calc(100vh - var(--app-navbar-height,56px));
-     transition:width .28s cubic-bezier(.22,.9,.35,1), transform .24s ease;
-     z-index:90; /* place under navbar (navbar z-index:100) */
- }
+    top:0;
+    left:0; 
+    width:205px;
+    height:100vh;
+    background:#071430;
+    color:#c6d0e6;
+    display:flex;
+    flex-direction:column;
+    transition:width .28s cubic-bezier(.22,.9,.35,1), transform .24s ease;
+    z-index:90; /* keep under navbar if navbar uses higher z-index */
+}
 
 .app-sidebar.collapsed .sidebar{ 
     width:72px }
@@ -260,15 +252,21 @@ const userData = computed(() => (userStore ? userStore.userData : {}))
 .app-sidebar .menu-link .title{ transition:opacity .18s ease }
     
 .sidebar header, .sidebar .sidebar-header{
-     display:flex;
-     align-items:center;
-     justify-content:space-between;
-     padding:12px 14px;
-     background: #071430 }
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px 14px;
+    background: #071430;
+    margin-top: 50px;
+}
 .logo{ 
     font-weight:700 }
 .actions{ display:flex; gap:8px; align-items:center }
-.collapse-btn, .mobile-btn{ background:transparent; border:none; color:inherit; cursor:pointer }
+.collapse-btn, .mobile-btn{ 
+    background:transparent;
+     border:none;
+      color:inherit;
+       cursor:pointer }
 
 /* collapse switch styles */
 /* removed: switch styles (icon-only control now in top nav) */
@@ -345,11 +343,12 @@ const userData = computed(() => (userStore ? userStore.userData : {}))
     color: #071430; /* dark icon color */
     border: 1px solid rgba(7,20,48,0.06);
     box-shadow: 0 6px 18px rgba(2,12,30,0.08);
-    transition: background .12s ease, top .12s ease, transform .06s ease, left .12s ease;
+    transition: background .12s ease, top .12s ease, transform .06s ease;
     cursor:pointer;
-    /* place the button slightly outside the sidebar so it doesn't overlap text */
+    /* center on the sidebar edge: half inside, half outside; anchor by right so it doesn't lag on width transition */
     top: 50%;
-    left: calc(100% + 8px);
+    right: -20px; /* half of 40px width */
+    left: auto;
     transform: translateY(-50%);
 }
 .edge-collapse i{ font-size:20px }
@@ -362,7 +361,8 @@ const userData = computed(() => (userStore ? userStore.userData : {}))
 .edge-collapse:focus{ outline: 3px solid rgba(0,163,196,0.16); outline-offset:2px }
 
 /* position adjustment when sidebar is collapsed to prevent large horizontal offset */
-.app-sidebar.collapsed .edge-collapse{ left: calc(72px + 8px); }
+/* keep it straddling the edge even when collapsed */
+.app-sidebar.collapsed .edge-collapse{ right: -20px; }
 
 /* When collapsed, center icons and remove horizontal padding so the icon sits in the middle */
 .app-sidebar.collapsed .menu-link{ justify-content:center; padding-left:6px; padding-right:6px }
