@@ -155,7 +155,7 @@ class menu extends Seeder
             'id'=>'18',
             'menuParent'=>'root',
             'Description'=>'Student',
-            'icon'=>'clipboard',
+            'icon'=>'/storage/icons/Others/book-shelf-line.svg',
             'slug'=>'0', 
         ]);
 
@@ -206,5 +206,15 @@ class menu extends Seeder
             'icon'=>'clipboard',
             'slug'=>'/Availablecourses', 
         ]);
+
+        DB::table('menu')->insert([
+            'id'=>'25',
+            'menuParent'=>'root',
+            'Description'=>'Files',
+            'icon'=>'clipboard',
+            'slug'=>'/files', 
+        ]);
+
+
     }
 }

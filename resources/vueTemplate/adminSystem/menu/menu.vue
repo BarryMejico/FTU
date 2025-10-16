@@ -58,7 +58,7 @@
                     <td  v-if="menu.menuParent=='root'">
                         {{menu.slug}}
                     </td>
-                    <td v-if="menu.menuParent=='root'">
+                    <td v-if="menu.slug=='0' && menu.menuParent=='root'">
                         <table >
                             <t-head>
                                 <tr>

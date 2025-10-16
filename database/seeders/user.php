@@ -22,7 +22,7 @@ class user extends Seeder
             'email_verified_at'=>'2021-10-13 20:40:32',
             'code'=>'1',
             // 'Reference_ID'=>'5',
-                        'Profile_Picture'=>'image/Default.png',
+                        'Profile_Picture'=>'/storage/assets/Default.png',
 
         ]);
 
@@ -34,7 +34,7 @@ class user extends Seeder
             'email_verified_at'=>'2021-10-13 20:40:32',
             'code'=>'2',
             // 'Reference_ID'=>'5',
-            'Profile_Picture'=>'image/Default.png',
+            'Profile_Picture'=>'/storage/assets/Default.png',
         ]);
 
         DB::table('users')->insert([
@@ -45,7 +45,7 @@ class user extends Seeder
             'email_verified_at'=>'2021-10-13 20:40:32',
             'code'=>'3',
             // 'Reference_ID'=>'5',
-            'Profile_Picture'=>'image/Default.png',
+            'Profile_Picture'=>'/storage/assets/Default.png',
         ]);
     }
 }
