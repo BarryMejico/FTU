@@ -111,12 +111,29 @@ class Authen extends Controller
     
         // Handle the file upload
         if ($request->hasFile('Profile_Picture')) {
+            // Delete old profile picture if it exists and is not the default
+            if ($user->Profile_Picture && 
+                !str_contains($user->Profile_Picture, 'Default.png') &&
+                !str_contains($user->Profile_Picture, 'assets/Default.png')) {
+                $oldPath = str_replace('storage/', 'public/', $user->Profile_Picture);
+                if (\Storage::exists($oldPath)) {
+                    \Storage::delete($oldPath);
+                }
+            }
+            
             $file = $request->file('Profile_Picture');
             $filename = time() . '_' . $file->getClientOriginalName();
             $filePath = $file->storeAs('public/profile_pictures', $filename);
             // Update the user's profile picture path in the database
             $user->Profile_Picture = 'storage/profile_pictures/' . $filename;
             $user->save();
+            
+            \Log::info('Profile picture updated', [
+                'user_code' => $user->code,
+                'old_path' => $user->Profile_Picture,
+                'new_path' => 'storage/profile_pictures/' . $filename
+            ]);
+            
             return response()->json(['message' => 'Profile picture updated successfully', 'path' => $user->Profile_Picture], 200);
         } else {
             return response()->json(['message' => 'No file uploaded'], 400);

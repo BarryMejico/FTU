@@ -1,9 +1,13 @@
 <script setup>
 import { ref } from 'vue';
+import { onMounted, onBeforeUnmount } from 'vue';
 import accreditationImg from '../images/accreditation.jpg';
 import ftuActivationImg from '../images/ftu_activation.jpeg';
 import ftuLogo from '../images/ftu_logo.png';
 import backgroundCampus from '../images/8.jpg';
+import rommelTacalImg from '../images/rommel tacal.png';
+import giovanniVillanuevaImg from '../images/giovanni villanueva.png';
+import jetmarkMarcosImg from '../images/jetmark marcos.png';
 // Intersection Observer for scroll reveal (Functions list)
 
 const showImageOverlay = ref(false);
@@ -23,7 +27,6 @@ const closeActivationOverlay = () => {
 };
 
 // Scroll reveal for functions list
-import { onMounted, onBeforeUnmount } from 'vue';
 const functionsList = ref(null);
 let fnObserver;
 onMounted(() => {
@@ -202,6 +205,57 @@ onBeforeUnmount(() => { if (fnObserver) fnObserver.disconnect(); });
                     <li class="fn-item">To administer the conduct of basic, advance and refresher courses.</li>
                     <li class="fn-item">To develop and revise curricula of Budget, Fiscal and Finance related courses.</li>
                 </ul>
+            </div>
+        </section>
+
+        <!-- Superintendents Section -->
+        <section class="superintendents-section fade-card" aria-labelledby="superintendents-heading" data-fade-offset="60" data-fade-duration="1000" data-fade-shadow="0 18px 48px -14px rgba(10,30,60,.28)">
+            <div class="superintendents-header">
+                <h2 id="superintendents-heading">SUPERINTENDENTS</h2>
+                <img :src="ftuLogo" alt="Finance Training Unit Seal" class="superintendents-logo" />
+            </div>
+            <div class="sup-grid">
+                <!-- Card 1 -->
+                <article class="sup-card">
+                    <div class="sup-card-accent"></div>
+                    <div class="sup-card-topbar"></div>
+                    <div class="sup-photo-wrap">
+                        <img :src="rommelTacalImg" alt="Portrait of LT Rommel N Tacal PN" class="sup-photo" />
+                    </div>
+                    <div class="sup-card-bottombar"></div>
+                    <h3 class="sup-name">LCDR ROMMEL N TACAL PN</h3>
+                    <p class="sup-role">Acting Superintendent</p>
+                    <p class="sup-dates">16 October 2020 - 15 March 2021</p>
+                    <img :src="ftuLogo" alt="FTU Seal" class="sup-seal" />
+                </article>
+
+                <!-- Card 2 -->
+                <article class="sup-card">
+                    <div class="sup-card-accent"></div>
+                    <div class="sup-card-topbar"></div>
+                    <div class="sup-photo-wrap">
+                        <img :src="giovanniVillanuevaImg" alt="Portrait of CDR Giovanni P Villanueva PN" class="sup-photo" />
+                    </div>
+                    <div class="sup-card-bottombar"></div>
+                    <h3 class="sup-name">CDR GIOVANNI P VILLANUEVA PN</h3>
+                    <p class="sup-role">Superintendent</p>
+                    <p class="sup-dates">15 March 2021 - 06 May 2021</p>
+                    <img :src="ftuLogo" alt="FTU Seal" class="sup-seal" />
+                </article>
+
+                <!-- Card 3 -->
+                <article class="sup-card">
+                    <div class="sup-card-accent"></div>
+                    <div class="sup-card-topbar"></div>
+                    <div class="sup-photo-wrap">
+                        <img :src="jetmarkMarcosImg" alt="Portrait of LCDR Jetmark T Marcos PN" class="sup-photo" />
+                    </div>
+                    <div class="sup-card-bottombar"></div>
+                    <h3 class="sup-name">LCDR JETMARK T MARCOS PN</h3>
+                    <p class="sup-role">Superintendent</p>
+                    <p class="sup-dates">06 May 2021 - Present</p>
+                    <img :src="ftuLogo" alt="FTU Seal" class="sup-seal" />
+                </article>
             </div>
         </section>
 
@@ -811,5 +865,149 @@ body:before {
 @media (prefers-reduced-motion: reduce) {
   .fade-card { transition: opacity .6s ease; transform:none !important; box-shadow: var(--fade-shadow-final); }
   .fade-child { transition: opacity .5s ease; transform:none !important; }
+}
+
+/* =============================
+   SUPERINTENDENTS SECTION
+   ============================= */
+.superintendents-section {
+    margin: 4rem 0 3rem;
+    position: relative;
+    background: #0f1e3d;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px -6px rgba(0,0,0,.18);
+}
+.superintendents-header {
+    background: var(--ftu-accent-dark);
+    padding: 1.35rem 1.6rem 1.05rem;
+    display:flex; align-items:center; justify-content:space-between; gap:1rem;
+}
+.superintendents-header h2 {
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 800;
+    letter-spacing: 4px;
+    margin:0; color:#fff;
+}
+.superintendents-logo { width: 110px; height:auto; filter: drop-shadow(0 4px 10px rgba(0,0,0,.4)); }
+.sup-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    padding: 2.5rem 2rem;
+}
+@media (max-width: 980px) { .sup-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; } }
+@media (max-width: 640px) { .sup-grid { grid-template-columns: 1fr; gap: 18px; padding: 2rem 1.5rem; } }
+
+.sup-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 0;
+    position: relative;
+    text-align: center;
+    box-shadow: 0 10px 32px rgba(0,0,0,0.15);
+    overflow: hidden;
+    transition: transform .4s ease, box-shadow .4s ease;
+    animation: cardFadeIn 0.6s ease backwards;
+}
+.sup-card:nth-child(1) { animation-delay: 0.1s; }
+.sup-card:nth-child(2) { animation-delay: 0.25s; }
+.sup-card:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes cardFadeIn {
+    from { opacity: 0; transform: translateY(30px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.sup-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 48px rgba(0,0,0,0.25);
+}
+
+.sup-card-accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #1e60d5 0%, #4a90e2 100%);
+}
+
+.sup-card-topbar {
+    height: 42px;
+    background: #0b1e3d;
+    margin: 0;
+}
+
+.sup-photo-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    padding: 0;
+    overflow: hidden;
+}
+
+.sup-photo {
+    width: 100%;
+    max-width: 280px;
+    height: 300px;
+    object-fit: cover;
+    display: block;
+    transition: transform .5s ease;
+}
+
+.sup-card:hover .sup-photo {
+    transform: scale(1.05);
+}
+
+.sup-card-bottombar {
+    height: 42px;
+    background: #0b1e3d;
+    margin: 0;
+}
+
+.sup-name {
+    color: #0b1e3d;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    margin: 18px 16px 8px;
+    font-size: 1.15rem;
+    line-height: 1.3;
+    min-height: 2.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sup-role {
+    color: #4d5b71;
+    margin: 0 16px 4px;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.sup-dates {
+    color: #6c757d;
+    margin: 0 16px 18px;
+    font-size: 0.9rem;
+}
+
+.sup-seal {
+    width: 90px;
+    height: auto;
+    margin: 0 auto 24px;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,.2));
+    transition: transform .3s ease;
+}
+
+.sup-card:hover .sup-seal {
+    transform: scale(1.08);
+}
+
+@media (max-width: 640px) {
+    .sup-name { font-size: 1.05rem; min-height: auto; }
+    .sup-photo { max-width: 100%; height: 280px; }
 }
 </style>

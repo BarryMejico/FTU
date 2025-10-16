@@ -1,19 +1,2 @@
-/* Base document background (grid handled by .bg-grid overlay) */
+/* Base document background */
 html, body, #app { min-height: 100%; background-color: #ffffff; }
-
-/* User-provided grid background pattern */
-.grid-wrapper {
-  min-height: 100%;
-  width: 100%;
-  position: relative;
-  background-color: transparent; /* use global background instead */
-}
-
-
-.grid-background {
-  display: none; /* disable legacy page-specific grid */
-}
-
-/* Ensure content sits above the grid background when using .grid-wrapper */
-.grid-wrapper > .home-page { position: relative; z-index: 1; }
-
