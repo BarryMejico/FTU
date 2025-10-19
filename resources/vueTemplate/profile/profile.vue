@@ -137,10 +137,23 @@ export default {
         profileImageSrc(){
             // Build a full URL for the profile image and normalize legacy paths like 'image/Default.png'
             const pic = this.profileID && this.profileID.Profile_Picture
-            if(!pic) return this.appURL + 'storage/Default.png'
+            
+            // If no picture path or it's one of the default variations, show default
+            if (!pic || 
+                pic.includes('Default.png') || 
+                pic.includes('assets/Default.png') ||
+                pic === 'storage/Default.png' ||
+                pic === '/storage/Default.png') {
+                return this.appURL + 'storage/Default.png?v=' + Date.now()
+            }
+            
+            // If it's an absolute URL (http/https), use it directly
             if(/^https?:\/\//.test(pic)) return pic
-            const normalized = pic.replace(/^\//, '').replace(/^image\//, 'storage/')
-            return this.appURL + normalized
+            
+            // Remove any existing query params before normalizing
+            const cleanPic = pic.split('?')[0]
+            const normalized = cleanPic.replace(/^\//, '').replace(/^image\//, 'storage/')
+            return this.appURL + normalized + '?v=' + Date.now()
         },
 
         userData(){

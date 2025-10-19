@@ -288,12 +288,12 @@ const userData = computed(() => (userStore ? userStore.userData : {}))
 .menu ul{ list-style:none; margin:0; padding:0 }
 .menu-section{ padding:12px 16px; font-size:1.1rem; color:#7d84ab; display:flex; align-items:center; justify-content:flex-start; gap:8px; position:relative }
 .menu-item{ border-bottom:1px solid rgba(255,255,255,0.02) }
-.menu-link{ display:flex; align-items:center; gap:10px; padding:10px 14px; cursor:pointer; transition:background-color .18s ease, color .12s ease, transform .06s ease }
+.menu-link{ display:flex; align-items:center; gap:10px; padding:10px 14px; cursor:pointer; transition:background-color .18s ease, color .12s ease, transform .06s ease; color: #eaf6fb; text-decoration: none; }
 .menu-link .icon{ width:36px; display:inline-flex; align-items:center; justify-content:center; color:#eaf6fb; transition:color .12s ease, opacity .12s ease }
 .menu-link .icon i{ color: inherit; font-size: 20px }
 .menu-link:hover .icon, .menu-item.open > .menu-link .icon{ color: #ffffff }
 .app-sidebar.collapsed .menu-link .icon{ color: #eaf6fb }
-.menu-link .title{ flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.menu-link .title{ flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color: #eaf6fb; }
 
 /* Brighten the dashboard and files entries so they are clearly visible */
 .menu-link.dashboard-link, .menu-link.files-link, .menu-link.courses-link{ color: #eaf6fb; text-decoration: none }
@@ -319,7 +319,8 @@ const userData = computed(() => (userStore ? userStore.userData : {}))
 /* Hover / focus / active effects */
 .menu-link:hover, .menu-link:focus{
     background: rgba(0,163,196,0.06);
-    color: #eaf6fb;
+    color: #ffffff;
+    text-decoration: none;
 }
 .menu-link:active{ transform:translateY(1px) }
 .menu-link:focus{ outline: 2px solid rgba(0,163,196,0.12); outline-offset: 2px; border-radius:6px }
@@ -327,17 +328,18 @@ const userData = computed(() => (userStore ? userStore.userData : {}))
 /* when a menu with children is open show stronger indicator */
 .menu-item.open > .menu-link{
     background: rgba(0,163,196,0.10);
-    color: #00a3c4;
+    color: #ffffff;
+    text-decoration: none;
 }
-.menu-item.open > .menu-link .icon{ color: #00a3c4 }
-.menu-item.open > .menu-link .caret{ color:#00a3c4 }
+.menu-item.open > .menu-link .icon{ color: #ffffff }
+.menu-item.open > .menu-link .caret{ color:#ffffff }
 .menu-item.hasChildren .caret{ transition:transform .24s ease }
-.menu-item.open .caret{ transform:rotate(90deg); color:#00a3c4 }
+.menu-item.open .caret{ transform:rotate(90deg); color:#ffffff }
 
 .sub-list{ list-style:none; margin:0; padding:6px 0 12px 56px; overflow:hidden }
 .sub-item{ padding:6px 0 }
-.sub-link{ color:inherit; text-decoration:none; display:block; padding:6px 8px; border-radius:6px; transition: background-color .12s ease }
-.sub-link:hover, .sub-link:focus{ background: rgba(0,163,196,0.04); color: #eaf6fb }
+.sub-link{ color:#eaf6fb; text-decoration:none; display:block; padding:6px 8px; border-radius:6px; transition: background-color .12s ease }
+.sub-link:hover, .sub-link:focus{ background: rgba(0,163,196,0.04); color: #ffffff; text-decoration: none; }
 
 .sidebar-footer{ padding:12px; background: #071430 }
 .overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:50 }
@@ -425,5 +427,24 @@ const userData = computed(() => (userStore ? userStore.userData : {}))
 .submenu-enter-to, .submenu-leave-from{ max-height:1000px; opacity:1 }
 .submenu-enter-active, .submenu-leave-active{ transition: max-height .24s ease, opacity .24s ease }
 
+</style>
+
+<style>
+/* Global styles for router-links in sidebar - not scoped */
+.app-sidebar a,
+.app-sidebar a.router-link-active,
+.app-sidebar a.router-link-exact-active {
+    text-decoration: none !important;
+    color: #eaf6fb !important;
+}
+
+.app-sidebar a:hover {
+    text-decoration: none !important;
+    color: #ffffff !important;
+}
+
+.app-sidebar .sub-link {
+    text-decoration: none !important;
+}
 </style>
 

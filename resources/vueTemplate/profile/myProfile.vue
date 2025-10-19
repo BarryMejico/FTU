@@ -3,7 +3,7 @@
         <div class="profile-card">
             <div class="profile-header">
                             <div class="profile-avatar">
-                                <img :src="profileImageSrc" alt="Profile Picture" @error="onImgError" @click="openModal" class="clickable-avatar" />
+                                <img :key="imageCacheBuster" :src="profileImageSrc" alt="Profile Picture" @error="onImgError" @click="openModal" class="clickable-avatar" />
                             </div>
                 <div class="profile-info">
                     <h1>My Profile</h1>
@@ -36,13 +36,9 @@
                     <img :src="previewSrc || profileImageSrc" alt="Preview" @error="onImgError" />
                 </div>
                 <input type="file" accept="image/*" @change="onFileChange" />
-                <div v-if="isUploading" class="modal-loader">
-                    <span class="loader"></span>
-                    <span>Uploading...</span>
-                </div>
                 <div class="modal-actions">
-                    <button class="btn" @click="uploadPicture" :disabled="!selectedFile || isUploading">Update</button>
-                    <button class="btn secondary" @click="closeModal" :disabled="isUploading">Cancel</button>
+                    <button class="btn" @click="uploadPicture" :disabled="!selectedFile">Update</button>
+                    <button class="btn secondary" @click="closeModal">Cancel</button>
                 </div>
                 <p v-if="uploadMessage" class="upload-message">{{ uploadMessage }}</p>
             </div>
@@ -66,17 +62,32 @@ export default {
         const selectedFile = ref(null);
         const previewSrc = ref('');
         const uploadMessage = ref('');
-        const isUploading = ref(false);
-        return { userData, showModal, selectedFile, previewSrc, uploadMessage, isUploading }
+        const imageCacheBuster = ref(Date.now());
+        return { userData, showModal, selectedFile, previewSrc, uploadMessage, imageCacheBuster }
     },
 
     computed: {
         profileImageSrc() {
             const pic = this.userData && this.userData.userData && this.userData.userData.Profile_Picture
-            if (!pic) return '/storage/Default.png'
+            
+            // If no picture path or it's one of the default variations, show default
+            if (!pic || 
+                pic.includes('Default.png') || 
+                pic.includes('assets/Default.png') ||
+                pic === 'storage/Default.png' ||
+                pic === '/storage/Default.png') {
+                return '/storage/Default.png?v=' + this.imageCacheBuster
+            }
+            
+            // If it's an absolute URL (http/https), use it directly
             if (/^https?:\/\//.test(pic)) return pic
-            const normalized = pic.replace(/^\//, '').replace(/^image\//, 'storage/')
-            return window.location.origin + '/' + normalized
+            
+            // Remove any existing query params before normalizing
+            const cleanPic = pic.split('?')[0]
+            const normalized = cleanPic.replace(/^\//, '').replace(/^image\//, 'storage/')
+            
+            // Add cache busting to force reload
+            return window.location.origin + '/' + normalized + '?v=' + this.imageCacheBuster
         }
     },
 
@@ -116,34 +127,43 @@ export default {
                 this.uploadMessage = 'No file selected.';
                 return;
             }
-            this.isUploading = true;
+            this.uploadMessage = 'Uploading...';
             const formData = new FormData();
-            formData.append('code', this.userData.userData.code || this.userData.userData.id || '');
+            const userCode = this.userData.userData.code || this.userData.userData.id || '';
+            formData.append('code', userCode);
             formData.append('Profile_Picture', this.selectedFile);
             try{
                 const resp = await axios.post('/api/uploadprofilepicture', formData, {
                     headers: { 'Content-Type': 'multipart/form-data' }
                 });
+                console.log('Upload successful:', resp.data);
                 if (resp && resp.data && resp.data.path){
-                    const pathWithBust = resp.data.path + '?v=' + Date.now();
+                    // Store the path without cache-busting (the computed property will handle that)
+                    // update Pinia store reactively without overwriting nested state
                     if (typeof this.userData.$patch === 'function'){
                         this.userData.$patch(state => {
                             if (!state.userData) state.userData = {};
-                            state.userData.Profile_Picture = pathWithBust;
+                            state.userData.Profile_Picture = resp.data.path;
                         });
                     } else {
-                        this.userData.userData.Profile_Picture = pathWithBust;
+                        this.userData.userData.Profile_Picture = resp.data.path;
                     }
-                    this.uploadMessage = 'Upload successful.';
-                    setTimeout(() => { this.closeModal(); this.isUploading = false; }, 800);
+                    // Update cache buster to force image reload
+                    this.imageCacheBuster = Date.now();
+                    this.uploadMessage = 'Upload successful!';
+                    // Close modal and reset preview after a short delay
+                    setTimeout(() => { 
+                        this.closeModal();
+                        this.previewSrc = '';
+                        this.selectedFile = null;
+                    }, 1000);
                 } else {
+                    console.error('No path in response:', resp.data);
                     this.uploadMessage = resp.data.message || 'Upload completed.';
-                    this.isUploading = false;
                 }
             }catch(err){
-                console.error(err);
+                console.error('Upload error:', err.response?.data || err.message);
                 this.uploadMessage = err.response && err.response.data && err.response.data.message ? err.response.data.message : 'Upload failed.';
-                this.isUploading = false;
             }
         },
 
@@ -288,24 +308,5 @@ export default {
     .info-row label {
         min-width: auto;
     }
-}
-.modal-loader {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 1rem 0;
-}
-.loader {
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid #2c7be5;
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    animation: spin 0.8s linear infinite;
-    margin-bottom: 0.5rem;
-}
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
 }
 </style>
