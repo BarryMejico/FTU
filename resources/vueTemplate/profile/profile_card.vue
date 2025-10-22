@@ -50,10 +50,22 @@ export default {
         },
 
         normalizedSrc(pic){
-            if(!pic) return window.location.origin + '/storage/Default.png'
+            // If no picture path or it's one of the default variations, show default
+            if (!pic || 
+                pic.includes('Default.png') || 
+                pic.includes('assets/Default.png') ||
+                pic === 'storage/Default.png' ||
+                pic === '/storage/Default.png') {
+                return window.location.origin + '/storage/Default.png?v=' + Date.now()
+            }
+            
+            // If it's an absolute URL (http/https), use it directly
             if(/^https?:\/\//.test(pic)) return pic
-            const normalized = pic.replace(/^\//, '').replace(/^image\//, 'storage/')
-            return window.location.origin + '/' + normalized
+            
+            // Remove any existing query params before normalizing
+            const cleanPic = pic.split('?')[0]
+            const normalized = cleanPic.replace(/^\//, '').replace(/^image\//, 'storage/')
+            return window.location.origin + '/' + normalized + '?v=' + Date.now()
         },
 
         onImgError(event){

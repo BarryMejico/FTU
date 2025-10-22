@@ -75,13 +75,28 @@ export default{
         }
         ,
         normalizedProfilePic(path){
-            if(!path) return '/storage/Default.png'
+            // If no picture path or it's one of the default variations, show default
+            if (!path || 
+                path.includes('Default.png') || 
+                path.includes('assets/Default.png') ||
+                path === 'storage/Default.png' ||
+                path === '/storage/Default.png') {
+                return '/storage/Default.png?v=' + Date.now()
+            }
+            
             // remove any cache-busting query string for normalization
             const clean = path.split('?')[0];
-            if(clean.startsWith('http')) return clean + (path.includes('?') ? ('?' + path.split('?').slice(1).join('?')) : '');
-            if(clean.startsWith('/')) return window.location.origin + clean + (path.includes('?') ? ('?' + path.split('?').slice(1).join('?')) : '');
-            // path like 'storage/profile_pictures/xxx' -> prefix origin
-            return window.location.origin + '/' + clean.replace(/^\/+/, '') + (path.includes('?') ? ('?' + path.split('?').slice(1).join('?')) : '');
+            let baseUrl;
+            if(clean.startsWith('http')) {
+                baseUrl = clean;
+            } else if(clean.startsWith('/')) {
+                baseUrl = window.location.origin + clean;
+            } else {
+                // path like 'storage/profile_pictures/xxx' -> prefix origin
+                baseUrl = window.location.origin + '/' + clean.replace(/^\/+/, '');
+            }
+            // Add cache busting parameter
+            return baseUrl + '?v=' + Date.now();
         },
         onAvatarError(event){
             event.target.src = '/storage/Default.png'
@@ -128,18 +143,43 @@ ul.topnav {
     margin: 0;
     padding: 0 18px; /* horizontal breathing room */
     overflow: hidden;
-    /* Clean gradient header, dot pattern removed */
-    background: linear-gradient(90deg, #0b2546 0%, #071430 100%);
     position: relative;
-    box-shadow: 0 6px 20px rgba(4,12,30,0.55), inset 0 -6px 20px rgba(2,8,18,0.25);
-    /* Set z-index for navbar */
-    z-index: 100;
+    /* 3D layered gradient background */
+    background-image:
+        radial-gradient(1200px 220px at 10% -60%, rgba(255,255,255,0.14), rgba(255,255,255,0) 60%), /* soft sheen near logo */
+        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0) 28%), /* top light */
+        linear-gradient(0deg, rgba(0,0,0,0.25), rgba(0,0,0,0) 42%),            /* bottom shade */
+        linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0) 60%), /* subtle diagonal texture */
+        linear-gradient(90deg, #0b2546 0%, #071430 100%); /* base */
+    background-blend-mode: screen, normal, multiply, screen, normal;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    border-bottom: 1px solid rgba(0,0,0,0.45);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.18),    /* inner top bevel */
+        inset 0 -1px 0 rgba(0,0,0,0.45),        /* inner bottom bevel */
+        0 10px 28px rgba(4,12,30,0.6);          /* outer drop shadow */
+    z-index: 100; /* keep above content */
 }
 
 /* subtle radial accent near the left (logo area) */
+/* Top glossy edge */
 ul.topnav::before{
-    /* Dot pattern removed: no pseudo-element background */
-    content: none;
+    content: '';
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 22px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0));
+    pointer-events: none;
+}
+
+/* Bottom inner shadow for depth */
+ul.topnav::after{
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 26px;
+    background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.35));
+    pointer-events: none;
 }
 
 ul.topnav li {float: left;}
@@ -191,17 +231,7 @@ ul.topnav li.right {float: right;}
         width: 100%;
     }
 }
-ul.topnav {
-        list-style-type: none;
-        margin: 0;
-        padding: 0 18px; /* horizontal breathing room */
-        overflow: hidden;
-        /* Clean gradient header, dot pattern removed */
-        background: linear-gradient(90deg, #0b2546 0%, #071430 100%);
-        position: relative;
-        box-shadow: 0 6px 20px rgba(4,12,30,0.55), inset 0 -6px 20px rgba(2,8,18,0.25);
-        z-index: 100;
-}
+ 
 
 /* small elevation for active route */
 .topnav li .router-link-active span{
@@ -289,7 +319,6 @@ ul.topnav {
 }
 .navbar-logout-btn:hover {
   background: #0b2546;
-  color: #fff;
-  box-shadow: 0 0 12px 2px #fff, 0 0 32px 8px rgba(255,255,255,0.18);
+  color: #ffd700;
 }
 </style>
