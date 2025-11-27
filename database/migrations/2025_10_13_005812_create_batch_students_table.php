@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('batch_students', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->foreignId('Batch_ID')->constrained('batches')->onDelete('cascade');
+            $table->foreignId('Student_ID')->constrained('students')->onDelete('cascade');
         });
     }
 

@@ -7,6 +7,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\menu;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\moduleController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -53,11 +54,25 @@ route::put('update_course/{id}',[CourseController::class,'updateCourse']);
 route::delete('delete_course/{id}',[CourseController::class,'deleteCourse']);
 route::get('course/{id}',[CourseController::class,'getCourse']);
 
+route::get('modules', [moduleController::class, 'getModules']);
+route::post('add_module', [moduleController::class, 'createModule']);
+route::put('update_module/{id}', [moduleController::class, 'updateModule']);
+route::delete('delete_module/{id}', [moduleController::class, 'deleteModule']); 
+route::get('module/{id}', [moduleController::class, 'getModule']);
+
+route::get('subjects', [\App\Http\Controllers\SubjectController::class, 'getSubjects']);
+route::post('add_subject', [\App\Http\Controllers\SubjectController::class, 'createSubject']);
+route::put('update_subject/{id}', [\App\Http\Controllers\SubjectController::class, 'updateSubject']);
+route::delete('delete_subject/{id}', [\App\Http\Controllers\SubjectController::class, 'deleteSubject']);
+route::get('subject/{id}', [\App\Http\Controllers\SubjectController::class, 'getSubject']);
+
 Route::get('listofMenu',[menu::class,'index_menu']);
 
 
 
 Route::post('save_teacher',[TeacherController::class,'save_data']);
+
+
 
 
 // Dashboard metrics (protected)

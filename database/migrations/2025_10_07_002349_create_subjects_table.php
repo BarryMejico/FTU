@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('subjects', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->foreignId('Module_ID')->constrained('courses')->onDelete('cascade');
             $table->string('Subject_Name');
             $table->string('Subject_Code')->unique();
             $table->string('Subject_Description')->nullable();
             $table->string('Subject_Credit');
             $table->string('Subject_Type');
+            $table->string('Subject_percentage');
         });
     }
 

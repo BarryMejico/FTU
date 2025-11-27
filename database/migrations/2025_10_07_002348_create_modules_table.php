@@ -14,6 +14,12 @@ return new class extends Migration
         Schema::create('modules', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->unsignedBigInteger('Course_ID')->nullable();
+            $table->foreign('Course_ID')->references('id')->on('courses')->onDelete('set null');
+            $table->string('Module_Name');
+            $table->text('Module_Description');
+            $table->decimal('Module_percentage', 5, 2);
+            $table->integer('Module_nr_hrs');
         });
     }
 

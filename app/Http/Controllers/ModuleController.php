@@ -1,79 +1,58 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\module;
 use Illuminate\Http\Request;
-
 class ModuleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    // Get all modules
+    public function getModules()
     {
-        $modules = Module::all();
-        return view('modules.index', compact('modules'));
+        return module::all();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(request $request)
+    // Create a new module
+    public function createModule(Request $request)
     {
-        $validatedData = $request->
-                validate([
-            'Module_Name' => 'required|string|max:255',
-            'Module_Description' => 'required|string',
-            'Module_percentage' => 'required|numeric|min:0|max:100',
-            'Module_nr_hrs' => 'required|integer|min:0',
-        ]);
+        $module = new module();
 
-        Module::create($validatedData);
-        return redirect()->route('modules.index')->with('success', 'Module created successfully.');
+        $module->Module_Name = $request->Module_Name;
+        $module->Module_Description ="This is a sample module description"; 
+            // $request->Module_Description;
+        $module->Module_percentage ="50" ;
+            // $request->Module_percentage;
+        $module->Module_nr_hrs ="1" ;
+            // $request->Module_nr_hrs;
+           
+        $module->save();
+
+        return response()->json(['message' => 'Module created successfully', 'module' => $module], 201);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    // Update an existing module
+    public function updateModule(Request $request, $id)
     {
-        //
+        $module = module::find($id);
+        $module->Module_Name = $request->Module_Name;
+        $module->Module_Description = $request->Module_Description;
+        $module->Course_ID = $request->Course_ID;
+        $module->save();
+
+        return response()->json(['message' => 'Module updated successfully', 'module' => $module], 200);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(module $module)
+    // Delete a module
+    public function deleteModule($id)
     {
-         $inputs = request()->all();
-        $module->update($inputs);
-        return redirect()->route('modules.index')->with('success', 'Module updated successfully.');
+        $module = module::find($id);
+        $module->delete();
+
+        return response()->json(['message' => 'Module deleted successfully'], 200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(module $module)
+    // Get a specific module
+    public function getModule($id)
     {
-        $inputs = request()->all();
-        $module->update($inputs);
-        return redirect()->route('modules.index')->with('success', 'Module updated successfully.');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, module $module)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(module $module)
-    {
-        //
+        return module::find($id);
     }
 }
+?>

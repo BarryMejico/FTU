@@ -42,6 +42,24 @@ const routes=[
 
     },
     {
+        path:'/CourseModuleslecturesures',
+        name:'CourseModuleslecturesures',
+        // import function for lazy loading 
+        component:()=>import('../vueTemplate/databuilder/CMS/cms.vue'),
+    },
+    {
+        path:'/modules',
+        name:'modules',
+        // import function for lazy loading 
+        component:()=>import('../vueTemplate/CD/modules/modules.vue'),
+    },
+    {
+        path:'/subjects',
+        name:'subjects',
+        // import function for lazy loading 
+        component:()=>import('../vueTemplate/CD/subjects/subjects.vue'),
+    },
+    {
         path:'/myprofile',
         name:'MyProfile',
         // import function for lazy loading 
@@ -137,7 +155,7 @@ const routes=[
         component:()=>import('../vueTemplate/CD/batch.vue'),
         children:[
              {path:'/batches',
-             name:'subjects',
+             name:'batches',
             component:()=>import('../vueTemplate/CD/batch.vue')},
 
             {path:'/courses',
@@ -154,7 +172,7 @@ const routes=[
         component:()=>import('../vueTemplate/teacherSystem/teacherDashboard.vue'),
         children:[
              {path:'/teacher-subjects',
-             name:'subjects',
+             name:'teacherSubjects',
             component:()=>import('../vueTemplate/teacherSystem/subjects.vue')},
             
         ]

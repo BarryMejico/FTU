@@ -3,35 +3,43 @@
         <!-- Header -->
         <div class="header">
             <h2>Courses Management</h2>
+            <div class="search-bar">
+                <input 
+                    type="text" 
+                    v-model="searchQuery" 
+                    placeholder="Search courses..." 
+                    class="form-control"
+                >
+            </div>
             <button class="btn btn-primary" @click="openAddModal">Add New Course</button>
         </div>
 
         <!-- Courses List -->
         <div class="courses-list">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Course Name</th>
-                        <th>Description</th>
-                        <th>Credits</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="course in courses" :key="course.id">
-                        <td>{{ course.Course_Code }}</td>
-                        <td>{{ course.Course_Name }}</td>
-                        <td>{{ course.Course_Description }}</td>
-                        <td>{{ course.Course_Level }}</td>
-                        <td>
-                            <button class="btn btn-sm btn-info" @click="editCourse(course)">Edit</button>
-                            <button type="button" class="btn btn-success" @click="Subjects(course)">Subjects</button>
-                            <button class="btn btn-sm btn-danger" @click="deleteCourse(course.Course_Code)">Delete</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="cards-grid">
+                <div v-for="course in courses" :key="course.id" class="course-card">
+                    <div class="card-header">
+                        <h3>{{ course.Course_Name }}</h3>
+                        <span class="course-id">ID: {{ course.Course_Code }}</span>
+                    </div>
+                    <div class="card-body">
+                        <p>{{ course.Course_Description }}</p>
+                        <div class="course-credits">
+                            <strong>Credits:</strong> {{ course.Course_Level }}
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-info" @click="editCourse(course)">Edit</button>
+                        <button type="button" class="btn btn-success" @click="Subjects(course)">Modules
+                            
+                        </button>
+                        <button class="btn btn-sm btn-danger" @click="deleteCourse(course.Course_Code)">Delete</button>
+                    </div>
+                </div>
+            </div>
+
+            
+           
         </div>
 
         <!-- Add/Edit Modal -->
@@ -76,7 +84,8 @@ export default {
                 name: '',
                 description: '',
                 credits: 0
-            }
+            },
+            searchQuery: ''
         }
     },
     methods: {
@@ -111,7 +120,7 @@ export default {
         async saveCourse() {
             try {
                 if (this.isEditing) {
-                    await axios.put(`/api/update_course/${this.currentCourse.Course_Code}`, this.currentCourse)
+                    await axios.put(`/api/update_course/${this.currentCourse.id}`, this.currentCourse)
                 } else {
                     await axios.post('/api/add_course', this.currentCourse)
                 }
@@ -146,7 +155,45 @@ export default {
     }
 }
 </script>
+<style scoped>
+            .cards-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 20px;
+                padding: 20px 0;
+            }
 
+            .course-card {
+                background: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                padding: 15px;
+            }
+
+            .card-header {
+                margin-bottom: 15px;
+            }
+
+            .card-header h3 {
+                margin: 0;
+                color: #333;
+            }
+
+            .course-id {
+                color: #666;
+                font-size: 0.9em;
+            }
+
+            .card-body {
+                margin-bottom: 15px;
+            }
+
+            .card-actions {
+                display: flex;
+                gap: 10px;
+                justify-content: flex-end;
+            }
+            </style>
 <style scoped>
 .courses-container {
     padding: 20px;

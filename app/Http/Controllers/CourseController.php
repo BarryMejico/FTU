@@ -82,8 +82,9 @@ class CourseController extends Controller
 
     public function updateCourse(Request $request, $id)
     {
+        
         $course = course::find($id);
-        $course->Course_Name = $request->name;
+        $course->Course_Name = $request->Course_Name;
         $course->Course_Description = $request->description;
         $course->Course_Duration = 1;
         $course->Course_Level = 1;
